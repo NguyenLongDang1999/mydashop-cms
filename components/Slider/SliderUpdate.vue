@@ -1,0 +1,117 @@
+<script setup lang="ts">
+
+// ** Types Imports
+import type { ISliderForm } from '~/types/slider.type'
+
+// ** Validations Imports
+import { label, schema } from '~/validations/slider'
+
+// ** Props & Emits
+interface Props {
+    slider: ISliderForm
+}
+
+const props = defineProps<Props>()
+
+// ** useHooks
+const { path } = useSlider()
+const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
+
+const { handleSubmit } = useForm({
+    validationSchema: schema,
+    initialValues: props.slider
+})
+
+// ** Data
+const isOpen = ref<boolean>(false)
+
+// ** Methods
+const onSubmit = handleSubmit(async values => {
+    await dataFormInput(values)
+    isOpen.value = false
+})
+</script>
+
+<template>
+    <UButton
+        icon="i-heroicons-pencil-square"
+        size="sm"
+        color="orange"
+        square
+        variant="solid"
+        @click="isOpen = true"
+    />
+
+    <UModal v-model="isOpen">
+        <UForm
+            :state="{}"
+            @submit="onSubmit"
+        >
+            <UCard>
+                <template #header>
+                    <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
+                        Cập nhật slider
+                    </h2>
+                </template>
+
+                <div class="grid gap-4 grid-cols-12">
+                    <div class="col-span-12">
+                        <FormUpload :image-src="getImageFile(path, slider.image_uri)" />
+                    </div>
+
+                    <div class="sm:col-span-6 col-span-12">
+                        <FormInput
+                            :label="label.name"
+                            name="name"
+                        />
+                    </div>
+
+                    <div class="sm:col-span-6 col-span-12">
+                        <FormInput
+                            :label="label.url"
+                            name="url"
+                        />
+                    </div>
+
+                    <div class="sm:col-span-6 col-span-12">
+                        <FormSelect
+                            :label="label.status"
+                            :options="optionStatus"
+                            name="status"
+                        />
+                    </div>
+
+                    <div class="sm:col-span-6 col-span-12">
+                        <FormInput
+                            :label="label.description"
+                            name="description"
+                        />
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="flex justify-center gap-4">
+                        <UButton
+                            type="submit"
+                            size="sm"
+                            variant="solid"
+                            label="Cập Nhật"
+                            :loading="isLoading"
+                            :trailing="false"
+                        />
+
+                        <UButton
+                            type="reset"
+                            size="sm"
+                            color="gray"
+                            variant="solid"
+                            label="Huỷ Bỏ"
+                            :trailing="false"
+                            @click="isOpen = false"
+                        />
+                    </div>
+                </template>
+            </UCard>
+        </UForm>
+    </UModal>
+</template>

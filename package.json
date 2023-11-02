@@ -1,0 +1,40 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev -p 5173",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . -c .eslintrc.cjs --fix --ext .ts,.js,.vue,.tsx,.jsx"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/ui": "latest",
+    "@nuxtjs/google-fonts": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@unocss/nuxt": "^0.56.5",
+    "@vee-validate/nuxt": "latest",
+    "@vueuse/nuxt": "latest",
+    "eslint": "^8.51.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-sonarjs": "^0.21.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "nuxt": "^3.7.4",
+    "nuxt-lodash": "^2.5.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@tanstack/vue-query": "^4.37.0",
+    "@vee-validate/yup": "^4.11.8",
+    "@vueup/vue-quill": "^1.2.0",
+    "vue-currency-input": "^3.0.5",
+    "yup": "^1.3.2"
+  }
+}
