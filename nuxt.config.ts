@@ -7,7 +7,8 @@ export default defineNuxtConfig({
         '@nuxtjs/google-fonts',
         '@vueuse/nuxt',
         '@nuxt/ui',
-        '@vee-validate/nuxt'
+        '@vee-validate/nuxt',
+        '@samk-dev/nuxt-vcalendar'
     ],
     ssr: false,
     unocss: {

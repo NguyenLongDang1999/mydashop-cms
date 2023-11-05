@@ -30,6 +30,7 @@ export enum ROUTE {
     SLIDER = 'slider',
     ATTRIBUTE = 'attribute',
     PRODUCT = 'product',
+    FLASH_SALE = 'flash-sale',
 }
 
 export enum ROUTER {
@@ -43,4 +44,8 @@ export enum ROUTER {
 
 export enum IMAGE {
     DEFAULT = '/assets/default.jpg'
+}
+
+export enum FORMAT {
+    DATE_TIME = 'DD-MM-YYYY HH:mm'
 }

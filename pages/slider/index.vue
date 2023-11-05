@@ -60,7 +60,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<ISlider>">
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1">
                                 <UAvatar
                                     :src="getImageFile(path, row.image_uri)"
                                     :alt="row.name"

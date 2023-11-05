@@ -24,6 +24,10 @@ export default [
                 to: '/attribute'
             },
             {
+                title: 'Flash Sale',
+                to: '/flash-sale'
+            },
+            {
                 title: 'Sản phẩm',
                 to: '/product'
             }

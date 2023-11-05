@@ -87,7 +87,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.PRODUCT}/${row.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
@@ -104,7 +104,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.CATEGORY}/${row.Category.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.Category.image_uri)"
                                         :alt="row.Category.name"
@@ -121,7 +121,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.BRAND}/${row.Brand.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4 truncate">
+                                <div class="flex items-center gap-1 truncate">
                                     <UAvatar
                                         :src="getImageFile(path, row.Brand.image_uri)"
                                         :alt="row.Brand.name"

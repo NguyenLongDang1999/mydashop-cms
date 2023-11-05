@@ -1,23 +1,23 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type'
 import type { IRow } from '~/types/core.type'
+import type { IFlashSale, IFlashSaleSearch, IFlashSaleTable } from '~/types/flash-sale.type'
 
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin thuộc tính',
+        label: 'Tên chiến dịch',
         sortable: true
     },
     {
-        key: 'category_id',
-        label: 'Danh mục',
+        key: 'date_range',
+        label: 'Ngày áp dụng',
         sortable: true
     },
     {
-        key: 'status',
-        label: 'Trạng thái',
+        key: 'discount',
+        label: 'Số tiền giảm',
         sortable: true
     },
     {
@@ -28,8 +28,8 @@ const columns = [
 ]
 
 // ** useHooks
-const { path, search } = useAttribute()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IAttributeTable, IAttributeSearch>(path.value, { params: search })
+const { path, search } = useFlashSale()
+const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IFlashSaleTable, IFlashSaleSearch>(path.value, { params: search })
 const { isLoading, dataDelete } = useCrudDelete(path.value)
 </script>
 
@@ -37,7 +37,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
     <section>
         <TheTitle
             label="Quản lý sản phẩm"
-            title="Thuộc tính"
+            title="Flash Sale"
         />
 
         <div class="mt-8 pb-24 max-w-none">
@@ -45,14 +45,14 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                 <template #header>
                     <div class="flex justify-between items-center">
                         <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                            Danh sách thuộc tính
+                            Danh sách Flash Sale
                         </h2>
 
-                        <AttributeForm />
+                        <FlashSaleForm />
                     </div>
                 </template>
 
-                <AttributeSearch />
+                <!-- <FlashSaleSearch /> -->
 
                 <div class="mt-4">
                     <UTable
@@ -64,43 +64,22 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
-                        <template #name-data="{ row }: IRow<IAttribute>">
-                            <NuxtLink
-                                :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
-                                class="inline-block"
-                            >
-                                <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
+                        <template #name-data="{ row }: IRow<IFlashSale>">
+                            <NuxtLink class="inline-block">
+                                <div class="flex items-center gap-1">
+                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.campaign_name }}</span>
+                                </div>
                             </NuxtLink>
                         </template>
 
-                        <template #category_id-data="{ row }: IRow<IAttribute>">
-                            <div
-                                v-if="row.CategoryAttribute.length"
-                                class="flex flex-wrap gap-1"
-                            >
-                                <UButton
-                                    v-for="category in row.CategoryAttribute"
-                                    :key="category.Category.id"
-                                    :label="category.Category.name"
-                                    :to="`${ROUTER.CATEGORY}/${category.Category.id}`"
-                                    size="xs"
-                                    color="gray"
-                                    variant="solid"
-                                />
-                            </div>
-
-                            <span v-else />
+                        <template #date_range-data="{ row }: IRow<IFlashSale>">
+                            <span>{{ formatDateTime(row.start_date) }} - {{ formatDateTime(row.end_date) }}</span>
                         </template>
 
-                        <template #status-data="{ row }: IRow<IAttribute>">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionStatus, row.status)?.name"
-                                :color="valueTransform(optionStatus, row.status)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                        <template #discount-data="{ row }: IRow<IFlashSale>">
+                            {{ row.discount_percent }}%
                         </template>
+
 
                         <template #actions-data="{ row }">
                             <div class="flex gap-2">
@@ -110,7 +89,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                     color="orange"
                                     square
                                     variant="solid"
-                                    :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
+                                    :to="`${ROUTER.PRODUCT}/${row.id}`"
                                 />
 
                                 <Confirm :remove="() => dataDelete(row.id)" />

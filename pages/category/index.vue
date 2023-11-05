@@ -74,7 +74,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.CATEGORY}/${row.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
@@ -91,7 +91,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.CATEGORY}/${row.parentCategory.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.parentCategory.image_uri)"
                                         :alt="row.parentCategory.name"

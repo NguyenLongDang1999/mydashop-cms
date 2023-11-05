@@ -74,7 +74,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 :to="`${ROUTER.BRAND}/${row.id}`"
                                 class="inline-block"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
@@ -88,7 +88,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         <template #category_id-data="{ row }: IRow<IBrand>">
                             <div
                                 v-if="row.CategoryBrand.length"
-                                class="flex flex-col gap-1"
+                                class="flex flex-wrap gap-1"
                             >
                                 <UButton
                                     v-for="category in row.CategoryBrand"
