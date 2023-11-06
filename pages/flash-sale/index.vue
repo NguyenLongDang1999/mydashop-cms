@@ -83,15 +83,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #actions-data="{ row }">
                             <div class="flex gap-2">
-                                <UButton
-                                    icon="i-heroicons-pencil-square"
-                                    size="sm"
-                                    color="orange"
-                                    square
-                                    variant="solid"
-                                    :to="`${ROUTER.PRODUCT}/${row.id}`"
-                                />
-
+                                <FlashSaleUpdate :flash-sale="row" />
                                 <Confirm :remove="() => dataDelete(row.id)" />
                             </div>
                         </template>

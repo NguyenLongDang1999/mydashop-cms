@@ -1,14 +1,10 @@
 <script setup lang="ts">
 
-const props = defineProps({
-    modelValue: {
-        type: Date,
-        default: null
-    }
-})
-
+// ** Props & Emits
+const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:model-value', 'close'])
 
+// ** Computed
 const date = computed({
     get: () => props.modelValue,
     set: value => {

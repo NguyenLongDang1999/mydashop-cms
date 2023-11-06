@@ -6,10 +6,21 @@ import type { IFlashSaleForm } from '~/types/flash-sale.type'
 // ** Validations Imports
 import { label, schema } from '~/validations/flash-sale'
 
+// ** Props & Emits
+interface Props {
+    flashSale: IFlashSaleForm
+}
+
+const props = defineProps<Props>()
+
 // ** useHooks
 const { path } = useFlashSale()
-const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value)
-const { handleSubmit, values, setFieldValue } = useForm({ validationSchema: schema })
+const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value, props.flashSale.id)
+
+const { handleSubmit, values, setFieldValue } = useForm({
+    validationSchema: schema,
+    initialValues: _omitBy(props.flashSale, _isNil)
+})
 
 // ** Data
 const isOpen = ref<boolean>(false)
@@ -28,12 +39,11 @@ const onSubmit = handleSubmit(async () => {
 
 <template>
     <UButton
-        icon="i-heroicons-plus"
+        icon="i-heroicons-pencil-square"
         size="sm"
-        color="primary"
+        color="orange"
+        square
         variant="solid"
-        label="Thêm Mới"
-        :trailing="false"
         @click="isOpen = true"
     />
 
@@ -45,7 +55,7 @@ const onSubmit = handleSubmit(async () => {
             <UCard>
                 <template #header>
                     <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                        Thêm mới chiến dịch
+                        Cập nhật chiến dịch
                     </h2>
                 </template>
 
@@ -73,6 +83,7 @@ const onSubmit = handleSubmit(async () => {
 
                     <div class="col-span-12">
                         <FlashSaleProductSelected
+                            v-model="flashSale.product_id"
                             :label="label.product_selected"
                             name="product_id"
                         />
@@ -85,7 +96,7 @@ const onSubmit = handleSubmit(async () => {
                             type="submit"
                             size="sm"
                             variant="solid"
-                            label="Thêm Mới"
+                            label="Cập Nhật"
                             :loading="isLoading"
                             :trailing="false"
                         />

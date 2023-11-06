@@ -2,6 +2,7 @@
 import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface IFlashSaleForm {
+    id?: number
     campaign_name: string
     product_id: number[]
     date_range?: string | string[]

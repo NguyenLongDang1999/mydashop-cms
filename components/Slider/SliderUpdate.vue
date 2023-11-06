@@ -19,7 +19,7 @@ const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
 
 const { handleSubmit } = useForm({
     validationSchema: schema,
-    initialValues: props.slider
+    initialValues: _omitBy(props.slider, _isNil)
 })
 
 // ** Data

@@ -18,6 +18,11 @@ export const schema = toTypedSchema(yup.object({
         .number()
         .required(`${label.discount_percent} không được bỏ trống.`),
     date_range: yup
-        .string()
-        .required(`${label.date_range} không được bỏ trống.`)
+        .object({
+            start: yup.string(),
+            end: yup.string()
+        }),
+    start_date: yup.string(),
+    end_date: yup.string(),
+    product_id: yup.array()
 }))
