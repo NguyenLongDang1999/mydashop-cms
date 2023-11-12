@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const { path } = useFlashSale()
 const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value, props.flashSale.id)
 
-const { handleSubmit, values, setFieldValue } = useForm({
+const { handleSubmit, values: form } = useForm({
     validationSchema: schema,
     initialValues: _omitBy(props.flashSale, _isNil)
 })
@@ -25,14 +25,18 @@ const { handleSubmit, values, setFieldValue } = useForm({
 // ** Data
 const isOpen = ref<boolean>(false)
 
-// ** Methods
-const onSubmit = handleSubmit(async () => {
-    setFieldValue('product_id', values.product_id?.map(_v => _v.id))
-    setFieldValue('start_date', values.date_range?.start)
-    setFieldValue('end_date', values.date_range?.end)
-    setFieldValue('date_range', undefined)
+// ** Computed
+const product_id = computed(() => form.ProductFlashSale.map((_p: IFlashSaleForm) => _p.product_id))
 
-    await dataFormInput(values)
+// ** Methods
+const onSubmit = handleSubmit(async values => {
+    await dataFormInput({
+        ...values,
+        start_date: form.date_range?.start,
+        end_date: form.date_range?.end,
+        date_range: undefined
+    })
+
     isOpen.value = false
 })
 </script>
@@ -77,13 +81,14 @@ const onSubmit = handleSubmit(async () => {
                     <div class="col-span-12">
                         <FormDatePickerRange
                             :label="label.date_range"
+                            :flash-sale="flashSale"
                             name="date_range"
                         />
                     </div>
 
                     <div class="col-span-12">
                         <FlashSaleProductSelected
-                            v-model="flashSale.product_id"
+                            :model-value="product_id"
                             :label="label.product_selected"
                             name="product_id"
                         />

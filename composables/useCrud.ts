@@ -81,13 +81,7 @@ export const useCrudFormInput = <T>(path: string, id?: number | string) => {
             const formData = new FormData()
 
             for (const item in body) {
-                let value = (body as Record<string, string>)[item]
-
-                if (Array.isArray(value)) {
-                    (body as Record<string, string>)[item] = JSON.stringify(value)
-                    value = JSON.stringify(value)
-                }
-
+                const value = (body as Record<string, string>)[item]
                 if (value) formData.append(item, value)
             }
 

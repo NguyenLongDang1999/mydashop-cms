@@ -9,19 +9,20 @@ import { label, schema } from '~/validations/flash-sale'
 // ** useHooks
 const { path } = useFlashSale()
 const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value)
-const { handleSubmit, values, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, values: flashSale } = useForm({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
 
 // ** Methods
-const onSubmit = handleSubmit(async () => {
-    setFieldValue('product_id', values.product_id?.map(_v => _v.id))
-    setFieldValue('start_date', values.date_range?.start)
-    setFieldValue('end_date', values.date_range?.end)
-    setFieldValue('date_range', undefined)
+const onSubmit = handleSubmit(async values => {
+    await dataFormInput({
+        ...values,
+        start_date: flashSale.date_range?.start,
+        end_date: flashSale.date_range?.end,
+        date_range: undefined
+    })
 
-    await dataFormInput(values)
     isOpen.value = false
 })
 </script>

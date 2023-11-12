@@ -38,6 +38,8 @@ const columns = [
 ]
 
 // ** useHooks
+const { path: pathBrand } = useBrand()
+const { path: pathCategory } = useCategory()
 const { path, search } = useProduct()
 const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
 const { isLoading, dataDelete } = useCrudDelete(path.value)
@@ -106,7 +108,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                             >
                                 <div class="flex items-center gap-1">
                                     <UAvatar
-                                        :src="getImageFile(path, row.Category.image_uri)"
+                                        :src="getImageFile(pathCategory, row.Category.image_uri)"
                                         :alt="row.Category.name"
                                     />
 
@@ -123,7 +125,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                             >
                                 <div class="flex items-center gap-1 truncate">
                                     <UAvatar
-                                        :src="getImageFile(path, row.Brand.image_uri)"
+                                        :src="getImageFile(pathBrand, row.Brand.image_uri)"
                                         :alt="row.Brand.name"
                                     />
 

@@ -1,12 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProductList } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
-    label: string
+    label?: string
     name: string
     modelValue?: number[]
 }
@@ -14,159 +13,64 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path, search } = useProduct()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
+const { path } = useProduct()
+const { dataList, isLoading } = useCrudDataList<IProductList>(path.value)
 
-const { value, errorMessage, setValue } = useField(() => props.name, undefined, {
+const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
-    initialValue: dataTable.value
+    initialValue: props.modelValue || []
 })
 
 // ** Computed
 const error = computed(() => errorMessage.value)
 
-// ** Data
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin sản phẩm',
-        sortable: true
-    },
-    {
-        key: 'category_id',
-        label: 'Danh mục',
-        sortable: true
-    },
-    {
-        key: 'brand_id',
-        label: 'Thương hiệu',
-        sortable: true
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái',
-        sortable: true
-    },
-    {
-        key: 'popular',
-        label: 'Phổ biến',
-        sortable: true
-    }
-]
+const productList = computed(() => dataList.value.map(_p => ({
+    id: _p.id,
+    label: _p.name,
+    avatar: { src: getImageFile(path.value, _p.image_uri) }
+})))
+
+const productSelected = computed(() => productList.value.filter(_p => value.value.includes(_p.id)))
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
-        <UFormGroup
-            :label="label"
-            :name="name"
-            :error="error"
+    <UFormGroup
+        :label="label"
+        :name="name"
+        :error="error"
+    >
+        <USelectMenu
+            v-model="value"
+            :options="productList"
+            :loading="isLoading"
+            searchable
+            multiple
+            placeholder="Vui Lòng Chọn"
+            value-attribute="id"
+            option-attribute="label"
         >
-            <div class="flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
-                <UTable
-                    v-model="value"
-                    :rows="dataTable"
-                    :columns="columns"
-                    :loading="isFetching"
-                    sort-asc-icon="i-heroicons-arrow-up"
-                    sort-desc-icon="i-heroicons-arrow-down"
-                    class="w-full"
-                    :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+            <template #label>
+                <ul
+                    v-if="value.length"
+                    class="flex flex-col gap-1"
                 >
-                    <template #name-data="{ row }: IRow<IProduct>">
-                        <NuxtLink
-                            :to="`${ROUTER.PRODUCT}/${row.id}`"
-                            class="inline-block"
-                        >
-                            <div class="flex items-center gap-1">
-                                <UAvatar
-                                    :src="getImageFile(path, row.image_uri)"
-                                    :alt="row.name"
-                                />
+                    <li
+                        v-for="product in productSelected"
+                        :key="product.id"
+                    >
+                        <div class="flex items-center gap-1">
+                            <UAvatar
+                                :src="product.avatar.src"
+                                :alt="product.label"
+                            />
 
-                                <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
-                            </div>
-                        </NuxtLink>
-                    </template>
+                            <span class="capitalize line-clamp-1 flex-1">{{ product.label }}</span>
+                        </div>
+                    </li>
+                </ul>
 
-                    <template #category_id-data="{ row }: IRow<IProduct>">
-                        <NuxtLink
-                            v-if="row.Category"
-                            :to="`${ROUTER.CATEGORY}/${row.Category.id}`"
-                            class="inline-block"
-                        >
-                            <div class="flex items-center gap-1">
-                                <UAvatar
-                                    :src="getImageFile(pathCategory, row.Category.image_uri)"
-                                    :alt="row.Category.name"
-                                />
-
-                                <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.Category.name }}</span>
-                            </div>
-                        </NuxtLink>
-                    </template>
-
-                    <template #brand_id-data="{ row }: IRow<IProduct>">
-                        <NuxtLink
-                            v-if="row.Brand"
-                            :to="`${ROUTER.BRAND}/${row.Brand.id}`"
-                            class="inline-block"
-                        >
-                            <div class="flex items-center gap-1 truncate">
-                                <UAvatar
-                                    :src="getImageFile(pathBrand, row.Brand.image_uri)"
-                                    :alt="row.Brand.name"
-                                />
-
-                                <span class="capitalize line-clamp-1 text-primary flex-1">{{ row.Brand.name }}</span>
-                            </div>
-                        </NuxtLink>
-
-                        <span v-else />
-                    </template>
-
-                    <template #status-data="{ row }: IRow<IProduct>">
-                        <UBadge
-                            size="xs"
-                            :label="valueTransform(optionStatus, row.status)?.name"
-                            :color="valueTransform(optionStatus, row.status)?.color"
-                            variant="subtle"
-                            class="capitalize"
-                        />
-                    </template>
-
-                    <template #popular-data="{ row }">
-                        <UBadge
-                            size="xs"
-                            :label="valueTransform(optionPopular, row.popular)?.name"
-                            :color="valueTransform(optionStatus, row.popular)?.color"
-                            variant="subtle"
-                            class="capitalize"
-                        />
-                    </template>
-                </UTable>
-            </div>
-        </UFormGroup>
-
-        <div class="flex flex-wrap justify-center items-center">
-            <UPagination
-                v-model="search.page"
-                :page-count="search.pageSize"
-                :total="dataAggregations"
-                :ui="{
-                    wrapper: 'flex items-center gap-1',
-                    rounded:
-                        '!rounded-full min-w-[32px] justify-center',
-                    default: {
-                        activeButton: {
-                            variant: 'outline',
-                        },
-                    },
-                }"
-            />
-        </div>
-    </div>
+                <span v-else>Vui Lòng Chọn</span>
+            </template>
+        </USelectMenu>
+    </UFormGroup>
 </template>
-

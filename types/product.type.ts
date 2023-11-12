@@ -4,6 +4,12 @@ import type { IBrandList } from '~/types/brand.type'
 import type { ICategoryList } from '~/types/category.type'
 import type { IAggregations, IPagination } from '~/types/core.type'
 
+export interface IProductList {
+    id: number
+    name: string
+    image_uri: string
+}
+
 export interface IProductForm {
     sku: string
     name: string

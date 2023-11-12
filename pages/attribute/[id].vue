@@ -17,7 +17,7 @@ const { isLoading, dataFormInput } = useCrudFormInput<IAttributeForm>(path.value
 
 const { handleSubmit, values: attribute, setFieldValue } = useForm({
     validationSchema: schema,
-    initialValues: data.value
+    initialValues: _omitBy(data.value, _isNil)
 })
 
 // ** Data
@@ -30,13 +30,13 @@ const items = [{
 }]
 
 // ** Methods
-const onSubmit = handleSubmit(async values => {
-    if (attribute.attribute_value_id) {
-        values.attribute_value_id = JSON.stringify((values.attribute_value_id as IAttributeValues[]).map(_v => _v.value))
-    }
-
-    await dataFormInput(values)
-})
+const onSubmit = handleSubmit(async values => dataFormInput({
+    ...values,
+    category_id: JSON.stringify(values.category_id),
+    attribute_value_id: attribute.attribute_value_id
+        ? JSON.stringify((values.attribute_value_id as IAttributeValues[]).map(_v => _v.value))
+        : undefined
+}))
 </script>
 
 <template>

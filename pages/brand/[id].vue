@@ -30,7 +30,10 @@ const items = [{
 }]
 
 // ** Methods
-const onSubmit = handleSubmit(values => dataFormInput(values))
+const onSubmit = handleSubmit(values => dataFormInput({
+    ...values,
+    category_id: JSON.stringify(values.category_id)
+}))
 </script>
 
 <template>

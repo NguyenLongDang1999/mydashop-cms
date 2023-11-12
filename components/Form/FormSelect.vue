@@ -22,6 +22,7 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 
 // ** Computed
 const error = computed(() => errorMessage.value)
+const dataList = computed(() => props.options.filter(_p => value.value?.includes(_p.id)))
 </script>
 
 <template>
@@ -46,7 +47,7 @@ const error = computed(() => errorMessage.value)
                 </span>
 
                 <span v-else>
-                    {{ value.length }} đã chọn
+                    {{ dataList.map(_v => _v.name).join(', ') }}
                 </span>
             </template>
         </USelectMenu>

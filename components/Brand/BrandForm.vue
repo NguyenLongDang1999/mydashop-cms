@@ -19,7 +19,11 @@ const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput(values)
+    await dataFormInput({
+        ...values,
+        category_id: JSON.stringify(values.category_id)
+    })
+
     isOpen.value = false
 })
 </script>
