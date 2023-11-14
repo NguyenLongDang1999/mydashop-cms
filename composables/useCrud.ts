@@ -80,6 +80,10 @@ export const useCrudFormInput = <T>(path: string, id?: number | string) => {
         async (body: Partial<T> & { id?: number }) => {
             const formData = new FormData()
 
+            if (imageURL.value) {
+                formData.append('_method', 'PUT')
+            }
+
             for (const item in body) {
                 const value = (body as Record<string, string>)[item]
                 if (value) formData.append(item, value)

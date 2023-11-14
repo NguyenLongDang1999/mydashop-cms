@@ -47,7 +47,7 @@ const dataList = computed(() => props.options.filter(_p => value.value?.includes
                 </span>
 
                 <span v-else>
-                    {{ dataList.map(_v => _v.name).join(', ') }}
+                    {{ dataList.map(_v => _v.name).join(', ') || 'Vui Lòng Chọn' }}
                 </span>
             </template>
         </USelectMenu>

@@ -22,7 +22,7 @@ export interface ICategoryList {
 export interface ICategory {
     id: number
     name: string
-    parentCategory: ICategoryList
+    parent: ICategoryList
     image_uri: string
     status: number
     popular: number

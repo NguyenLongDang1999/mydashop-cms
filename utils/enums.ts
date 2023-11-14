@@ -1,11 +1,11 @@
 export enum STATUS {
-    ACTIVE = 1,
-    INACTIVE = 2
+    ACTIVE = 10,
+    INACTIVE = 20
 }
 
 export enum POPULAR {
-    ACTIVE = 1,
-    INACTIVE = 2
+    ACTIVE = 10,
+    INACTIVE = 20
 }
 
 export enum PAGE {

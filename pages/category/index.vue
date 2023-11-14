@@ -87,17 +87,17 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #parent_id-data="{ row }: IRow<ICategory>">
                             <NuxtLink
-                                v-if="row.parentCategory"
-                                :to="`${ROUTER.CATEGORY}/${row.parentCategory.id}`"
+                                v-if="row.parent"
+                                :to="`${ROUTER.CATEGORY}/${row.parent.id}`"
                                 class="inline-block"
                             >
                                 <div class="flex items-center gap-1">
                                     <UAvatar
-                                        :src="getImageFile(path, row.parentCategory.image_uri)"
-                                        :alt="row.parentCategory.name"
+                                        :src="getImageFile(path, row.parent.image_uri)"
+                                        :alt="row.parent.name"
                                     />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.parentCategory.name }}</span>
+                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.parent.name }}</span>
                                 </div>
                             </NuxtLink>
 
