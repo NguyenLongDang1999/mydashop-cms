@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrand, IBrandSearch, IBrandTable } from '~/types/brand.type'
-import type { IRow } from '~/types/core.type'
+import type { IBrand, IBrandSearch, IBrandTable } from '~/types/brand.type';
+import type { IRow } from '~/types/core.type';
 
 const columns = [
     {
@@ -87,14 +87,14 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #category_id-data="{ row }: IRow<IBrand>">
                             <div
-                                v-if="row.CategoryBrand.length"
+                                v-if="row.categories.length"
                                 class="flex flex-wrap gap-1"
                             >
                                 <UButton
-                                    v-for="category in row.CategoryBrand"
-                                    :key="category.Category.id"
-                                    :label="category.Category.name"
-                                    :to="`${ROUTER.CATEGORY}/${category.Category.id}`"
+                                    v-for="category in row.categories"
+                                    :key="category.id"
+                                    :label="category.name"
+                                    :to="`${ROUTER.CATEGORY}/${category.id}`"
                                     size="xs"
                                     color="gray"
                                     variant="solid"

@@ -28,9 +28,7 @@ export interface IAttribute {
     status: number
     created_at: string
     updated_at: string
-    CategoryAttribute: {
-        Category: ICategoryList
-    }[]
+    categories: ICategoryList[]
 }
 
 export interface IAttributeSearch extends IPagination {

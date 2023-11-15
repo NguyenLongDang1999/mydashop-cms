@@ -23,9 +23,7 @@ export interface IBrand {
     popular: number
     created_at: string
     updated_at: string
-    CategoryBrand: {
-        Category: ICategoryList
-    }[]
+    categories: ICategoryList[]
 }
 
 export interface IBrandSearch extends IPagination {

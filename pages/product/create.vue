@@ -39,7 +39,10 @@ const onSubmit = handleSubmit(async values => {
 
     values.attribute_id = undefined
 
-    dataFormInput(values)
+    dataFormInput({
+        ...values,
+        technical_specifications: JSON.stringify(product.technical_specifications)
+    })
 })
 
 const handleChangeAttribute = () => {
@@ -285,7 +288,7 @@ const handleChangeAttribute = () => {
                                     <FormSelect
                                         :label="label.attribute.values"
                                         :name="`attributes.${index}.values`"
-                                        :options="attributeValueList[index]?.data?.attribute_values || []"
+                                        :options="attributeValueList[index]?.data || []"
                                         multiple
                                     />
                                 </div>

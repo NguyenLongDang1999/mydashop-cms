@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type'
-import type { IRow } from '~/types/core.type'
+import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type';
+import type { IRow } from '~/types/core.type';
 
 const columns = [
     {
@@ -75,14 +75,14 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #category_id-data="{ row }: IRow<IAttribute>">
                             <div
-                                v-if="row.CategoryAttribute.length"
+                                v-if="row.categories.length"
                                 class="flex flex-wrap gap-1"
                             >
                                 <UButton
-                                    v-for="category in row.CategoryAttribute"
-                                    :key="category.Category.id"
-                                    :label="category.Category.name"
-                                    :to="`${ROUTER.CATEGORY}/${category.Category.id}`"
+                                    v-for="category in row.categories"
+                                    :key="category.id"
+                                    :label="category.name"
+                                    :to="`${ROUTER.CATEGORY}/${category.id}`"
                                     size="xs"
                                     color="gray"
                                     variant="solid"

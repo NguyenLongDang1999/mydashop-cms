@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategory, ICategorySearch, ICategoryTable } from '~/types/category.type'
-import type { IRow } from '~/types/core.type'
+import type { ICategory, ICategorySearch, ICategoryTable } from '~/types/category.type';
+import type { IRow } from '~/types/core.type';
 
 const columns = [
     {

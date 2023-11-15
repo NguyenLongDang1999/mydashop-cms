@@ -34,14 +34,13 @@ const { handleSubmit, values: product, setFieldValue } = useForm({
     validationSchema: schema,
     initialValues: {
         ..._omitBy(data.value, _isNil),
-        attributes: data.value.attributes,
-        technical_specifications: JSON.parse(data.value.technical_specifications as string) || []
+        attributes: data.value.attributes
     }
 })
 
 // ** SetData
 category_id.value = data.value.category_id
-attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
+// attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
@@ -298,7 +297,7 @@ const handleChangeAttribute = () => {
                                                 :model-value="attributeItem.values"
                                                 :label="label.attribute.values"
                                                 :name="`attributes.${index}.values`"
-                                                :options="attributeValueList[index]?.data?.attribute_values || []"
+                                                :options="attributeValueList[index]?.data || []"
                                                 multiple
                                             />
                                         </div>
