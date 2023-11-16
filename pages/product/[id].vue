@@ -280,7 +280,7 @@ const handleChangeAttribute = () => {
 
                                 <div class="col-span-12 flex flex-col gap-4">
                                     <div
-                                        v-for="(attributeItem, index) in (data.attributes as IAttributeValuesList[])"
+                                        v-for="(attributeItem, index) in (product.attributes as IAttributeValuesList[])"
                                         :key="attributeItem.name"
                                         class="grid grid-cols-12 gap-4"
                                     >
