@@ -14,8 +14,8 @@ export enum PAGE {
 }
 
 export enum DISCOUNT {
-    PRICE = 1,
-    PERCENT = 2
+    PRICE = 10,
+    PERCENT = 20
 }
 
 export enum AUTH {

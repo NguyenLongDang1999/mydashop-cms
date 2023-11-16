@@ -41,10 +41,21 @@ const onSubmit = handleSubmit(async values => {
         ...values,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
+
+    attribute_id.value = []
 })
 
 const handleChangeAttribute = () => {
     const attributeData: IAttributeList[] = attributeList.value.filter(attributeItem => product.attribute_id?.includes(attributeItem.id))
+
+    if (product.attribute_id) {
+        attributeData.sort((a, b) => {
+            const indexA = product.attribute_id.indexOf(a.id);
+            const indexB = product.attribute_id.indexOf(b.id);
+
+            return indexA - indexB;
+        });
+    }
 
     setFieldValue('attributes', attributeData.map(_v => ({
         id: _v.id,
@@ -244,7 +255,10 @@ const handleChangeAttribute = () => {
                                 :label="label.category_id"
                                 :options="categoryList"
                                 name="category_id"
-                                @change="val => category_id = val"
+                                @change="val => {
+                                    category_id = val
+                                    attribute_id = []
+                                }"
                             />
                         </div>
 
@@ -274,6 +288,7 @@ const handleChangeAttribute = () => {
                                 class="grid grid-cols-12 gap-4"
                             >
                                 <div class="col-span-3">
+                                    {{ attributeItem.name }}
                                     <FormInput
                                         :model-value="attributeItem.name"
                                         :label="label.attribute.name"

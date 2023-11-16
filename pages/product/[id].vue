@@ -59,10 +59,21 @@ const onSubmit = handleSubmit(async values => {
         ...values,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
+
+    attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
 })
 
 const handleChangeAttribute = () => {
     const attributeData: IAttributeList[] = attributeList.value.filter(attributeItem => product.attribute_id?.includes(attributeItem.id))
+
+    if (product.attribute_id) {
+        attributeData.sort((a, b) => {
+            const indexA = product.attribute_id.indexOf(a.id);
+            const indexB = product.attribute_id.indexOf(b.id);
+
+            return indexA - indexB;
+        });
+    }
 
     setFieldValue('attributes', attributeData.map(_v => ({
         id: _v.id,
@@ -159,6 +170,7 @@ const handleChangeAttribute = () => {
 
                                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                                     <FormMoney
+                                        :model-value="product.quantity"
                                         :label="label.quantity"
                                         name="quantity"
                                     />
@@ -255,7 +267,10 @@ const handleChangeAttribute = () => {
                                         :label="label.category_id"
                                         :options="categoryList"
                                         name="category_id"
-                                        @change="val => category_id = val"
+                                        @change="val => {
+                                            category_id = val
+                                            attribute_id = []
+                                        }"
                                     />
                                 </div>
 

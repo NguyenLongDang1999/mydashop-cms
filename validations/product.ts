@@ -36,7 +36,7 @@ export const schema = toTypedSchema(yup.object({
     sku: yup
         .string()
         .required(`${label.sku} không được bỏ trống.`)
-        .max(29, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+        .max(30, ({ max }) => `${label.sku} không được vượt quá ${max} ký tự.`),
     name: yup
         .string()
         .required(`${label.name} không được bỏ trống.`)
