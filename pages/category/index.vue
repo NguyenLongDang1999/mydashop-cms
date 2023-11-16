@@ -1,34 +1,29 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategory, ICategorySearch, ICategoryTable } from '~/types/category.type';
-import type { IRow } from '~/types/core.type';
+import type { ICategory, ICategorySearch, ICategoryTable } from '~/types/category.type'
+import type { IRow } from '~/types/core.type'
 
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin danh mục',
-        sortable: true
+        label: 'Thông tin danh mục'
     },
     {
         key: 'parent_id',
-        label: 'Danh mục cha',
-        sortable: true
+        label: 'Danh mục cha'
     },
     {
         key: 'status',
-        label: 'Trạng thái',
-        sortable: true
+        label: 'Trạng thái'
     },
     {
         key: 'popular',
-        label: 'Phổ biến',
-        sortable: true
+        label: 'Phổ biến'
     },
     {
         key: 'actions',
-        label: 'Thao tác',
-        sortable: false
+        label: 'Thao tác'
     }
 ]
 
@@ -64,8 +59,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
-                        sort-asc-icon="i-heroicons-arrow-up"
-                        sort-desc-icon="i-heroicons-arrow-down"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >

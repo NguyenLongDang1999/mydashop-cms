@@ -2,7 +2,7 @@
 import { ofetch } from 'ofetch'
 
 export default function () {
-    const _fetcher = ofetch.create({
+    return ofetch.create({
         baseURL: config.baseURL,
         credentials: 'include',
         headers: {
@@ -22,10 +22,10 @@ export default function () {
                 }
             }
         },
-        onResponseError: () => {
-            navigateTo(ROUTER.LOGIN)
+        onResponseError: ({ response }) => {
+            if (!response.ok && response.status === 401) {
+                navigateTo(ROUTER.LOGIN)
+            }
         }
     })
-
-    return _fetcher
 }

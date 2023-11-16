@@ -7,6 +7,7 @@ import { CurrencyDisplay, useCurrencyInput } from 'vue-currency-input'
 interface Props {
     label?: string
     name: string
+    modelValue?: string | number
 }
 
 const props = defineProps<Props>()
@@ -17,7 +18,10 @@ const { inputRef, numberValue, formattedValue, setValue } = useCurrencyInput({
     currencyDisplay: CurrencyDisplay.hidden
 })
 
-const { value, errorMessage, handleChange } = useField(() => props.name, undefined, { syncVModel: true })
+const { value, errorMessage, handleChange } = useField(() => props.name, undefined, {
+    syncVModel: true,
+    initialValue: props.modelValue
+})
 
 // ** Lifecycle
 onMounted(() => {

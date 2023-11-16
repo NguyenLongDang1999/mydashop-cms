@@ -18,6 +18,7 @@ const searchTemp = reactive<IProductSearch>(_clone(search))
 // ** Methods
 const handleReset = () => {
     _assign(searchTemp, {
+        sku: undefined,
         name: undefined,
         category_id: undefined,
         status: undefined,

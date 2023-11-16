@@ -7,18 +7,15 @@ import type { ISlider, ISliderSearch, ISliderTable } from '~/types/slider.type'
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin slider',
-        sortable: true
+        label: 'Thông tin slider'
     },
     {
         key: 'status',
-        label: 'Trạng thái',
-        sortable: true
+        label: 'Trạng thái'
     },
     {
         key: 'actions',
-        label: 'Thao tác',
-        sortable: false
+        label: 'Thao tác'
     }
 ]
 
@@ -54,8 +51,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
-                        sort-asc-icon="i-heroicons-arrow-up"
-                        sort-desc-icon="i-heroicons-arrow-down"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >

@@ -1,29 +1,25 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type';
-import type { IRow } from '~/types/core.type';
+import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type'
+import type { IRow } from '~/types/core.type'
 
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin thuộc tính',
-        sortable: true
+        label: 'Thông tin thuộc tính'
     },
     {
         key: 'category_id',
-        label: 'Danh mục',
-        sortable: true
+        label: 'Danh mục'
     },
     {
         key: 'status',
-        label: 'Trạng thái',
-        sortable: true
+        label: 'Trạng thái'
     },
     {
         key: 'actions',
-        label: 'Thao tác',
-        sortable: false
+        label: 'Thao tác'
     }
 ]
 
@@ -59,8 +55,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
-                        sort-asc-icon="i-heroicons-arrow-up"
-                        sort-desc-icon="i-heroicons-arrow-down"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >

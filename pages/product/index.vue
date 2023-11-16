@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type';
+import type { IRow } from '~/types/core.type'
+import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
 
 const columns = [
     {
@@ -22,15 +22,15 @@ const columns = [
     },
     {
         key: 'status',
-        label: 'Trạng thái',
+        label: 'Trạng thái'
     },
     {
         key: 'popular',
-        label: 'Phổ biến',
+        label: 'Phổ biến'
     },
     {
         key: 'actions',
-        label: 'Thao tác',
+        label: 'Thao tác'
     }
 ]
 
@@ -76,8 +76,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
-                        sort-asc-icon="i-heroicons-arrow-up"
-                        sort-desc-icon="i-heroicons-arrow-down"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
@@ -92,7 +90,10 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         :alt="row.name"
                                     />
 
-                                    <span class="capitalize text-primary flex-1">{{ row.name }}</span>
+                                    <div class="flex flex-col flex-1">
+                                        <span class="capitalize text-primary">{{ row.name }}</span>
+                                        <span>{{ row.sku }}</span>
+                                    </div>
                                 </div>
                             </NuxtLink>
                         </template>
@@ -106,11 +107,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                                 <li>
                                     <span class="font-semibold capitalize">Giá giảm: </span>
-                                    
+
                                     <template v-if="row.special_price_type === DISCOUNT.PERCENT">
                                         {{ row.special_price }}%
                                     </template>
-                                    
+
                                     <template v-else>
                                         {{ formatCurrency(Number(row.special_price)) }}
                                     </template>

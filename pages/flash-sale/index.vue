@@ -7,23 +7,19 @@ import type { IFlashSale, IFlashSaleSearch, IFlashSaleTable } from '~/types/flas
 const columns = [
     {
         key: 'name',
-        label: 'Tên chiến dịch',
-        sortable: true
+        label: 'Tên chiến dịch'
     },
     {
         key: 'date_range',
-        label: 'Ngày áp dụng',
-        sortable: true
+        label: 'Ngày áp dụng'
     },
     {
         key: 'discount',
-        label: 'Số tiền giảm',
-        sortable: true
+        label: 'Số tiền giảm'
     },
     {
         key: 'actions',
-        label: 'Thao tác',
-        sortable: false
+        label: 'Thao tác'
     }
 ]
 
@@ -59,8 +55,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
-                        sort-asc-icon="i-heroicons-arrow-up"
-                        sort-desc-icon="i-heroicons-arrow-down"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >

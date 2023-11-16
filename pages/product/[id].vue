@@ -68,11 +68,11 @@ const handleChangeAttribute = () => {
 
     if (product.attribute_id) {
         attributeData.sort((a, b) => {
-            const indexA = product.attribute_id.indexOf(a.id);
-            const indexB = product.attribute_id.indexOf(b.id);
+            const indexA = product.attribute_id.indexOf(a.id)
+            const indexB = product.attribute_id.indexOf(b.id)
 
-            return indexA - indexB;
-        });
+            return indexA - indexB
+        })
     }
 
     setFieldValue('attributes', attributeData.map(_v => ({

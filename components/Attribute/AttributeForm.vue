@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type';
-import type { ICategoryList } from '~/types/category.type';
+import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
+import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/attribute';
+import { label, schema } from '~/validations/attribute'
 
 // ** useHooks
 const { path } = useAttribute()

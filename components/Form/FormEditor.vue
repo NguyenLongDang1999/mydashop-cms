@@ -26,7 +26,7 @@ const error = computed(() => errorMessage.value)
             v-model:content="value"
             theme="snow"
             toolbar="full"
-            class="!h-100"
+            class="!h-[400px]"
             content-type="html"
             v-bind="$attrs"
         />

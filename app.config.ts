@@ -23,7 +23,13 @@ export default defineAppConfig({
             font: 'font-medium capitalize'
         },
         table: {
-            thead: 'capitalize'
+            thead: 'capitalize',
+            default: {
+                emptyState: {
+                    icon: 'i-heroicons-face-frown',
+                    label: 'Không tìm thấy kết quả nào!'
+                }
+            }
         },
         tabs: {
             list: {

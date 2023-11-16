@@ -3,25 +3,24 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface IFlashSaleForm {
     id?: number
-    campaign_name: string
+    name: string
     product_id: number[]
-    date_range?: string | string[]
-    start_date: string | Date
-    end_date: string | Date
-    discount_percent: number
+    start_time: string | Date
+    end_time: string | Date
+    discount_percentage: number
 }
 
 export interface IFlashSaleSearch extends IPagination {
-    campaign_name?: string
+    name?: string
     product_id?: string
 }
 
 export interface IFlashSale {
     id: number
-    campaign_name: string
-    start_date: string
-    end_date: string
-    discount_percent: number
+    name: string
+    start_time: string
+    end_time: string
+    discount_percentage: number
     discounted_price: number
 }
 
