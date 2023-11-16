@@ -93,16 +93,10 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         </template>
 
                         <template #status-data="{ row }: IRow<IAttribute>">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionStatus, row.status)?.name"
-                                :color="valueTransform(optionStatus, row.status)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                            <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
-                        <template #actions-data="{ row }">
+                        <template #actions-data="{ row }: IRow<IAttribute>">
                             <div class="flex gap-2">
                                 <UButton
                                     icon="i-heroicons-pencil-square"

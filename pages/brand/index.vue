@@ -105,26 +105,14 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         </template>
 
                         <template #status-data="{ row }: IRow<IBrand>">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionStatus, row.status)?.name"
-                                :color="valueTransform(optionStatus, row.status)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                            <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
-                        <template #popular-data="{ row }">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionPopular, row.popular)?.name"
-                                :color="valueTransform(optionStatus, row.popular)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                        <template #popular-data="{ row }: IRow<IBrand>">
+                            <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                         </template>
 
-                        <template #actions-data="{ row }">
+                        <template #actions-data="{ row }: IRow<IBrand>">
                             <div class="flex gap-2">
                                 <UButton
                                     icon="i-heroicons-pencil-square"

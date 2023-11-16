@@ -3,7 +3,7 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface ISliderForm {
     name: string
-    url: string
+    slug: string
     status?: number
     image_uri?: string
     description?: string
@@ -17,7 +17,7 @@ export interface ISliderSearch extends IPagination {
 export interface ISlider {
     id: number
     name: string
-    url: string
+    slug: string
     image_uri: string
     status: number
     description: string

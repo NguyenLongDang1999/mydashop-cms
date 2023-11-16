@@ -138,7 +138,7 @@ export const useCrudListWithParams = <T>(path: string, id: Ref<number | undefine
     // ** Hooks
     const _fetcher = useFetchData()
 
-    const { isLoading, data, refetch } = useQuery<T[]>({
+    const { isFetching, isLoading, data, refetch } = useQuery<T[]>({
         queryKey: [`${path}${subKey}`, id.value],
         queryFn: () => _fetcher(`${path}${subPath}/${id.value}`),
         enabled: false
@@ -153,6 +153,7 @@ export const useCrudListWithParams = <T>(path: string, id: Ref<number | undefine
     return {
         dataList,
         isLoading,
+        isFetching,
         refetch
     }
 }

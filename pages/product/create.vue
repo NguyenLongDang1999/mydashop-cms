@@ -18,11 +18,14 @@ const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
 const { path: pathAttribute, attribute_id } = useAttribute()
 const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
-const { dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
+const { isFetching: isFetchingBrand, dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
+const { isFetching: isFetchingAttribute, dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
 const { handleSubmit, values: product, setFieldValue } = useForm({ validationSchema: schema })
 const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
 const attributeValueList = useAttributeValueList()
+
+// ** SetData
+attribute_id.value = []
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
@@ -266,6 +269,7 @@ const handleChangeAttribute = () => {
                             <FormSelect
                                 :label="label.brand_id"
                                 :options="brandList"
+                                :loading="isFetchingBrand"
                                 name="brand_id"
                             />
                         </div>
@@ -275,6 +279,7 @@ const handleChangeAttribute = () => {
                                 v-model="attribute_id"
                                 :label="label.attribute.name"
                                 :options="attributeList"
+                                :loading="isFetchingAttribute"
                                 name="attribute_id"
                                 multiple
                                 @change="handleChangeAttribute"
@@ -288,7 +293,6 @@ const handleChangeAttribute = () => {
                                 class="grid grid-cols-12 gap-4"
                             >
                                 <div class="col-span-3">
-                                    {{ attributeItem.name }}
                                     <FormInput
                                         :model-value="attributeItem.name"
                                         :label="label.attribute.name"

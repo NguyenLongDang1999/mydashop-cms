@@ -62,8 +62,8 @@ export interface IProduct {
     popular: number
     image_uri: string
     created_at: string
-    Brand: IBrandList
-    Category: ICategoryList
+    brand: IBrandList
+    category: ICategoryList
 }
 export interface IProductTable extends IAggregations {
     data: IProduct[]

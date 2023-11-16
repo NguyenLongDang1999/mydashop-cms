@@ -24,8 +24,8 @@ const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
 const { path: pathAttribute, attribute_id } = useAttribute()
 const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
-const { dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
+const { isFetching: isFetchingBrand, dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
+const { isFetching: isFetchingAttribute, dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
 const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id as string)
 const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
 const attributeValueList = useAttributeValueList()
@@ -106,6 +106,10 @@ const handleChangeAttribute = () => {
                                     <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
                                         1. Thông tin cơ bản
                                     </p>
+                                </div>
+
+                                <div class="col-span-12">
+                                    <FormUpload :image-src="getImageFile(path, product.image_uri)" />
                                 </div>
 
                                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
@@ -278,6 +282,7 @@ const handleChangeAttribute = () => {
                                     <FormSelect
                                         :label="label.brand_id"
                                         :options="brandList"
+                                        :loading="isFetchingBrand"
                                         name="brand_id"
                                     />
                                 </div>
@@ -287,6 +292,7 @@ const handleChangeAttribute = () => {
                                         v-model="attribute_id"
                                         :label="label.attribute.name"
                                         :options="attributeList"
+                                        :loading="isFetchingAttribute"
                                         name="attribute_id"
                                         multiple
                                         @change="handleChangeAttribute"

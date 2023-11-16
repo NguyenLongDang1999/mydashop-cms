@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ISliderForm } from '~/types/slider.type'
+import type { ISliderForm } from '~/types/slider.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/slider'
+import { label, schema } from '~/validations/slider';
 
 // ** Props & Emits
 interface Props {
@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const { path } = useSlider()
 const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
 
-const { handleSubmit } = useForm({
+const { handleSubmit, setFieldValue } = useForm({
     validationSchema: schema,
     initialValues: _omitBy(props.slider, _isNil)
 })
@@ -61,20 +61,24 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
+                            :model-value="slider.name"
                             :label="label.name"
                             name="name"
+                            @update:model-value="val => setFieldValue('slug', slugify(val))"
                         />
                     </div>
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :label="label.url"
-                            name="url"
+                            :model-value="slider.slug"
+                            :label="label.slug"
+                            name="slug"
                         />
                     </div>
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
+                            :model-value="slider.status"
                             :label="label.status"
                             :options="optionStatus"
                             name="status"
@@ -83,6 +87,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
+                            :model-value="slider.description"
                             :label="label.description"
                             name="description"
                         />

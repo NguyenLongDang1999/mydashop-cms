@@ -3,7 +3,6 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     modules: [
         'nuxt-lodash',
-        '@unocss/nuxt',
         '@nuxtjs/google-fonts',
         '@vueuse/nuxt',
         '@nuxt/ui',
@@ -11,23 +10,11 @@ export default defineNuxtConfig({
         '@samk-dev/nuxt-vcalendar'
     ],
     ssr: false,
-    unocss: {
-        preflight: false
-    },
-    css: [
-        '@unocss/reset/tailwind-compat.css'
-    ],
     googleFonts: {
         prefetch: true,
         preconnect: true,
         families: {
             'Quicksand': [400, 500, 600, 700]
-        }
-    },
-    app: {
-        pageTransition: {
-            name: 'page',
-            mode: 'out-in'
         }
     },
     lodash: {

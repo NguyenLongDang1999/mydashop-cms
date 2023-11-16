@@ -1,35 +1,52 @@
+<script setup lang="ts">
+
+useHead({
+    htmlAttrs: {
+        lang: 'vi',
+        class: 'nuxt-ui-scrollbars'
+    },
+    bodyAttrs: {
+        class: 'font-[Quicksand] font-normal overflow-x-hidden text-sm bg-white text-dark-700'
+    },
+    title: 'Nuxivy',
+    titleTemplate: titleChunk => {
+        return titleChunk ? `${titleChunk} · Nuxivy` : 'Nuxivy'
+    }
+})
+</script>
+
 <template>
-    <Html lang="vi">
-        <Head>
-            <Title>Nuxivy</Title>
-        </Head>
-
-        <Body class="font-sans font-normal overflow-x-hidden text-sm bg-white text-dark-700">
-            <NuxtLayout>
-                <NuxtLoadingIndicator />
-                <NuxtPage />
-            </NuxtLayout>
-
-            <UNotifications />
-        </Body>
-    </Html>
+    <NuxtLayout>
+        <NuxtLoadingIndicator />
+        <NuxtPage />
+    </NuxtLayout>
+    
+    <UNotifications />
 </template>
 
 <style>
-.page-leave-active,
-.page-enter-active {
-  transition: all 0.2s;
+.nuxt-ui-scrollbars ::-webkit-scrollbar {
+    background-color: transparent;
+    height: .6em;
+    width: .7em;
 }
 
-.page-enter-from {
-  opacity: 0;
-  transition: all 0.2s;
-  transform: translateX(-30px);
+.nuxt-ui-scrollbars ::-webkit-scrollbar-track {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--color-gray-100)/1);
+    background-color: rgb(var(--color-gray-100)/var(--tw-bg-opacity))
 }
 
-.page-leave-to {
-  opacity: 0;
-  transition: all 0.2s;
-  transform: translateX(30px);
+.nuxt-ui-scrollbars ::-webkit-scrollbar-thumb {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--color-gray-300)/1);
+    background-color: rgb(var(--color-gray-300)/var(--tw-bg-opacity));
+    border-radius: .6em
+}
+
+.nuxt-ui-scrollbars ::-webkit-scrollbar-thumb:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(var(--color-gray-400)/1);
+    background-color: rgb(var(--color-gray-400)/var(--tw-bg-opacity))
 }
 </style>

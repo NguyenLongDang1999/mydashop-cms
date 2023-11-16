@@ -22,21 +22,8 @@ export default function () {
                 }
             }
         },
-        onResponseError: async ({ response }) => {
-            if (
-                response.status === 401 &&
-                !response.ok
-            ) {
-                try {
-                    const data = await _fetcher('/auth/refresh')
-
-                    setToken(data.accessToken)
-                } catch {
-                    removeToken()
-                    removeUserData()
-                    navigateTo(ROUTER.LOGIN)
-                }
-            }
+        onResponseError: () => {
+            navigateTo(ROUTER.LOGIN)
         }
     })
 

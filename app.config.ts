@@ -5,7 +5,7 @@ export default defineAppConfig({
             wrapper: 'w-64 pointer-events-auto fixed top-3 right-3'
         },
         card: {
-            base: 'border border-gray-200 dark:border-gray-800',
+            base: 'border-gray-200 dark:border-gray-800',
             body: {
                 padding: 'sm:px-6'
             }

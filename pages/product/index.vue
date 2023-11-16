@@ -1,39 +1,36 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type';
 
 const columns = [
     {
         key: 'name',
         label: 'Thông tin sản phẩm',
-        sortable: true
+        class: 'min-w-[250px]'
+    },
+    {
+        key: 'price',
+        label: 'Giá tiền',
+        class: 'min-w-[160px]'
     },
     {
         key: 'category_id',
         label: 'Danh mục',
-        sortable: true
-    },
-    {
-        key: 'brand_id',
-        label: 'Thương hiệu',
-        sortable: true
+        class: 'min-w-[160px]'
     },
     {
         key: 'status',
         label: 'Trạng thái',
-        sortable: true
     },
     {
         key: 'popular',
         label: 'Phổ biến',
-        sortable: true
     },
     {
         key: 'actions',
         label: 'Thao tác',
-        sortable: false
     }
 ]
 
@@ -95,65 +92,75 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         :alt="row.name"
                                     />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
+                                    <span class="capitalize text-primary flex-1">{{ row.name }}</span>
                                 </div>
                             </NuxtLink>
+                        </template>
+
+                        <template #price-data="{ row }: IRow<IProduct>">
+                            <ul>
+                                <li>
+                                    <span class="font-semibold capitalize">Giá gốc:</span>
+                                    {{ formatCurrency(Number(row.price)) }}
+                                </li>
+
+                                <li>
+                                    <span class="font-semibold capitalize">Giá giảm: </span>
+                                    
+                                    <template v-if="row.special_price_type === DISCOUNT.PERCENT">
+                                        {{ row.special_price }}%
+                                    </template>
+                                    
+                                    <template v-else>
+                                        {{ formatCurrency(Number(row.special_price)) }}
+                                    </template>
+                                </li>
+
+                                <li>
+                                    <span class="font-semibold capitalize">Giá bán:</span>
+                                    {{ formatCurrency(Number(row.selling_price)) }}
+                                </li>
+                            </ul>
                         </template>
 
                         <template #category_id-data="{ row }: IRow<IProduct>">
-                            <NuxtLink
-                                v-if="row.Category"
-                                :to="`${ROUTER.CATEGORY}/${row.Category.id}`"
-                                class="inline-block"
-                            >
-                                <div class="flex items-center gap-1">
-                                    <UAvatar
-                                        :src="getImageFile(pathCategory, row.Category.image_uri)"
-                                        :alt="row.Category.name"
-                                    />
+                            <div class="flex flex-col gap-1">
+                                <NuxtLink
+                                    v-if="row.brand"
+                                    :to="`${ROUTER.BRAND}/${row.brand.id}`"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <UAvatar
+                                            :src="getImageFile(pathBrand, row.brand.image_uri)"
+                                            :alt="row.brand.name"
+                                        />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.Category.name }}</span>
-                                </div>
-                            </NuxtLink>
-                        </template>
+                                        <span class="capitalize text-primary flex-1">{{ row.brand.name }}</span>
+                                    </div>
+                                </NuxtLink>
 
-                        <template #brand_id-data="{ row }: IRow<IProduct>">
-                            <NuxtLink
-                                v-if="row.Brand"
-                                :to="`${ROUTER.BRAND}/${row.Brand.id}`"
-                                class="inline-block"
-                            >
-                                <div class="flex items-center gap-1 truncate">
-                                    <UAvatar
-                                        :src="getImageFile(pathBrand, row.Brand.image_uri)"
-                                        :alt="row.Brand.name"
-                                    />
+                                <NuxtLink
+                                    v-if="row.category"
+                                    :to="`${ROUTER.CATEGORY}/${row.category.id}`"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <UAvatar
+                                            :src="getImageFile(pathCategory, row.category.image_uri)"
+                                            :alt="row.category.name"
+                                        />
 
-                                    <span class="capitalize line-clamp-1 text-primary flex-1">{{ row.Brand.name }}</span>
-                                </div>
-                            </NuxtLink>
-
-                            <span v-else />
+                                        <span class="capitalize text-primary flex-1">{{ row.category.name }}</span>
+                                    </div>
+                                </NuxtLink>
+                            </div>
                         </template>
 
                         <template #status-data="{ row }: IRow<IProduct>">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionStatus, row.status)?.name"
-                                :color="valueTransform(optionStatus, row.status)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                            <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
                         <template #popular-data="{ row }">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionPopular, row.popular)?.name"
-                                :color="valueTransform(optionStatus, row.popular)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                            <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                         </template>
 
                         <template #actions-data="{ row }">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IOptions } from '~/types/core.type'
+import type { IOptions } from '~/types/core.type';
 
 // ** Props & Emits
 interface Props {
@@ -17,7 +17,9 @@ const props = defineProps<Props>()
 // ** useHooks
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
-    initialValue: props.multiple || Array.isArray(props.modelValue) ? props.modelValue || [] : undefined
+    initialValue: props.multiple || Array.isArray(props.modelValue) 
+        ? props.modelValue || [] 
+        : props.modelValue || undefined
 })
 
 // ** Computed
@@ -39,6 +41,7 @@ const dataList = computed(() => props.options.filter(_p => value.value?.includes
             value-attribute="id"
             option-attribute="name"
             :multiple="multiple"
+            :loading="$attrs.loading"
             v-bind="$attrs"
         >
             <template #label>

@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 export const label = {
     name: 'Tên slider',
-    url: 'Đường dẫn URL',
+    slug: 'Đường dẫn URL',
     status: 'Trạng thái',
     description: 'Mô tả'
 }
@@ -14,9 +14,9 @@ export const schema = toTypedSchema(yup.object({
         .string()
         .required(`${label.name} không được bỏ trống.`)
         .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
-    url: yup
+    slug: yup
         .string()
-        .required(`${label.url} không được bỏ trống.`),
+        .required(`${label.slug} không được bỏ trống.`),
     description: yup
         .string()
         .max(160, `${label.description} không được vượt quá 160 ký tự.`)
