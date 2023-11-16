@@ -37,11 +37,9 @@ const onSubmit = handleSubmit(async values => {
         values.attributes = JSON.stringify(resultArray)
     }
 
-    values.attribute_id = undefined
-
     dataFormInput({
         ...values,
-        technical_specifications: JSON.stringify(product.technical_specifications)
+        technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
 })
 

@@ -40,7 +40,7 @@ const { handleSubmit, values: product, setFieldValue } = useForm({
 
 // ** SetData
 category_id.value = data.value.category_id
-// attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
+attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
@@ -55,9 +55,10 @@ const onSubmit = handleSubmit(async values => {
         values.attributes = JSON.stringify(resultArray)
     }
 
-    values.attribute_id = undefined
-
-    dataFormInput(values)
+    dataFormInput({
+        ...values,
+        technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
+    })
 })
 
 const handleChangeAttribute = () => {
@@ -189,7 +190,7 @@ const handleChangeAttribute = () => {
                                             :class="hasTechnicalSpecifications ? 'mt-4' : ''"
                                         >
                                             <div
-                                                v-for="(value, index) in Object.values(product.technical_specifications)"
+                                                v-for="(value, index) in product.technical_specifications"
                                                 :key="index"
                                                 class="grid gap-4 grid-cols-12"
                                             >
