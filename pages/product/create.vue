@@ -35,17 +35,20 @@ const onSubmit = handleSubmit(async values => {
     if (values.attributes?.length) {
         const originalArray: IAttributeValuesList[] = _cloneDeep(values.attributes) as IAttributeValuesList[]
 
-        const resultArray = originalArray.flatMap(item => item.values?.map(value => ({ id: item.id, attribute_value_id: value })))
+        const resultArray = originalArray.map(item => ({ id: item.id, attribute_value_id: item.values }))
 
         values.attributes = JSON.stringify(resultArray)
     }
 
     dataFormInput({
         ...values,
+        attributes: values.attributes as string,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
 
     attribute_id.value = []
+
+    navigateTo(ROUTER.PRODUCT)
 })
 
 const handleChangeAttribute = () => {
@@ -53,11 +56,11 @@ const handleChangeAttribute = () => {
 
     if (product.attribute_id) {
         attributeData.sort((a, b) => {
-            const indexA = product.attribute_id.indexOf(a.id);
-            const indexB = product.attribute_id.indexOf(b.id);
+            const indexA = product.attribute_id!.indexOf(a.id)
+            const indexB = product.attribute_id!.indexOf(b.id)
 
-            return indexA - indexB;
-        });
+            return indexA - indexB
+        })
     }
 
     setFieldValue('attributes', attributeData.map(_v => ({

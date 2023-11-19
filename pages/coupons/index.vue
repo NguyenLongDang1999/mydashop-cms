@@ -1,18 +1,25 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttribute, IAttributeSearch, IAttributeTable } from '~/types/attribute.type'
 import type { IRow } from '~/types/core.type'
+import type { ICoupons, ICouponsSearch, ICouponsTable } from '~/types/coupons.type'
 
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin thuộc tính'
+        label: 'Tiêu đề'
     },
     {
-        key: 'category_id',
-        label: 'Danh mục',
-        class: 'min-w-[250px]'
+        key: 'code',
+        label: 'Code'
+    },
+    {
+        key: 'discount',
+        label: 'Giảm giá'
+    },
+    {
+        key: 'expire_date',
+        label: 'Ngày hết hạn'
     },
     {
         key: 'status',
@@ -25,8 +32,8 @@ const columns = [
 ]
 
 // ** useHooks
-const { path, search } = useAttribute()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IAttributeTable, IAttributeSearch>(path.value, { params: search })
+const { path, search } = useCoupons()
+const { isFetching, dataTable, dataAggregations } = useCrudDataTable<ICouponsTable, ICouponsSearch>(path.value, { params: search })
 const { isLoading, dataDelete } = useCrudDelete(path.value)
 </script>
 
@@ -34,7 +41,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
     <section>
         <TheTitle
             label="Quản lý sản phẩm"
-            title="Thuộc tính"
+            title="Coupons"
         />
 
         <div class="mt-8 pb-24 max-w-none">
@@ -42,14 +49,14 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                 <template #header>
                     <div class="flex justify-between items-center">
                         <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                            Danh sách thuộc tính
+                            Danh sách Coupons
                         </h2>
 
-                        <AttributeForm />
+                        <CouponsForm />
                     </div>
                 </template>
 
-                <AttributeSearch />
+                <CouponsSearch />
 
                 <div class="mt-4">
                     <UTable
@@ -59,39 +66,15 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
-                        <template #name-data="{ row }: IRow<IAttribute>">
-                            <NuxtLink
-                                :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
-                                class="inline-block"
-                            >
-                                <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
-                            </NuxtLink>
+                        <template #name-data="{ row }: IRow<ICoupons>">
+                            <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
                         </template>
 
-                        <template #category_id-data="{ row }: IRow<IAttribute>">
-                            <div
-                                v-if="row.categories.length"
-                                class="flex flex-wrap gap-1"
-                            >
-                                <UButton
-                                    v-for="category in row.categories"
-                                    :key="category.id"
-                                    :label="category.name"
-                                    :to="`${ROUTER.CATEGORY}/${category.id}`"
-                                    size="xs"
-                                    color="gray"
-                                    variant="solid"
-                                />
-                            </div>
-
-                            <span v-else />
-                        </template>
-
-                        <template #status-data="{ row }: IRow<IAttribute>">
+                        <template #status-data="{ row }: IRow<ICoupons>">
                             <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
-                        <template #actions-data="{ row }: IRow<IAttribute>">
+                        <template #actions-data="{ row }: IRow<ICoupons>">
                             <div class="flex gap-2">
                                 <UButton
                                     icon="i-heroicons-pencil-square"

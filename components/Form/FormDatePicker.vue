@@ -18,7 +18,7 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 // ** Computed
 const error = computed(() => errorMessage.value)
 
-const formatDate = computed(() => useDateFormat(value.value, 'DD-MM-YYYY').value)
+const formatDate = computed(() => useDateFormat(value.value, 'DD-MM-YYYY HH:mm').value)
 </script>
 
 <template>
@@ -39,6 +39,7 @@ const formatDate = computed(() => useDateFormat(value.value, 'DD-MM-YYYY').value
             <template #panel="{ close }">
                 <LazyDatePicker
                     v-model="value"
+                    mode="dateTime"
                     v-bind="$attrs"
                     @close="close"
                 />

@@ -28,6 +28,10 @@ export default [
                 to: '/flash-sale'
             },
             {
+                title: 'Coupons',
+                to: '/coupons'
+            },
+            {
                 title: 'Sản phẩm',
                 to: '/product'
             }

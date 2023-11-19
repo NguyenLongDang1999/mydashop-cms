@@ -97,8 +97,8 @@ export const useCrudFormInput = <T>(path: string, id?: number | string) => {
         {
             onSuccess: () => {
                 queryClient.refetchQueries({ queryKey: [`${path}DataTable`] })
+                queryClient.invalidateQueries({ queryKey: [`${path}Detail`] })
                 queryClient.invalidateQueries({ queryKey: [`${path}DataList`] })
-                if (!!id) queryClient.invalidateQueries({ queryKey: [`${path}Detail`, id] })
                 useNotification('Đã lưu dữ liệu thành công!')
 
                 imageURL.value = undefined

@@ -11,7 +11,8 @@ const columns = [
     },
     {
         key: 'category_id',
-        label: 'Danh mục'
+        label: 'Danh mục',
+        class: 'min-w-[250px]'
     },
     {
         key: 'status',
