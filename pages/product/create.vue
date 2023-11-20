@@ -43,12 +43,13 @@ const onSubmit = handleSubmit(async values => {
     dataFormInput({
         ...values,
         attributes: values.attributes as string,
+        product_related: product.product_related ? JSON.stringify(product.product_related) : undefined,
+        product_upsell: product.product_upsell ? JSON.stringify(product.product_upsell) : undefined,
+        product_cross_sell: product.product_cross_sell ? JSON.stringify(product.product_cross_sell) : undefined,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
 
     attribute_id.value = []
-
-    navigateTo(ROUTER.PRODUCT)
 })
 
 const handleChangeAttribute = () => {
@@ -340,6 +341,33 @@ const handleChangeAttribute = () => {
                             <FormInput
                                 :label="label.meta_description"
                                 name="meta_description"
+                            />
+                        </div>
+
+                        <div class="col-span-12">
+                            <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                                6. Lựa chọn sản phẩm
+                            </p>
+                        </div>
+
+                        <div class="col-span-12">
+                            <FlashSaleProductSelected
+                                :label="label.product_related"
+                                name="product_related"
+                            />
+                        </div>
+
+                        <div class="col-span-12">
+                            <FlashSaleProductSelected
+                                :label="label.product_upsell"
+                                name="product_upsell"
+                            />
+                        </div>
+
+                        <div class="col-span-12">
+                            <FlashSaleProductSelected
+                                :label="label.product_cross_sell"
+                                name="product_cross_sell"
                             />
                         </div>
                     </div>

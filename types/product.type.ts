@@ -29,6 +29,9 @@ export interface IProductForm {
     popular?: number
     meta_title?: string
     meta_description?: string
+    product_related?: string
+    product_upsell?: string
+    product_cross_sell?: string
 }
 
 export interface IProductSpecification {

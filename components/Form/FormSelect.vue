@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IOptions } from '~/types/core.type';
+import type { IOptions } from '~/types/core.type'
 
 // ** Props & Emits
 interface Props {
@@ -17,8 +17,8 @@ const props = defineProps<Props>()
 // ** useHooks
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
-    initialValue: props.multiple || Array.isArray(props.modelValue) 
-        ? props.modelValue || [] 
+    initialValue: props.multiple || Array.isArray(props.modelValue)
+        ? props.modelValue || []
         : props.modelValue || undefined
 })
 
