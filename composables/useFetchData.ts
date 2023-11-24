@@ -2,7 +2,7 @@
 import { ofetch } from 'ofetch'
 
 export default function () {
-    return ofetch.create({
+    const _fetcher = ofetch.create({
         baseURL: config.baseURL,
         credentials: 'include',
         headers: {
@@ -22,9 +22,20 @@ export default function () {
                 }
             }
         },
-        onResponseError: ({ response }) => {
-            if (!response.ok && response.status === 401) {
-                navigateTo(ROUTER.LOGIN)
+        onResponseError: async ({ response }) => {
+            if (
+                response.status === 401 &&
+                !response.ok
+            ) {
+                try {
+                    const data = await _fetcher('/auth/refresh')
+
+                    setToken(data.accessToken)
+                } catch {
+                    removeToken()
+                    removeUserData()
+                    navigateTo(ROUTER.LOGIN)
+                }
             }
         }
     })
