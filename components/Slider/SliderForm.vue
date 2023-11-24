@@ -1,15 +1,15 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ISliderForm } from '~/types/slider.type';
+import type { ISliderForm } from '~/types/slider.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/slider';
+import { label, schema } from '~/validations/slider'
 
 // ** useHooks
 const { path } = useSlider()
 const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit } = useForm({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
@@ -53,14 +53,13 @@ const onSubmit = handleSubmit(async values => {
                         <FormInput
                             :label="label.name"
                             name="name"
-                            @update:model-value="val => setFieldValue('slug', slugify(val))"
                         />
                     </div>
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :label="label.slug"
-                            name="slug"
+                            :label="label.url"
+                            name="url"
                         />
                     </div>
 

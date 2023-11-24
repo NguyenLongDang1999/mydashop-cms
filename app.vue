@@ -8,7 +8,7 @@ useHead({
     bodyAttrs: {
         class: 'font-[Quicksand] font-normal overflow-x-hidden text-sm bg-white text-dark-700'
     },
-    title: 'Nuxivy',
+    title: 'Quản trị viên',
     titleTemplate: titleChunk => {
         return titleChunk ? `${titleChunk} · Nuxivy` : 'Nuxivy'
     }

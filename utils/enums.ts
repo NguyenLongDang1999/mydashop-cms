@@ -13,7 +13,7 @@ export enum PAGE {
     SIZE = 10
 }
 
-export enum DISCOUNT {
+export enum SPECIAL_PRICE {
     PRICE = 10,
     PERCENT = 20
 }

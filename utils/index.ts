@@ -29,11 +29,11 @@ export const optionPopular = [
 
 export const optionTypeDiscount = [
     {
-        id: DISCOUNT.PRICE,
+        id: SPECIAL_PRICE.PRICE,
         name: 'Giá tiền'
     },
     {
-        id: DISCOUNT.PERCENT,
+        id: SPECIAL_PRICE.PERCENT,
         name: 'Phần trăm'
     }
 ]

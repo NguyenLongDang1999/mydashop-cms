@@ -108,7 +108,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 <li>
                                     <span class="font-semibold capitalize">Giá giảm: </span>
 
-                                    <template v-if="row.special_price_type === DISCOUNT.PERCENT">
+                                    <template v-if="row.special_price_type === SPECIAL_PRICE.PERCENT">
                                         {{ row.special_price }}%
                                     </template>
 

@@ -71,7 +71,7 @@ export const useCrudDetail = async <T>(path: string, id: number | string) => {
     }
 }
 
-export const useCrudFormInput = <T>(path: string, id?: number | string) => {
+export const useCrudFormInput = <T>(path: string) => {
     // ** Hooks
     const _fetcher = useFetchData()
     const queryClient = useQueryClient()
@@ -79,7 +79,6 @@ export const useCrudFormInput = <T>(path: string, id?: number | string) => {
     const { isLoading, mutateAsync: dataFormInput } = useMutation(
         async (body: Partial<T> & { id?: number }) => {
             const formData = new FormData()
-            if (body.id) formData.append('_method', 'PATCH')
 
             for (const item in body) {
                 const value = (body as Record<string, string>)[item]
@@ -91,8 +90,8 @@ export const useCrudFormInput = <T>(path: string, id?: number | string) => {
             formData.delete('id')
 
             return body.id ?
-                _fetcher(`${path}/${body.id}`, { method: 'POST', body: formData }) :
-                _fetcher(`${path}`, { method: 'POST', body: formData })
+                _fetcher(`${path}/${body.id}`, { method: 'PATCH', body: imageURL.value ? formData : body }) :
+                _fetcher(`${path}`, { method: 'POST', body: imageURL.value ? formData : body })
         },
         {
             onSuccess: () => {

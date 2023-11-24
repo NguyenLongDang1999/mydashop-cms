@@ -25,11 +25,7 @@ const { value, errorMessage, handleChange } = useField(() => props.name, undefin
 
 // ** Lifecycle
 onMounted(() => {
-    setTimeout(() => {
-        if (value.value) {
-            setValue(Number(value.value))
-        }
-    }, 300)
+    setTimeout(() => setValue(Number(value.value)), 300)
 })
 
 // ** Watch

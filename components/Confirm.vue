@@ -44,12 +44,12 @@ const isOpen = ref<boolean>(false)
                 </div>
             </template>
 
-            <p class="text-base">
+            <p class="text-lg text-center">
                 Bạn có chắc chắn muốn xoá dữ liệu này không?
             </p>
 
             <template #footer>
-                <div class="flex gap-2">
+                <div class="flex justify-center gap-2">
                     <UButton
                         color="primary"
                         variant="solid"

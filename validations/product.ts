@@ -59,6 +59,18 @@ export const schema = toTypedSchema(yup.object({
     description: yup
         .string()
         .required(`${label.description} không được bỏ trống.`),
+    quantity: yup
+        .number()
+        .required(`${label.quantity} không được bỏ trống.`)
+        .default(0),
+    special_price_type: yup
+        .number()
+        .required(`${label.special_price_type} không được bỏ trống.`)
+        .default(SPECIAL_PRICE.PRICE),
+    special_price: yup
+        .number()
+        .required(`${label.special_price} không được bỏ trống.`)
+        .default(0),
     attribute_id: yup.array(yup.number().required()),
     attributes: yup.mixed<string | IAttributeValuesList[]>().nullable(),
     technical_specifications: yup.array()
