@@ -10,12 +10,12 @@ export default defineNuxtPlugin(nuxt => {
                 refetchOnWindowFocus: false,
                 refetchOnMount: false,
                 refetchOnReconnect: false,
-                retry: 1,
+                retry: 2,
                 staleTime: 5 * (60 * 1000),
                 cacheTime: 10 * (60 * 1000)
             },
             mutations: {
-                retry: 1
+                retry: 2
             }
         }
     })
