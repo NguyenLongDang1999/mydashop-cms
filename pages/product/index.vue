@@ -118,6 +118,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                 </li>
 
                                 <li>
+                                    <span class="font-semibold capitalize">Giá sale:</span>
+                                    {{ row.discount || 0 }}%
+                                </li>
+
+                                <li>
                                     <span class="font-semibold capitalize">Giá bán:</span>
                                     {{ formatCurrency(Number(row.selling_price)) }}
                                 </li>

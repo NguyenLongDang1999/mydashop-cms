@@ -54,6 +54,7 @@ export interface IProduct {
     id: number
     sku: string
     name: string
+    discount: number
     price: string
     special_price: string
     special_price_type: number
