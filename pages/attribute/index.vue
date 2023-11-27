@@ -60,12 +60,12 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IAttribute>">
-                            <NuxtLink
+                            <ULink
                                 :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
                                 class="inline-block"
                             >
                                 <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
-                            </NuxtLink>
+                            </ULink>
                         </template>
 
                         <template #category_id-data="{ row }: IRow<IAttribute>">

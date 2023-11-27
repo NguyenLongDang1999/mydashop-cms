@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink
+    <ULink
         href="/"
         class="flex items-end gap-1.5 font-bold text-xl text-gray-900 dark:text-white"
         aria-label="Nuxt UI"
@@ -43,5 +43,5 @@
                 fill="rgb(var(--color-primary-DEFAULT))"
             />
         </svg>
-    </NuxtLink>
+    </ULink>
 </template>

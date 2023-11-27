@@ -63,7 +63,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<ICategory>">
-                            <NuxtLink
+                            <ULink
                                 :to="`${ROUTER.CATEGORY}/${row.id}`"
                                 class="inline-block"
                             >
@@ -75,11 +75,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                                     <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
                                 </div>
-                            </NuxtLink>
+                            </ULink>
                         </template>
 
                         <template #parent_id-data="{ row }: IRow<ICategory>">
-                            <NuxtLink
+                            <ULink
                                 v-if="row.parent"
                                 :to="`${ROUTER.CATEGORY}/${row.parent.id}`"
                                 class="inline-block"
@@ -92,7 +92,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                                     <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.parent.name }}</span>
                                 </div>
-                            </NuxtLink>
+                            </ULink>
 
                             <span v-else />
                         </template>

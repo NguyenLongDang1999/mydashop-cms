@@ -80,7 +80,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
-                            <NuxtLink
+                            <ULink
                                 :to="`${ROUTER.PRODUCT}/${row.id}`"
                                 class="inline-block"
                             >
@@ -95,7 +95,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         <span>{{ row.sku }}</span>
                                     </div>
                                 </div>
-                            </NuxtLink>
+                            </ULink>
                         </template>
 
                         <template #price-data="{ row }: IRow<IProduct>">
@@ -126,7 +126,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #category_id-data="{ row }: IRow<IProduct>">
                             <div class="flex flex-col gap-1">
-                                <NuxtLink
+                                <ULink
                                     v-if="row.brand"
                                     :to="`${ROUTER.BRAND}/${row.brand.id}`"
                                 >
@@ -138,9 +138,9 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                                         <span class="capitalize text-primary flex-1">{{ row.brand.name }}</span>
                                     </div>
-                                </NuxtLink>
+                                </ULink>
 
-                                <NuxtLink
+                                <ULink
                                     v-if="row.category"
                                     :to="`${ROUTER.CATEGORY}/${row.category.id}`"
                                 >
@@ -152,7 +152,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                                         <span class="capitalize text-primary flex-1">{{ row.category.name }}</span>
                                     </div>
-                                </NuxtLink>
+                                </ULink>
                             </div>
                         </template>
 

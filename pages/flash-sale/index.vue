@@ -59,11 +59,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IFlashSale>">
-                            <NuxtLink class="inline-block">
+                            <ULink class="inline-block">
                                 <div class="flex items-center gap-1">
                                     <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.campaign_name }}</span>
                                 </div>
-                            </NuxtLink>
+                            </ULink>
                         </template>
 
                         <template #date_range-data="{ row }: IRow<IFlashSale>">

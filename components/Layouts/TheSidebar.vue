@@ -37,7 +37,7 @@
                         style="margin-left: 0.5rem"
                     >
                         <div class="space-y-1.5">
-                            <NuxtLink
+                            <ULink
                                 v-for="nav in item.children"
                                 :key="nav.to"
                                 class="flex items-center capitalize gap-1.5 group border-l -ml-px pl-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border-transparent hover:border-gray-500 dark:hover:border-gray-400"
@@ -45,7 +45,7 @@
                                 :to="nav.to"
                             >
                                 <span class="text-sm/6">{{ nav.title }}</span>
-                            </NuxtLink>
+                            </ULink>
                         </div>
                     </nav>
                 </template>
