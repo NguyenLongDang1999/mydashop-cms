@@ -45,7 +45,7 @@ export enum ROUTER {
 }
 
 export enum IMAGE {
-    DEFAULT = '/assets/default.jpg'
+    DEFAULT = '/default.jpg'
 }
 
 export enum FORMAT {
