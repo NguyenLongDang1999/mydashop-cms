@@ -50,6 +50,8 @@ const onSubmit = handleSubmit(async values => {
     })
 
     attribute_id.value = []
+
+    navigateTo(ROUTER.PRODUCT)
 })
 
 const handleChangeAttribute = () => {

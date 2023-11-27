@@ -71,7 +71,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         </template>
 
                         <template #discount-data="{ row }: IRow<IFlashSale>">
-                            {{ row.discount_percent }}%
+                            {{ row.discount }}%
                         </template>
 
 

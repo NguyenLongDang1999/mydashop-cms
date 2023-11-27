@@ -16,8 +16,8 @@ const props = defineProps<Props>()
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
     initialValue: {
-        start: props.flashSale ? new Date(props.flashSale.start_time) : new Date(),
-        end: props.flashSale ? new Date(props.flashSale.end_time) : new Date()
+        start: props.flashSale ? new Date(props.flashSale.start_date) : new Date(),
+        end: props.flashSale ? new Date(props.flashSale.end_date) : new Date()
     }
 })
 

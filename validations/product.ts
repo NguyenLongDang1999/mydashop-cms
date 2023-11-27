@@ -70,7 +70,14 @@ export const schema = toTypedSchema(yup.object({
     special_price: yup
         .number()
         .required(`${label.special_price} không được bỏ trống.`)
-        .default(0),
+        .default(0)
+        .when('special_price_type', {
+            is: SPECIAL_PRICE.PERCENT,
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+            then: schema => schema
+                .min(1, `${label.special_price} phải lớn hơn hoặc bằng 1.`)
+                .max(99, `${label.special_price} phải nhỏ hơn hoặc bằng 99.`)
+        }),
     attribute_id: yup.array(yup.number().required()),
     attributes: yup.mixed<string | IAttributeValuesList[]>().nullable(),
     technical_specifications: yup.array()

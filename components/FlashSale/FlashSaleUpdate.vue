@@ -15,7 +15,7 @@ const props = defineProps<Props>()
 
 // ** useHooks
 const { path } = useFlashSale()
-const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value, props.flashSale.id)
+const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value)
 
 const { handleSubmit, values: form } = useForm({
     validationSchema: schema,
@@ -26,15 +26,14 @@ const { handleSubmit, values: form } = useForm({
 const isOpen = ref<boolean>(false)
 
 // ** Computed
-const product_id = computed(() => form.ProductFlashSale.map((_p: IFlashSaleForm) => _p.product_id))
+const product_id = computed(() => form.FlashSaleProduct.map((_p: IFlashSaleForm) => _p.product_id))
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     await dataFormInput({
         ...values,
         start_date: form.date_range?.start,
-        end_date: form.date_range?.end,
-        date_range: undefined
+        end_date: form.date_range?.end
     })
 
     isOpen.value = false
@@ -66,6 +65,7 @@ const onSubmit = handleSubmit(async values => {
                 <div class="grid gap-4 grid-cols-12">
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
+                            :model-value="flashSale.campaign_name"
                             :label="label.campaign_name"
                             name="campaign_name"
                         />
@@ -73,8 +73,9 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormMoney
-                            :label="label.discount_percent"
-                            name="discount_percent"
+                            :model-value="flashSale.discount"
+                            :label="label.discount"
+                            name="discount"
                         />
                     </div>
 

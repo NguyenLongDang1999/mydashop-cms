@@ -18,8 +18,8 @@ const isOpen = ref<boolean>(false)
 const onSubmit = handleSubmit(async values => {
     await dataFormInput({
         ...values,
-        start_time: flashSale.date_range?.start,
-        end_time: flashSale.date_range?.end
+        start_date: flashSale.date_range?.start,
+        end_date: flashSale.date_range?.end
     })
 
     isOpen.value = false
@@ -52,15 +52,15 @@ const onSubmit = handleSubmit(async values => {
                 <div class="grid gap-4 grid-cols-12">
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :label="label.name"
-                            name="name"
+                            :label="label.campaign_name"
+                            name="campaign_name"
                         />
                     </div>
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormMoney
-                            :label="label.discount_percentage"
-                            name="discount_percentage"
+                            :label="label.discount"
+                            name="discount"
                         />
                     </div>
 
