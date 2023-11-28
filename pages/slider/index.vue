@@ -7,7 +7,8 @@ import type { ISlider, ISliderSearch, ISliderTable } from '~/types/slider.type'
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin slider'
+        label: 'Thông tin slider',
+        class: 'min-w-[200px]'
     },
     {
         key: 'status',
@@ -15,7 +16,8 @@ const columns = [
     },
     {
         key: 'actions',
-        label: 'Thao tác'
+        label: 'Thao tác',
+        class: 'min-w-[100px]'
     }
 ]
 
@@ -52,7 +54,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :columns="columns"
                         :loading="isFetching || isLoading"
                         class="w-full"
-                        :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<ISlider>">
                             <div class="flex items-center gap-1">
@@ -61,7 +63,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                     :alt="row.name"
                                 />
 
-                                <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
+                                <span class="capitalize text-primary flex-1 truncate">{{ row.name }}</span>
                             </div>
                         </template>
 
