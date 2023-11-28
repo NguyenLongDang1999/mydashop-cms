@@ -7,11 +7,13 @@ import type { IFlashSale, IFlashSaleSearch, IFlashSaleTable } from '~/types/flas
 const columns = [
     {
         key: 'name',
-        label: 'Tên chiến dịch'
+        label: 'Tên chiến dịch',
+        class: 'min-w-[200px]'
     },
     {
         key: 'date_range',
-        label: 'Ngày áp dụng'
+        label: 'Ngày áp dụng',
+        class: 'min-w-[250px]'
     },
     {
         key: 'discount',
@@ -19,7 +21,8 @@ const columns = [
     },
     {
         key: 'actions',
-        label: 'Thao tác'
+        label: 'Thao tác',
+        class: 'min-w-[100px]'
     }
 ]
 
@@ -50,20 +53,18 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                 <!-- <FlashSaleSearch /> -->
 
-                <div class="mt-4">
+                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
                         class="w-full"
-                        :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IFlashSale>">
-                            <ULink class="inline-block">
-                                <div class="flex items-center gap-1">
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.campaign_name }}</span>
-                                </div>
-                            </ULink>
+                            <div class="flex items-center gap-1">
+                                <span class="capitalize text-primary flex-1 truncate">{{ row.campaign_name }}</span>
+                            </div>
                         </template>
 
                         <template #date_range-data="{ row }: IRow<IFlashSale>">
@@ -73,7 +74,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         <template #discount-data="{ row }: IRow<IFlashSale>">
                             {{ row.discount }}%
                         </template>
-
 
                         <template #actions-data="{ row }">
                             <div class="flex gap-2">

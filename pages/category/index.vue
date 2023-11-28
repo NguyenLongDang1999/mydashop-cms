@@ -7,11 +7,13 @@ import type { IRow } from '~/types/core.type'
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin danh mục'
+        label: 'Thông tin danh mục',
+        class: 'min-w-[200px]'
     },
     {
         key: 'parent_id',
-        label: 'Danh mục cha'
+        label: 'Danh mục cha',
+        class: 'min-w-[200px]'
     },
     {
         key: 'status',
@@ -22,8 +24,14 @@ const columns = [
         label: 'Phổ biến'
     },
     {
+        key: 'created_at',
+        label: 'Ngày tạo',
+        class: 'min-w-[120px]'
+    },
+    {
         key: 'actions',
-        label: 'Thao tác'
+        label: 'Thao tác',
+        class: 'min-w-[100px]'
     }
 ]
 
@@ -54,26 +62,23 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                 <CategorySearch />
 
-                <div class="mt-4">
+                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
                         class="w-full"
-                        :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<ICategory>">
-                            <ULink
-                                :to="`${ROUTER.CATEGORY}/${row.id}`"
-                                class="inline-block"
-                            >
+                            <ULink :to="`${ROUTER.CATEGORY}/${row.id}`">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
                                     />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
+                                    <span class="capitalize text-primary flex-1 truncate">{{ row.name }}</span>
                                 </div>
                             </ULink>
                         </template>
@@ -82,7 +87,6 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                             <ULink
                                 v-if="row.parent"
                                 :to="`${ROUTER.CATEGORY}/${row.parent.id}`"
-                                class="inline-block"
                             >
                                 <div class="flex items-center gap-1">
                                     <UAvatar
@@ -90,7 +94,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         :alt="row.parent.name"
                                     />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.parent.name }}</span>
+                                    <span class="capitalize text-primary flex-1 truncate">{{ row.parent.name }}</span>
                                 </div>
                             </ULink>
 
@@ -103,6 +107,10 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #popular-data="{ row }: IRow<ICategory>">
                             <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
+                        </template>
+
+                        <template #created_at-data="{ row }: IRow<ICategory>">
+                            <span>{{ formatDateTime(row.created_at) }}</span>
                         </template>
 
                         <template #actions-data="{ row }: IRow<ICategory>">

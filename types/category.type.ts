@@ -27,7 +27,6 @@ export interface ICategory {
     status: number
     popular: number
     created_at: string
-    updated_at: string
 }
 
 export interface ICategorySearch extends IPagination {

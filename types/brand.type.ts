@@ -21,8 +21,6 @@ export interface IBrand {
     image_uri: string
     status: number
     popular: number
-    created_at: string
-    updated_at: string
     categories: ICategoryList[]
 }
 

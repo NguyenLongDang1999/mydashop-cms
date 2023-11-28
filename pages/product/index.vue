@@ -30,7 +30,8 @@ const columns = [
     },
     {
         key: 'actions',
-        label: 'Thao tác'
+        label: 'Thao tác',
+        class: 'min-w-[100px]'
     }
 ]
 
@@ -71,27 +72,24 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                 <ProductSearch />
 
-                <div class="mt-4">
+                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
                         class="w-full"
-                        :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
-                            <ULink
-                                :to="`${ROUTER.PRODUCT}/${row.id}`"
-                                class="inline-block"
-                            >
+                            <ULink :to="`${ROUTER.PRODUCT}/${row.id}`">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
                                     />
 
-                                    <div class="flex flex-col flex-1">
-                                        <span class="capitalize text-primary">{{ row.name }}</span>
+                                    <div class="flex flex-col flex-1 truncate">
+                                        <span class="capitalize text-primary truncate">{{ row.name }} {{ row.name }} {{ row.name }}</span>
                                         <span>{{ row.sku }}</span>
                                     </div>
                                 </div>
@@ -141,7 +139,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                             :alt="row.brand.name"
                                         />
 
-                                        <span class="capitalize text-primary flex-1">{{ row.brand.name }}</span>
+                                        <span class="capitalize text-primary flex-1 truncate">{{ row.brand.name }}</span>
                                     </div>
                                 </ULink>
 
@@ -155,7 +153,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                             :alt="row.category.name"
                                         />
 
-                                        <span class="capitalize text-primary flex-1">{{ row.category.name }}</span>
+                                        <span class="capitalize text-primary flex-1 truncate">{{ row.category.name }}</span>
                                     </div>
                                 </ULink>
                             </div>

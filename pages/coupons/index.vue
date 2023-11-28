@@ -58,7 +58,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                 <CouponsSearch />
 
-                <div class="mt-4">
+                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"

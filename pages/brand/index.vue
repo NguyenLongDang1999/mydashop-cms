@@ -7,7 +7,8 @@ import type { IRow } from '~/types/core.type'
 const columns = [
     {
         key: 'name',
-        label: 'Thông tin thương hiệu'
+        label: 'Thông tin thương hiệu',
+        class: 'min-w-[180px]'
     },
     {
         key: 'category_id',
@@ -24,7 +25,8 @@ const columns = [
     },
     {
         key: 'actions',
-        label: 'Thao tác'
+        label: 'Thao tác',
+        class: 'min-w-[100px]'
     }
 ]
 
@@ -55,26 +57,23 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                 <BrandSearch />
 
-                <div class="mt-4">
+                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"
                         :loading="isFetching || isLoading"
                         class="w-full"
-                        :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IBrand>">
-                            <ULink
-                                :to="`${ROUTER.BRAND}/${row.id}`"
-                                class="inline-block"
-                            >
+                            <ULink :to="`${ROUTER.BRAND}/${row.id}`">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getImageFile(path, row.image_uri)"
                                         :alt="row.name"
                                     />
 
-                                    <span class="capitalize text-primary line-clamp-1 flex-1">{{ row.name }}</span>
+                                    <span class="capitalize text-primary flex-1 truncate">{{ row.name }}</span>
                                 </div>
                             </ULink>
                         </template>
