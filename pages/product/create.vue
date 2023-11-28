@@ -72,6 +72,20 @@ const handleChangeAttribute = () => {
         values: []
     })))
 }
+
+const getSellingPrice = () => {
+    let discount = 0
+
+    if (product.special_price_type === SPECIAL_PRICE.PERCENT) {
+        discount = (product.price as number / 100) * (product.special_price as number)
+    }
+
+    if (product.special_price_type === SPECIAL_PRICE.PRICE) {
+        discount = (product.special_price as number)
+    }
+
+    return setFieldValue('selling_price', (product.price as number) - discount)
+}
 </script>
 
 <template>
@@ -149,6 +163,7 @@ const handleChangeAttribute = () => {
                                 :label="label.special_price_type"
                                 :options="optionTypeDiscount"
                                 name="special_price_type"
+                                @update:model-value="getSellingPrice"
                             />
                         </div>
 
@@ -156,6 +171,8 @@ const handleChangeAttribute = () => {
                             <FormMoney
                                 :label="label.price"
                                 name="price"
+                                text-trailing="VNĐ"
+                                @update:model-value="getSellingPrice"
                             />
                         </div>
 
@@ -163,6 +180,17 @@ const handleChangeAttribute = () => {
                             <FormMoney
                                 :label="label.special_price"
                                 name="special_price"
+                                :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                @update:model-value="getSellingPrice"
+                            />
+                        </div>
+
+                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
+                            <FormMoney
+                                v-model="product.selling_price"
+                                :label="label.selling_price"
+                                name="selling_price"
+                                text-trailing="VNĐ"
                             />
                         </div>
 
@@ -170,6 +198,15 @@ const handleChangeAttribute = () => {
                             <FormMoney
                                 :label="label.quantity"
                                 name="quantity"
+                                @update:model-value="setFieldValue('in_stock', product.quantity as number <= 0 ? INVENTORY_STATUS.OUT_OF_STOCK : INVENTORY_STATUS.STOCK)"
+                            />
+                        </div>
+
+                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
+                            <FormSelect
+                                :label="label.in_stock"
+                                :options="optionInventoryStatus"
+                                name="in_stock"
                             />
                         </div>
 

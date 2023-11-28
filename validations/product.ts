@@ -17,6 +17,8 @@ export const label = {
     price: 'Giá tiền',
     special_price: 'Giá ưu đãi',
     special_price_type: 'Loại ưu đãi',
+    in_stock: 'Tình trạng hàng hóa',
+    selling_price: 'Giá bán',
     technical_specifications: {
         name: 'Thông số kỹ thuật',
         title: 'Tiêu đề',
@@ -49,7 +51,9 @@ export const schema = toTypedSchema(yup.object({
         .required(`${label.slug} không được bỏ trống.`),
     price: yup
         .number()
-        .required(`${label.price} không được bỏ trống.`),
+        .required(`${label.price} không được bỏ trống.`)
+        .default(0)
+        .min(0, ({ min }) => `${label.price} phải lớn hơn hoặc bằng ${min}.`),
     category_id: yup
         .number()
         .required(`${label.category_id} không được bỏ trống.`),
@@ -62,7 +66,8 @@ export const schema = toTypedSchema(yup.object({
     quantity: yup
         .number()
         .required(`${label.quantity} không được bỏ trống.`)
-        .default(0),
+        .default(0)
+        .min(0, ({ min }) => `${label.quantity} phải lớn hơn hoặc bằng ${min}.`),
     special_price_type: yup
         .number()
         .required(`${label.special_price_type} không được bỏ trống.`)
@@ -71,13 +76,22 @@ export const schema = toTypedSchema(yup.object({
         .number()
         .required(`${label.special_price} không được bỏ trống.`)
         .default(0)
+        .min(0, ({ min }) => `${label.special_price} phải lớn hơn hoặc bằng ${min}.`)
         .when('special_price_type', {
             is: SPECIAL_PRICE.PERCENT,
             // eslint-disable-next-line @typescript-eslint/no-shadow
             then: schema => schema
-                .min(1, `${label.special_price} phải lớn hơn hoặc bằng 1.`)
-                .max(99, `${label.special_price} phải nhỏ hơn hoặc bằng 99.`)
+                .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
+                .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
         }),
+    in_stock: yup
+        .number()
+        .default(INVENTORY_STATUS.OUT_OF_STOCK),
+    selling_price: yup
+        .number()
+        .required(`${label.selling_price} không được bỏ trống.`)
+        .default(0)
+        .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`),
     attribute_id: yup.array(yup.number().required()),
     attributes: yup.mixed<string | IAttributeValuesList[]>().nullable(),
     technical_specifications: yup.array()

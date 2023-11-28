@@ -7,6 +7,7 @@ import { CurrencyDisplay, useCurrencyInput } from 'vue-currency-input'
 interface Props {
     label?: string
     name: string
+    textTrailing?: string
     modelValue?: string | number
 }
 
@@ -30,6 +31,7 @@ onMounted(() => {
 
 // ** Watch
 watch(numberValue, newValue => handleChange(newValue))
+watch(() => props.modelValue, newValue => setValue(newValue as number))
 
 // ** Computed
 const error = computed(() => errorMessage.value)
@@ -45,6 +47,13 @@ const error = computed(() => errorMessage.value)
             ref="inputRef"
             v-model="formattedValue"
             v-bind="$attrs"
-        />
+        >
+            <template
+                v-if="textTrailing"
+                #trailing
+            >
+                <span class="text-gray-500 dark:text-gray-400 text-xs">{{ textTrailing }}</span>
+            </template>
+        </UInput>
     </UFormGroup>
 </template>

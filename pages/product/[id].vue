@@ -85,6 +85,20 @@ const handleChangeAttribute = () => {
         values: []
     })))
 }
+
+const getSellingPrice = () => {
+    let discount = 0
+
+    if (product.special_price_type === SPECIAL_PRICE.PERCENT) {
+        discount = (product.price as number / 100) * (product.special_price as number)
+    }
+
+    if (product.special_price_type === SPECIAL_PRICE.PRICE) {
+        discount = (product.special_price as number)
+    }
+
+    return setFieldValue('selling_price', (product.price as number) - discount)
+}
 </script>
 
 <template>
@@ -106,6 +120,38 @@ const handleChangeAttribute = () => {
                     >
                         <UCard>
                             <div class="grid gap-4 grid-cols-12">
+                                <div
+                                    v-if="product.flashSaleProduct.length"
+                                    class="col-span-12"
+                                >
+                                    <UAlert
+                                        icon="i-heroicons-bell"
+                                        color="primary"
+                                        variant="outline"
+                                        title="Thông Báo!"
+                                        description="Sản phẩm này đang trong quá trình Flash Sale."
+                                    />
+                                </div>
+
+                                <div
+                                    v-if="product.flashSaleProduct.length"
+                                    class="col-span-12"
+                                >
+                                    <UAlert
+                                        icon="i-heroicons-information-circle"
+                                        color="red"
+                                        variant="outline"
+                                        title="Lưu Ý!"
+                                    >
+                                        <template #description>
+                                            <p>Khi sản phẩm được kích hoạt chiến dịch Flash Sale thì <b class="line-through">Giá Ưu Đãi</b> sẽ không hoạt động.</p>
+                                            <p class="mt-1">
+                                                Giá bán sẽ được tính lại từ Giá gốc và Giá giảm từ Flash Sale.
+                                            </p>
+                                        </template>
+                                    </UAlert>
+                                </div>
+
                                 <div class="col-span-12">
                                     <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
                                         1. Thông tin cơ bản
@@ -159,6 +205,7 @@ const handleChangeAttribute = () => {
                                         :label="label.special_price_type"
                                         :options="optionTypeDiscount"
                                         name="special_price_type"
+                                        @update:model-value="getSellingPrice"
                                     />
                                 </div>
 
@@ -166,6 +213,8 @@ const handleChangeAttribute = () => {
                                     <FormMoney
                                         :label="label.price"
                                         name="price"
+                                        text-trailing="VNĐ"
+                                        @update:model-value="getSellingPrice"
                                     />
                                 </div>
 
@@ -173,6 +222,19 @@ const handleChangeAttribute = () => {
                                     <FormMoney
                                         :label="label.special_price"
                                         name="special_price"
+                                        :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                        @update:model-value="getSellingPrice"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-4 sm:col-span-6 col-span-12">
+                                    <FormMoney
+                                        v-model="product.selling_price"
+                                        :label="label.selling_price"
+                                        :hint="`${product.discount ? `-${product.discount}%` : ''}`"
+                                        name="selling_price"
+                                        :help="`Công Thức: ${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                        text-trailing="VNĐ"
                                     />
                                 </div>
 
@@ -181,6 +243,15 @@ const handleChangeAttribute = () => {
                                         :model-value="product.quantity"
                                         :label="label.quantity"
                                         name="quantity"
+                                        @update:model-value="setFieldValue('in_stock', product.quantity as number <= 0 ? INVENTORY_STATUS.OUT_OF_STOCK : INVENTORY_STATUS.STOCK)"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-4 sm:col-span-6 col-span-12">
+                                    <FormSelect
+                                        :label="label.in_stock"
+                                        :options="optionInventoryStatus"
+                                        name="in_stock"
                                     />
                                 </div>
 
