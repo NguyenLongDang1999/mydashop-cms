@@ -172,6 +172,7 @@ const getSellingPrice = () => {
                                 :label="label.price"
                                 name="price"
                                 text-trailing="VNĐ"
+                                help="Giá Gốc"
                                 @update:model-value="getSellingPrice"
                             />
                         </div>
@@ -190,6 +191,7 @@ const getSellingPrice = () => {
                                 v-model="product.selling_price"
                                 :label="label.selling_price"
                                 name="selling_price"
+                                :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
                                 text-trailing="VNĐ"
                             />
                         </div>
@@ -390,21 +392,21 @@ const getSellingPrice = () => {
                         </div>
 
                         <div class="col-span-12">
-                            <FlashSaleProductSelected
+                            <FormProductSearchSelected
                                 :label="label.product_related"
                                 name="product_related"
                             />
                         </div>
 
                         <div class="col-span-12">
-                            <FlashSaleProductSelected
+                            <FormProductSearchSelected
                                 :label="label.product_upsell"
                                 name="product_upsell"
                             />
                         </div>
 
                         <div class="col-span-12">
-                            <FlashSaleProductSelected
+                            <FormProductSearchSelected
                                 :label="label.product_cross_sell"
                                 name="product_cross_sell"
                             />

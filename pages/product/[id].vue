@@ -214,6 +214,7 @@ const getSellingPrice = () => {
                                         :label="label.price"
                                         name="price"
                                         text-trailing="VNĐ"
+                                        help="Giá Gốc"
                                         @update:model-value="getSellingPrice"
                                     />
                                 </div>
@@ -233,7 +234,7 @@ const getSellingPrice = () => {
                                         :label="label.selling_price"
                                         :hint="`${product.discount ? `-${product.discount}%` : ''}`"
                                         name="selling_price"
-                                        :help="`Công Thức: ${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                        :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
                                         text-trailing="VNĐ"
                                     />
                                 </div>
@@ -436,7 +437,7 @@ const getSellingPrice = () => {
                                 </div>
 
                                 <div class="col-span-12">
-                                    <FlashSaleProductSelected
+                                    <FormProductSearchSelected
                                         :model-value="product.related_products"
                                         :label="label.product_related"
                                         name="product_related"
@@ -444,7 +445,7 @@ const getSellingPrice = () => {
                                 </div>
 
                                 <div class="col-span-12">
-                                    <FlashSaleProductSelected
+                                    <FormProductSearchSelected
                                         :model-value="product.upsell_products"
                                         :label="label.product_upsell"
                                         name="product_upsell"
@@ -452,7 +453,7 @@ const getSellingPrice = () => {
                                 </div>
 
                                 <div class="col-span-12">
-                                    <FlashSaleProductSelected
+                                    <FormProductSearchSelected
                                         :model-value="product.cross_sell_products"
                                         :label="label.product_cross_sell"
                                         name="product_cross_sell"

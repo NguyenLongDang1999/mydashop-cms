@@ -45,7 +45,7 @@ const dateFormat = (date: Date) => useDateFormat(date, 'DD-MM-YYYY HH:mm').value
             />
 
             <template #panel="{ close }">
-                <LazyDatePicker
+                <DatePicker
                     v-model.range="value"
                     mode="dateTime"
                     v-bind="$attrs"
