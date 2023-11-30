@@ -11,6 +11,9 @@ const items: TabItem[] = [{
 }, {
     slot: 'sale_products',
     label: 'Sản phẩm Sale'
+}, {
+    slot: 'image_products',
+    label: 'Hình ảnh sản phẩm'
 }]
 
 // ** useHooks
@@ -37,6 +40,10 @@ const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id a
 
                 <template #sale_products>
                     <ProductDetailSale :data="data" />
+                </template>
+
+                <template #image_products>
+                    <ProductDetailImage :data="data" />
                 </template>
             </UTabs>
         </div>

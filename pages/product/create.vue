@@ -385,22 +385,22 @@ const getSellingPrice = () => {
 
                         <div class="col-span-12">
                             <FormProductSearchSelected
-                                :label="label.product_related"
-                                name="product_related"
+                                :label="label.related_products"
+                                name="related_products"
                             />
                         </div>
 
                         <div class="col-span-12">
                             <FormProductSearchSelected
-                                :label="label.product_upsell"
-                                name="product_upsell"
+                                :label="label.upsell_products"
+                                name="upsell_products"
                             />
                         </div>
 
                         <div class="col-span-12">
                             <FormProductSearchSelected
-                                :label="label.product_cross_sell"
-                                name="product_cross_sell"
+                                :label="label.cross_sell_products"
+                                name="cross_sell_products"
                             />
                         </div>
                     </div>

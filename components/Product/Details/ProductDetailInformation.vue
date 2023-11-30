@@ -128,10 +128,6 @@ const getSellingPrice = () => {
                     </p>
                 </div>
 
-                <div class="col-span-12">
-                    <FormUpload :image-src="getImageFile(path, product.image_uri)" />
-                </div>
-
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormInput
                         :label="label.sku"
