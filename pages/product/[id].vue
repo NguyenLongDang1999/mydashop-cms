@@ -9,6 +9,9 @@ const items: TabItem[] = [{
     slot: 'detail',
     label: 'Thông tin chi tiết'
 }, {
+    slot: 'attribute_products',
+    label: 'Thuộc tính'
+}, {
     slot: 'sale_products',
     label: 'Sản phẩm Sale'
 }, {
@@ -36,6 +39,10 @@ const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id a
             >
                 <template #detail>
                     <ProductDetailInformation :data="data" />
+                </template>
+
+                <template #attribute_products>
+                    <ProductDetailAttribute :data="data" />
                 </template>
 
                 <template #sale_products>
