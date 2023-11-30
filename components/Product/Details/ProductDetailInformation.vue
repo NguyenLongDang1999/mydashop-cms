@@ -9,10 +9,17 @@ import type { IProductForm } from '~/types/product.type'
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
 
-const category_id = ref<number>()
+// ** Props & Emits
+interface Props {
+    data: IProductForm
+}
+
+const props = defineProps<Props>()
+
+// ** Data
+const category_id = ref<number>(props.data.category_id as number)
 
 // ** useHooks
-const route = useRoute()
 const { path } = useProduct()
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
@@ -20,44 +27,26 @@ const { path: pathAttribute, attribute_id } = useAttribute()
 const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
 const { isFetching: isFetchingBrand, dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
 const { isFetching: isFetchingAttribute, dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
-const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id as string)
 const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
 const attributeValueList = useAttributeValueList()
 
 const { handleSubmit, values: product, setFieldValue } = useForm({
     validationSchema: schema,
-    initialValues: _omitBy(data.value, _isNil)
+    initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** SetData
-category_id.value = data.value.category_id
-attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
-
-// ** Computed
-const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
+attribute_id.value = (props.data.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    if (values.attributes?.length) {
-        const originalArray: IAttributeValuesList[] = _cloneDeep(values.attributes) as IAttributeValuesList[]
-
-        const resultArray = originalArray.map(item => ({ id: item.id, attribute_value_id: item.values }))
-
-        values.attributes = JSON.stringify(resultArray)
-    }
-
     dataFormInput({
         ...values,
-        attributes: values.attributes as string,
-        product_related: product.product_related ? JSON.stringify(product.product_related) : undefined,
-        product_upsell: product.product_upsell ? JSON.stringify(product.product_upsell) : undefined,
-        product_cross_sell: product.product_cross_sell ? JSON.stringify(product.product_cross_sell) : undefined,
+        attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
 
-    attribute_id.value = (data.value.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
-
-    navigateTo(ROUTER.PRODUCT)
+    attribute_id.value = (props.data.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
 })
 
 const handleChangeAttribute = () => {
@@ -260,7 +249,7 @@ const getSellingPrice = () => {
 
                         <div
                             class="flex flex-col gap-4"
-                            :class="hasTechnicalSpecifications ? 'mt-4' : ''"
+                            :class="product.technical_specifications.length ? 'mt-4' : ''"
                         >
                             <div
                                 v-for="(value, index) in product.technical_specifications"

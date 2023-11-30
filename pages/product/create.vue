@@ -32,20 +32,12 @@ const hasTechnicalSpecifications = computed(() => product.technical_specificatio
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    if (values.attributes?.length) {
-        const originalArray: IAttributeValuesList[] = _cloneDeep(values.attributes) as IAttributeValuesList[]
-
-        const resultArray = originalArray.map(item => ({ id: item.id, attribute_value_id: item.values }))
-
-        values.attributes = JSON.stringify(resultArray)
-    }
-
     dataFormInput({
         ...values,
-        attributes: values.attributes as string,
-        product_related: product.product_related ? JSON.stringify(product.product_related) : undefined,
-        product_upsell: product.product_upsell ? JSON.stringify(product.product_upsell) : undefined,
-        product_cross_sell: product.product_cross_sell ? JSON.stringify(product.product_cross_sell) : undefined,
+        attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
+        related_products: product.related_products ? JSON.stringify(product.related_products) : undefined,
+        upsell_products: product.upsell_products ? JSON.stringify(product.upsell_products) : undefined,
+        cross_sell_products: product.cross_sell_products ? JSON.stringify(product.cross_sell_products) : undefined,
         technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
     })
 

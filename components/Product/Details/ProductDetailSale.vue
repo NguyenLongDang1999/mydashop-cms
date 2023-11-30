@@ -6,7 +6,7 @@ import type { IProductForm } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
-    product: IProductForm
+    data: IProductForm
 }
 
 const props = defineProps<Props>()
@@ -23,7 +23,7 @@ const items: TabItem[] = [{
     label: 'Sản phẩm liên quan'
 }]
 
-const data = ref<IProductForm>(_cloneDeep(props.product))
+const product = ref<IProductForm>(_cloneDeep(props.data))
 </script>
 
 <template>
@@ -32,15 +32,27 @@ const data = ref<IProductForm>(_cloneDeep(props.product))
         class="w-full"
     >
         <template #upsell_products>
-            <ProductSelectedTable v-model="data.upsell_products" />
+            <ProductSelectedTable
+                v-model="product.upsell_products"
+                :data="data"
+                name="upsell_products"
+            />
         </template>
 
         <template #cross_sell_products>
-            <ProductSelectedTable v-model="data.cross_sell_products" />
+            <ProductSelectedTable
+                v-model="product.cross_sell_products"
+                :data="data"
+                name="cross_sell_products"
+            />
         </template>
 
         <template #related_products>
-            <ProductSelectedTable v-model="data.related_products" />
+            <ProductSelectedTable
+                v-model="product.related_products"
+                :data="data"
+                name="related_products"
+            />
         </template>
     </UTabs>
 </template>

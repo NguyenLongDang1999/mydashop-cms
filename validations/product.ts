@@ -32,9 +32,9 @@ export const label = {
     description: 'Mô tả chi tiết',
     meta_title: 'Meta Title',
     meta_description: 'Meta Description',
-    product_related: 'Sản phẩm liên quan',
-    product_upsell: 'Sản phẩm UpSell',
-    product_cross_sell: 'Sản phẩm CrossSell'
+    related_products: 'Sản phẩm liên quan',
+    upsell_products: 'Sản phẩm UpSell',
+    cross_sell_products: 'Sản phẩm CrossSell'
 }
 
 export const schema = toTypedSchema(yup.object({
@@ -101,7 +101,7 @@ export const schema = toTypedSchema(yup.object({
                 content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
             }).default({ title: '', content: '' })
         ),
-    product_related: yup.array(yup.number().required()),
-    product_upsell: yup.array(yup.number().required()),
-    product_cross_sell: yup.array(yup.number().required())
+    related_products: yup.array(yup.number().required()),
+    upsell_products: yup.array(yup.number().required()),
+    cross_sell_products: yup.array(yup.number().required())
 }))

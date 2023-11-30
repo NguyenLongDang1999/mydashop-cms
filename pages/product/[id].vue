@@ -32,11 +32,11 @@ const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id a
                 class="w-full"
             >
                 <template #detail>
-                    <ProductDetailInformation />
+                    <ProductDetailInformation :data="data" />
                 </template>
 
                 <template #sale_products>
-                    <ProductDetailSale :product="data" />
+                    <ProductDetailSale :data="data" />
                 </template>
             </UTabs>
         </div>

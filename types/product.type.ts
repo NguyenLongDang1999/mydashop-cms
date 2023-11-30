@@ -11,6 +11,7 @@ export interface IProductList {
 }
 
 export interface IProductForm {
+    id?: number
     sku: string
     name: string
     slug: string

@@ -2,10 +2,12 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProduct, IProductForm, IProductSearch, IProductTable } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
+    name: string
+    data: IProductForm
     modelValue?: string | number[]
 }
 
@@ -16,6 +18,8 @@ const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
 const { path, search } = useProduct()
 const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
+const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
+const { handleSubmit } = useForm()
 
 // ** Data
 const columns = [
@@ -44,14 +48,28 @@ const columns = [
     }
 ]
 
-const selected = ref([])
+const selected = ref<IProductForm[]>([])
 
 // ** Watch
 watchEffect(() => selected.value = dataTable.value.filter(_d => props.modelValue?.includes(_d.id)))
+
+// ** Methods
+const onSubmit = handleSubmit(() => {
+    dataFormInput({
+        ...props.data,
+        attributes: undefined,
+        technical_specifications: undefined,
+        [props.name]: selected.value.length ? JSON.stringify(selected.value.map(_s => _s.id)) : undefined
+    })
+})
+
 </script>
 
 <template>
-    <UForm :state="{}">
+    <UForm
+        :state="{}"
+        @submit="onSubmit"
+    >
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
@@ -186,6 +204,7 @@ watchEffect(() => selected.value = dataTable.value.filter(_d => props.modelValue
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
+                        :loading="isLoading"
                         :trailing="false"
                     />
 
