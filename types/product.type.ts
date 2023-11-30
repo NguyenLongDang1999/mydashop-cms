@@ -33,6 +33,7 @@ export interface IProductForm {
     related_products?: string | number[]
     upsell_products?: string | number[]
     cross_sell_products?: string | number[]
+    productImage: IProductUpload[]
 }
 
 export interface IProductSpecification {
@@ -72,4 +73,12 @@ export interface IProduct {
 }
 export interface IProductTable extends IAggregations {
     data: IProduct[]
+}
+
+export interface IProductUpload {
+    id?: number
+    image_id?: number
+    index: number
+    slug: string
+    image_uri: File | string
 }

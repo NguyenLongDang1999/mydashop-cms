@@ -7,12 +7,10 @@ interface ICrudTable<T> {
 }
 
 const imageURL = ref()
-const galleryURL = reactive<{ slug: string, image_uri: File }[]>([])
 
 export default function () {
     return {
-        imageURL,
-        galleryURL
+        imageURL
     }
 }
 

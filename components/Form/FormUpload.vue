@@ -3,7 +3,6 @@
 // ** Props & Emits
 interface Props {
     imageSrc?: string
-    slug?: string
     gallery?: boolean
 }
 
@@ -14,7 +13,7 @@ const file = ref<File | null>()
 const { base64: fileURL } = useBase64(file)
 
 // ** useHooks
-const { imageURL, galleryURL } = useCrud()
+const { imageURL } = useCrud()
 
 // ** Methods
 function onFileInput(e: Event) {
@@ -22,15 +21,7 @@ function onFileInput(e: Event) {
 
     if (fileValue) {
         file.value = fileValue
-
-        if (props.gallery) {
-            galleryURL.push({
-                slug: props.slug + '-' + new Date().getTime(),
-                image_uri: fileValue
-            })
-        } else {
-            imageURL.value = fileValue
-        }
+        imageURL.value = !props.gallery ? fileValue : undefined
     }
 }
 </script>
@@ -77,6 +68,7 @@ function onFileInput(e: Event) {
                 <input
                     type="file"
                     class="sr-only"
+                    v-bind="$attrs"
                     @input="onFileInput"
                 >
             </label>

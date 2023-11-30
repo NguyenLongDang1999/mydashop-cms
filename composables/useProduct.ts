@@ -1,12 +1,12 @@
 // ** Third Party Imports
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { IProductSearch, IProductTable } from '~/types/product.type'
 
 // ** Types Imports
+import type { IProductSearch, IProductTable, IProductUpload } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT)
-const galleryURL = reactive<{ slug: string, image_uri: File }[]>([])
+const galleryURL = reactive<IProductUpload[]>([])
 
 const search = reactive<IProductSearch>({
     page: PAGE.CURRENT,
@@ -16,7 +16,8 @@ const search = reactive<IProductSearch>({
 export default function () {
     return {
         path,
-        search
+        search,
+        galleryURL
     }
 }
 
@@ -50,19 +51,16 @@ export const useProductUpload = () => {
     const queryClient = useQueryClient()
 
     const { isLoading, mutateAsync: dataFormInput } = useMutation(
-        (body: Partial<T> & { id?: number }) => {
+        (body: Partial<IProductUpload> & { id?: number, image_id?: number }) => {
             const formData = new FormData()
 
             for (const item in body) {
-                const value = (body as Record<string, string>)[item]
-                if (value) formData.append(item, value)
+                formData.append(item, (body as Record<string, string>)[item])
             }
 
-            // if (imageURL.value) formData.append('image_uri', imageURL.value)
-
-            formData.delete('id')
-
-            return _fetcher(`${path}/${body.id}`, { method: 'PATCH', body: formData })
+            return body.image_id ?
+                _fetcher(`${path.value}/${body.id}/upload/${body.image_id}`, { method: 'PATCH', body: formData }) :
+                _fetcher(`${path.value}/${body.id}/upload`, { method: 'POST', body: formData })
         },
         {
             onSuccess: () => {
