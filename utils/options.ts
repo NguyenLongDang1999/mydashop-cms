@@ -1,26 +1,33 @@
 export const optionStatus = [
     {
         id: STATUS.ACTIVE,
-        name: 'Hoạt động',
-        color: 'blue'
+        name: 'Hoạt động'
     },
     {
         id: STATUS.INACTIVE,
-        name: 'Ngừng hoạt động',
-        color: 'red'
+        name: 'Ngừng hoạt động'
     }
 ]
 
 export const optionPopular = [
     {
         id: POPULAR.ACTIVE,
-        name: 'Phổ biến',
-        color: 'blue'
+        name: 'Phổ biến'
     },
     {
         id: POPULAR.INACTIVE,
-        name: 'Không phổ biến',
-        color: 'red'
+        name: 'Không phổ biến'
+    }
+]
+
+export const optionShowProduct = [
+    {
+        id: SHOW_PRODUCT.SHOW,
+        name: 'Hiển thị'
+    },
+    {
+        id: SHOW_PRODUCT.NOT_SHOW,
+        name: 'Không hiển thị'
     }
 ]
 

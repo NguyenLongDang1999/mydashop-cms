@@ -6,6 +6,7 @@ export interface ICategoryForm {
     slug: string
     parent_id?: number
     image_uri?: string
+    show_product?: number
     status?: number
     popular?: number
     description?: string

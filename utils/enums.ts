@@ -8,6 +8,11 @@ export enum POPULAR {
     INACTIVE = 20
 }
 
+export enum SHOW_PRODUCT {
+    SHOW = 10,
+    NOT_SHOW = 20,
+}
+
 export enum PAGE {
     CURRENT = 1,
     SIZE = 10

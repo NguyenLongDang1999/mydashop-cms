@@ -63,6 +63,14 @@ const onSubmit = handleSubmit(values => dataFormInput(values))
 
                 <div class="sm:col-span-6 col-span-12">
                     <FormSelect
+                        :label="label.show_product"
+                        :options="optionShowProduct"
+                        name="show_product"
+                    />
+                </div>
+
+                <div class="sm:col-span-6 col-span-12">
+                    <FormSelect
                         :label="label.status"
                         :options="optionStatus"
                         name="status"
@@ -77,7 +85,7 @@ const onSubmit = handleSubmit(values => dataFormInput(values))
                     />
                 </div>
 
-                <div class="sm:col-span-6 col-span-12">
+                <div class="col-span-12">
                     <FormInput
                         :label="label.description"
                         name="description"

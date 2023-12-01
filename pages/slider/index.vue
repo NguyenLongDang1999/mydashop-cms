@@ -68,13 +68,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         </template>
 
                         <template #status-data="{ row }: IRow<ISlider>">
-                            <UBadge
-                                size="xs"
-                                :label="valueTransform(optionStatus, row.status)?.name"
-                                :color="valueTransform(optionStatus, row.status)?.color"
-                                variant="subtle"
-                                class="capitalize"
-                            />
+                            <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
                         <template #actions-data="{ row }">

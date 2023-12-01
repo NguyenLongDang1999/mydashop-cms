@@ -7,6 +7,7 @@ export const label = {
     slug: 'Đường dẫn URL',
     parent_id: 'Danh mục cha',
     status: 'Trạng thái',
+    show_product: 'Hiển thị trên trang chủ',
     popular: 'Phổ biến',
     description: 'Mô tả',
     meta_title: 'Meta Title',
