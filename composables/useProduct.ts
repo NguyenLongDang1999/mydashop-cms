@@ -1,47 +1,17 @@
 // ** Third Party Imports
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
-import type { IProductSearch, IProductTable, IProductUpload } from '~/types/product.type'
+import type { IProductUpload } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT)
 const galleryURL = reactive<IProductUpload[]>([])
 
-const search = reactive<IProductSearch>({
-    page: PAGE.CURRENT,
-    pageSize: PAGE.SIZE
-})
-
 export default function () {
     return {
         path,
-        search,
         galleryURL
-    }
-}
-
-export const useProductSelected = async () => {
-    // ** Hooks
-    const _fetcher = useFetchData()
-
-    const { data, isLoading, isFetching, suspense } = useQuery<IProductTable>({
-        queryKey: [`${path.value}DataTable`, search],
-        queryFn: () => _fetcher(path.value, { params: search }),
-        keepPreviousData: true
-    })
-
-    await suspense()
-
-    // ** Computed
-    const dataTable = computed(() => data.value?.data || [])
-    const dataAggregations = computed(() => data.value?.aggregations || 0)
-
-    return {
-        isLoading,
-        isFetching,
-        dataTable,
-        dataAggregations
     }
 }
 

@@ -7,12 +7,21 @@ import type { IProductSearch } from '~/types/product.type'
 // ** Validations Imports
 import { label } from '~/validations/product'
 
+// ** Props & Emits
+interface Props {
+    showCategory?: boolean
+}
+
+withDefaults(defineProps<Props>(), {
+    showCategory: true
+})
+
 // ** useHooks
-const { search } = useProduct()
 const { path: pathCategory } = useCategory()
 const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
 
 // ** Data
+const search = inject('search') as IProductSearch
 const searchTemp = reactive<IProductSearch>(_clone(search))
 
 // ** Methods
@@ -22,7 +31,8 @@ const handleReset = () => {
         name: undefined,
         category_id: undefined,
         status: undefined,
-        popular: undefined
+        popular: undefined,
+        page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
 }
@@ -47,7 +57,10 @@ const handleReset = () => {
                 />
             </div>
 
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
+            <div
+                v-if="showCategory"
+                class="md:col-span-3 sm:col-span-6 col-span-12"
+            >
                 <FormSelect
                     v-model="searchTemp.category_id"
                     :label="label.category_id"

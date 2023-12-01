@@ -4,6 +4,16 @@
 import type { IRow } from '~/types/core.type'
 import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
 
+// ** Props & Emits
+interface Props {
+    categoryId: number
+    showCategory?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    showCategory: true
+})
+
 // ** Data
 const columns = [
     {
@@ -28,15 +38,11 @@ const columns = [
     {
         key: 'popular',
         label: 'Phổ biến'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
     }
 ]
 
 const search = reactive<IProductSearch>({
+    category_id: props.categoryId,
     page: PAGE.CURRENT,
     pageSize: PAGE.SIZE
 })
@@ -44,47 +50,25 @@ const search = reactive<IProductSearch>({
 provide('search', search)
 
 // ** useHooks
-const { path } = useProduct()
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
+const { path } = useProduct()
 const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
-const { isLoading, dataDelete } = useCrudDelete(path.value)
 </script>
 
 <template>
-    <section>
-        <TheTitle
-            label="Quản lý sản phẩm"
-            title="Sản phẩm"
-        />
+    <UCard>
+        <div class="grid gap-4 grid-cols-12">
+            <div class="col-span-12">
+                <ProductSearch :show-category="false" />
+            </div>
 
-        <div class="mt-8 pb-24 max-w-none">
-            <UCard>
-                <template #header>
-                    <div class="flex justify-between items-center">
-                        <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                            Danh sách sản phẩm
-                        </h2>
-
-                        <UButton
-                            icon="i-heroicons-plus"
-                            size="sm"
-                            color="primary"
-                            variant="solid"
-                            label="Thêm Mới"
-                            :trailing="false"
-                            to="/product/create"
-                        />
-                    </div>
-                </template>
-
-                <ProductSearch />
-
-                <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
+            <div class="col-span-12">
+                <div class="flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
+                        :loading="isFetching"
                         :columns="columns"
-                        :loading="isFetching || isLoading"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
@@ -174,44 +158,29 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         <template #popular-data="{ row }">
                             <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                         </template>
-
-                        <template #actions-data="{ row }">
-                            <div class="flex gap-2">
-                                <UButton
-                                    icon="i-heroicons-pencil-square"
-                                    size="sm"
-                                    color="orange"
-                                    square
-                                    variant="solid"
-                                    :to="`${ROUTER.PRODUCT}/${row.id}`"
-                                />
-
-                                <Confirm :remove="() => dataDelete(row.id)" />
-                            </div>
-                        </template>
                     </UTable>
                 </div>
+            </div>
 
-                <template #footer>
-                    <div class="flex flex-wrap justify-center items-center">
-                        <UPagination
-                            v-model="search.page"
-                            :page-count="search.pageSize"
-                            :total="dataAggregations"
-                            :ui="{
-                                wrapper: 'flex items-center gap-1',
-                                rounded:
-                                    '!rounded-full min-w-[32px] justify-center',
-                                default: {
-                                    activeButton: {
-                                        variant: 'outline',
-                                    },
+            <div class="col-span-12">
+                <div class="flex flex-wrap justify-center items-center">
+                    <UPagination
+                        v-model="search.page"
+                        :page-count="search.pageSize"
+                        :total="dataAggregations"
+                        :ui="{
+                            wrapper: 'flex items-center gap-1',
+                            rounded:
+                                '!rounded-full min-w-[32px] justify-center',
+                            default: {
+                                activeButton: {
+                                    variant: 'outline',
                                 },
-                            }"
-                        />
-                    </div>
-                </template>
-            </UCard>
+                            },
+                        }"
+                    />
+                </div>
+            </div>
         </div>
-    </section>
+    </UCard>
 </template>

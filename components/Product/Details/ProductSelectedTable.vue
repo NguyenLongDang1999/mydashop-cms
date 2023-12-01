@@ -13,14 +13,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// ** useHooks
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path, search } = useProduct()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
-const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
-const { handleSubmit } = useForm()
-
 // ** Data
 const columns = [
     {
@@ -49,6 +41,21 @@ const columns = [
 ]
 
 const selected = ref<IProductForm[]>([])
+
+const search = reactive<IProductSearch>({
+    page: PAGE.CURRENT,
+    pageSize: PAGE.SIZE
+})
+
+provide('search', search)
+
+// ** useHooks
+const { path } = useProduct()
+const { path: pathBrand } = useBrand()
+const { path: pathCategory } = useCategory()
+const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
+const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
+const { handleSubmit } = useForm()
 
 // ** Watch
 watchEffect(() => selected.value = dataTable.value.filter(_d => props.modelValue?.includes(_d.id)))
@@ -95,7 +102,7 @@ const onSubmit = handleSubmit(() => {
                                         />
 
                                         <div class="flex flex-col flex-1 truncate">
-                                            <span class="capitalize text-primary truncate">{{ row.name }} {{ row.name }} {{ row.name }}</span>
+                                            <span class="capitalize text-primary truncate">{{ row.name }}</span>
                                             <span>{{ row.sku }}</span>
                                         </div>
                                     </div>

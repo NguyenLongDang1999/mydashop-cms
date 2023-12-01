@@ -19,7 +19,8 @@ const handleReset = () => {
         name: undefined,
         parent_id: undefined,
         status: undefined,
-        popular: undefined
+        popular: undefined,
+        page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
 }

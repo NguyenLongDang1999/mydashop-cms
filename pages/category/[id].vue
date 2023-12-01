@@ -32,14 +32,14 @@ const items: TabItem[] = [{
                 class="w-full"
             >
                 <template #detail>
-                    <CategoryDetail
+                    <CategoryDetailInformation
                         :data="data"
                         :path="path"
                     />
                 </template>
 
                 <template #product>
-                    ?
+                    <CategoryDetailProduct :category-id="Number(route.params.id)" />
                 </template>
             </UTabs>
         </div>

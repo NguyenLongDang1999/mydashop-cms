@@ -20,7 +20,8 @@ const handleReset = () => {
     _assign(searchTemp, {
         name: undefined,
         category_id: undefined,
-        status: undefined
+        status: undefined,
+        page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
 }
