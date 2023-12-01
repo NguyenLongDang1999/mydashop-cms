@@ -7,12 +7,9 @@ import type { IProduct, IProductSearch, IProductTable } from '~/types/product.ty
 // ** Props & Emits
 interface Props {
     categoryId: number
-    showCategory?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-    showCategory: true
-})
+const props = defineProps<Props>()
 
 // ** Data
 const columns = [
@@ -50,9 +47,9 @@ const search = reactive<IProductSearch>({
 provide('search', search)
 
 // ** useHooks
+const { path } = useProduct()
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
-const { path } = useProduct()
 const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
 </script>
 
@@ -60,7 +57,7 @@ const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTab
     <UCard>
         <div class="grid gap-4 grid-cols-12">
             <div class="col-span-12">
-                <ProductSearch :show-category="false" />
+                <ProductSearch :category-id="categoryId" />
             </div>
 
             <div class="col-span-12">

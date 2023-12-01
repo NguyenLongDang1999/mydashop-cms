@@ -9,12 +9,10 @@ import { label } from '~/validations/product'
 
 // ** Props & Emits
 interface Props {
-    showCategory?: boolean
+    categoryId?: number
 }
 
-withDefaults(defineProps<Props>(), {
-    showCategory: true
-})
+const props = defineProps<Props>()
 
 // ** useHooks
 const { path: pathCategory } = useCategory()
@@ -29,7 +27,7 @@ const handleReset = () => {
     _assign(searchTemp, {
         sku: undefined,
         name: undefined,
-        category_id: undefined,
+        category_id: props.categoryId,
         status: undefined,
         popular: undefined,
         page: PAGE.CURRENT
@@ -58,7 +56,7 @@ const handleReset = () => {
             </div>
 
             <div
-                v-if="showCategory"
+                v-if="!categoryId"
                 class="md:col-span-3 sm:col-span-6 col-span-12"
             >
                 <FormSelect
