@@ -24,7 +24,7 @@ export default [
                 to: '/attribute'
             },
             {
-                title: 'Flash Sale',
+                title: 'Chiến dịch',
                 to: '/flash-sale'
             },
             {

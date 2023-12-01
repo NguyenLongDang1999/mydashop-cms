@@ -47,6 +47,7 @@ export enum ROUTER {
     ATTRIBUTE = '/attribute',
     PRODUCT = '/product',
     COUPONS = '/coupons',
+    FLASH_SALE = '/flash-sale',
 }
 
 export enum IMAGE {

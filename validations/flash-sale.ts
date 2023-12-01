@@ -2,6 +2,9 @@
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 
+// ** Types Imports
+import type { IProduct } from '~/types/product.type'
+
 export const label = {
     campaign_name: 'Tên chiến dịch',
     date_range: 'Ngày áp dụng',
@@ -24,5 +27,7 @@ export const schema = toTypedSchema(yup.object({
         }),
     start_time: yup.string(),
     end_time: yup.string(),
-    product_id: yup.array()
+    product_id: yup
+        .array<IProduct[]>()
+        .min(1)
 }))

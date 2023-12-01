@@ -36,7 +36,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
     <section>
         <TheTitle
             label="Quản lý sản phẩm"
-            title="Flash Sale"
+            title="Chiến dịch"
         />
 
         <div class="mt-8 pb-24 max-w-none">
@@ -44,14 +44,20 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                 <template #header>
                     <div class="flex justify-between items-center">
                         <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                            Danh sách Flash Sale
+                            Danh sách Chiến dịch
                         </h2>
 
-                        <FlashSaleForm />
+                        <UButton
+                            icon="i-heroicons-plus"
+                            size="sm"
+                            color="primary"
+                            variant="solid"
+                            label="Thêm Mới"
+                            :trailing="false"
+                            to="/flash-sale/create"
+                        />
                     </div>
                 </template>
-
-                <!-- <FlashSaleSearch /> -->
 
                 <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
@@ -62,9 +68,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IFlashSale>">
-                            <div class="flex items-center gap-1">
-                                <span class="capitalize text-primary flex-1 truncate">{{ row.campaign_name }}</span>
-                            </div>
+                            <ULink :to="`${ROUTER.FLASH_SALE}/${row.id}`">
+                                <div class="flex items-center gap-1">
+                                    <span class="capitalize text-primary flex-1 truncate">{{ row.campaign_name }}</span>
+                                </div>
+                            </ULink>
                         </template>
 
                         <template #date_range-data="{ row }: IRow<IFlashSale>">
@@ -77,7 +85,15 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #actions-data="{ row }">
                             <div class="flex gap-2">
-                                <FlashSaleUpdate :flash-sale="row" />
+                                <UButton
+                                    icon="i-heroicons-pencil-square"
+                                    size="sm"
+                                    color="orange"
+                                    square
+                                    variant="solid"
+                                    :to="`${ROUTER.FLASH_SALE}/${row.id}`"
+                                />
+
                                 <Confirm :remove="() => dataDelete(row.id)" />
                             </div>
                         </template>

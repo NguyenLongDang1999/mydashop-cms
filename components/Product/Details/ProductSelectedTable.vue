@@ -69,7 +69,6 @@ const onSubmit = handleSubmit(() => {
         [props.name]: selected.value.length ? JSON.stringify(selected.value.map(_s => _s.id)) : undefined
     })
 })
-
 </script>
 
 <template>
