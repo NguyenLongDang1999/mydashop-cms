@@ -95,7 +95,7 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        <Divider />
+                        <UDivider />
                     </div>
 
                     <FieldArray
