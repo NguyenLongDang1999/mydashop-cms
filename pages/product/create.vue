@@ -10,6 +10,7 @@ import type { IProductForm } from '~/types/product.type'
 import { label, schema } from '~/validations/product'
 
 // ** Data
+const result = ref([])
 const category_id = ref<number>()
 
 // ** useHooks
@@ -63,6 +64,20 @@ const handleChangeAttribute = () => {
         name: _v.name,
         values: []
     })))
+}
+
+const handleChangeProductVariant = (arrays, currentIndex, currentCombination) => {
+    console.log(currentIndex, arrays.length)
+    if (currentIndex === arrays.length) {
+        result.value.push({ ...currentCombination })
+
+        return
+    }
+
+    for (let i = 0; i < arrays[currentIndex].values.length; i++) {
+        currentCombination[arrays[currentIndex].name] = arrays[currentIndex].values[i]
+        handleChangeProductVariant(arrays, currentIndex + 1, { ...currentCombination })
+    }
 }
 
 const getSellingPrice = () => {
@@ -323,6 +338,8 @@ const getSellingPrice = () => {
                             />
                         </div>
 
+                        {{ result }}
+
                         <div class="col-span-12 flex flex-col gap-4">
                             <div
                                 v-for="(attributeItem, index) in (product.attributes as IAttributeValuesList[])"
@@ -344,6 +361,7 @@ const getSellingPrice = () => {
                                         :name="`attributes.${index}.values`"
                                         :options="attributeValueList[index]?.data || []"
                                         multiple
+                                        @change="handleChangeProductVariant(product.attributes, 0, {}, [])"
                                     />
                                 </div>
 
