@@ -4,13 +4,13 @@
 import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
 import type { IBrandList } from '~/types/brand.type'
 import type { ICategoryList } from '~/types/category.type'
-import type { IProductForm } from '~/types/product.type'
+import type { IProductForm, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
 
 // ** Data
-const result = ref([])
+const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
 const category_id = ref<number>()
 
 // ** useHooks
@@ -36,6 +36,7 @@ const onSubmit = handleSubmit(async values => {
     dataFormInput({
         ...values,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
+        variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
         related_products: product.related_products ? JSON.stringify(product.related_products) : undefined,
         upsell_products: product.upsell_products ? JSON.stringify(product.upsell_products) : undefined,
         cross_sell_products: product.cross_sell_products ? JSON.stringify(product.cross_sell_products) : undefined,
@@ -64,34 +65,70 @@ const handleChangeAttribute = () => {
         name: _v.name,
         values: []
     })))
+
+    setFieldValue('variants', [])
 }
 
-const handleChangeProductVariant = (arrays, currentIndex, currentCombination) => {
-    console.log(currentIndex, arrays.length)
-    if (currentIndex === arrays.length) {
-        result.value.push({ ...currentCombination })
-
+const generateProductVariants = () => {
+    if (!product.attributes || product.attributes.length === 0) {
         return
     }
 
-    for (let i = 0; i < arrays[currentIndex].values.length; i++) {
-        currentCombination[arrays[currentIndex].name] = arrays[currentIndex].values[i]
-        handleChangeProductVariant(arrays, currentIndex + 1, { ...currentCombination })
+    const combinations: IProductVariant[] = []
+
+    const generateCombinations = (
+        currentIndex: number,
+        currentCombination: string[]
+    ) => {
+        if (Array.isArray(product.attributes)) {
+            if (currentIndex === product.attributes.length) {
+                combinations.push({
+                    label: currentCombination.join(' - '),
+                    price: 0,
+                    quantity: 0,
+                    sku: product.sku as string,
+                    in_stock: INVENTORY_STATUS.OUT_OF_STOCK,
+                    is_default: false,
+                    special_price: 0,
+                    special_price_type: SPECIAL_PRICE.PRICE,
+                    selling_price: 0
+                })
+
+                return
+            }
+
+            const currentAttribute = attributeValueName.value[currentIndex]
+
+            for (const value of currentAttribute) {
+                generateCombinations(currentIndex + 1, [
+                    ...currentCombination,
+                    value.name
+                ])
+            }
+        }
     }
+
+    generateCombinations(0, [])
+
+    setFieldValue('variants', combinations)
 }
 
-const getSellingPrice = () => {
-    let discount = 0
+const getSellingPrice = (index: number) => {
+    if (product.variants?.length) {
+        let discount = 0
 
-    if (product.special_price_type === SPECIAL_PRICE.PERCENT) {
-        discount = (product.price as number / 100) * (product.special_price as number)
+        if (product.variants[index]?.special_price_type === SPECIAL_PRICE.PERCENT) {
+            discount = (product.variants[index].price as number / 100) * (product.variants[index].special_price as number)
+        }
+
+        if (product.variants[index].special_price_type === SPECIAL_PRICE.PRICE) {
+            discount = (product.variants[index].special_price as number)
+        }
+
+        return setFieldValue(`variants.${index}.selling_price`, (product.variants[index].price as number) - discount)
     }
 
-    if (product.special_price_type === SPECIAL_PRICE.PRICE) {
-        discount = (product.special_price as number)
-    }
-
-    return setFieldValue('selling_price', (product.price as number) - discount)
+    return setFieldValue(`variants.${index}.selling_price`, 0)
 }
 </script>
 
@@ -162,60 +199,6 @@ const getSellingPrice = () => {
                                 :label="label.popular"
                                 :options="optionPopular"
                                 name="popular"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormSelect
-                                :label="label.special_price_type"
-                                :options="optionTypeDiscount"
-                                name="special_price_type"
-                                @update:model-value="getSellingPrice"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormMoney
-                                :label="label.price"
-                                name="price"
-                                text-trailing="VNĐ"
-                                help="Giá Gốc"
-                                @update:model-value="getSellingPrice"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormMoney
-                                :label="label.special_price"
-                                name="special_price"
-                                :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
-                                @update:model-value="getSellingPrice"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormMoney
-                                v-model="product.selling_price"
-                                :label="label.selling_price"
-                                name="selling_price"
-                                :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
-                                text-trailing="VNĐ"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormMoney
-                                :label="label.quantity"
-                                name="quantity"
-                                @update:model-value="setFieldValue('in_stock', product.quantity as number <= 0 ? INVENTORY_STATUS.OUT_OF_STOCK : INVENTORY_STATUS.STOCK)"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormSelect
-                                :label="label.in_stock"
-                                :options="optionInventoryStatus"
-                                name="in_stock"
                             />
                         </div>
 
@@ -338,9 +321,10 @@ const getSellingPrice = () => {
                             />
                         </div>
 
-                        {{ result }}
-
-                        <div class="col-span-12 flex flex-col gap-4">
+                        <div
+                            v-if="attribute_id.length"
+                            class="col-span-12 flex flex-col gap-4"
+                        >
                             <div
                                 v-for="(attributeItem, index) in (product.attributes as IAttributeValuesList[])"
                                 :key="attributeItem.name"
@@ -359,9 +343,9 @@ const getSellingPrice = () => {
                                     <FormSelect
                                         :label="label.attribute.values"
                                         :name="`attributes.${index}.values`"
-                                        :options="attributeValueList[index]?.data || []"
+                                        :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
                                         multiple
-                                        @change="handleChangeProductVariant(product.attributes, 0, {}, [])"
+                                        @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => (product.attributes as IAttributeValuesList[])[index].values?.includes(_v.id))"
                                     />
                                 </div>
 
@@ -371,6 +355,113 @@ const getSellingPrice = () => {
                                         :model-value="attributeItem.id"
                                         :name="`attributes.${index}.id`"
                                     />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            v-if="attribute_id.length"
+                            class="col-span-12"
+                        >
+                            <UButton
+                                size="sm"
+                                variant="solid"
+                                label="Tạo Biến Thể"
+                                :trailing="false"
+                                @click="generateProductVariants"
+                            />
+                        </div>
+
+                        <div
+                            v-if="attribute_id.length"
+                            class="col-span-12 flex flex-col gap-4"
+                        >
+                            <div
+                                v-for="(variant, index) in product.variants"
+                                :key="variant.label"
+                                class="grid grid-cols-12 gap-4"
+                            >
+                                <div class="md:col-span-2 sm:col-span-4 col-span-6">
+                                    <FormToggle
+                                        v-model="variant.is_default"
+                                        label="Mặc định"
+                                        :name="`variants.${index}.is_default`"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-2 sm:col-span-4 col-span-6">
+                                    <FormInput
+                                        v-model="variant.label"
+                                        label="Tiêu đề"
+                                        :name="`variants.${index}.label`"
+                                        disabled
+                                    />
+                                </div>
+
+                                <div class="md:col-span-2 sm:col-span-4 col-span-6">
+                                    <FormInput
+                                        v-model="variant.sku"
+                                        label="Mã sản phẩm"
+                                        :name="`variants.${index}.sku`"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormMoney
+                                        :label="label.quantity"
+                                        :name="`variants.${index}.quantity`"
+                                        @update:model-value="setFieldValue(`variants.${index}.in_stock`, variant.quantity as number <= 0 ? INVENTORY_STATUS.OUT_OF_STOCK : INVENTORY_STATUS.STOCK)"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormSelect
+                                        :label="label.in_stock"
+                                        :options="optionInventoryStatus"
+                                        :name="`variants.${index}.in_stock`"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormSelect
+                                        :label="label.special_price_type"
+                                        :options="optionTypeDiscount"
+                                        :name="`variants.${index}.special_price_type`"
+                                        @update:model-value="getSellingPrice(index)"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormMoney
+                                        :label="label.special_price"
+                                        :name="`variants.${index}.special_price`"
+                                        :text-trailing="variant.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                        @update:model-value="getSellingPrice(index)"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormMoney
+                                        :label="label.price"
+                                        :name="`variants.${index}.price`"
+                                        text-trailing="VNĐ"
+                                        help="Giá Gốc"
+                                        @update:model-value="getSellingPrice(index)"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                    <FormMoney
+                                        v-model="variant.selling_price"
+                                        :label="label.selling_price"
+                                        :name="`variants.${index}.selling_price`"
+                                        :help="`${variant.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                        text-trailing="VNĐ"
+                                    />
+                                </div>
+
+                                <div class="col-span-12">
+                                    <UDivider />
                                 </div>
                             </div>
                         </div>

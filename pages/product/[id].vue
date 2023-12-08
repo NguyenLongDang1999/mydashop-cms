@@ -23,6 +23,16 @@ const items: TabItem[] = [{
 const route = useRoute()
 const { path } = useProduct()
 const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id as string)
+
+// ** Computed
+const defaultIndex = computed(() => items.findIndex(item => item.slot === route.query.tab))
+
+// ** Methods
+const onChange = (index: number) => {
+    const item = items[index]
+
+    navigateTo(`${route.path}?tab=${item.slot}`)
+}
 </script>
 
 <template>
@@ -36,6 +46,8 @@ const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id a
             <UTabs
                 :items="items"
                 class="w-full"
+                :default-index="defaultIndex === -1 ? 0 : defaultIndex"
+                @change="onChange"
             >
                 <template #detail>
                     <ProductDetailInformation :data="data" />

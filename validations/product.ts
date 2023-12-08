@@ -49,11 +49,6 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    price: yup
-        .number()
-        .required(`${label.price} không được bỏ trống.`)
-        .default(0)
-        .min(0, ({ min }) => `${label.price} phải lớn hơn hoặc bằng ${min}.`),
     category_id: yup
         .number()
         .required(`${label.category_id} không được bỏ trống.`),
@@ -63,35 +58,6 @@ export const schema = toTypedSchema(yup.object({
     description: yup
         .string()
         .required(`${label.description} không được bỏ trống.`),
-    quantity: yup
-        .number()
-        .required(`${label.quantity} không được bỏ trống.`)
-        .default(0)
-        .min(0, ({ min }) => `${label.quantity} phải lớn hơn hoặc bằng ${min}.`),
-    special_price_type: yup
-        .number()
-        .required(`${label.special_price_type} không được bỏ trống.`)
-        .default(SPECIAL_PRICE.PRICE),
-    special_price: yup
-        .number()
-        .required(`${label.special_price} không được bỏ trống.`)
-        .default(0)
-        .min(0, ({ min }) => `${label.special_price} phải lớn hơn hoặc bằng ${min}.`)
-        .when('special_price_type', {
-            is: SPECIAL_PRICE.PERCENT,
-            // eslint-disable-next-line @typescript-eslint/no-shadow
-            then: schema => schema
-                .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
-                .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
-        }),
-    in_stock: yup
-        .number()
-        .default(INVENTORY_STATUS.OUT_OF_STOCK),
-    selling_price: yup
-        .number()
-        .required(`${label.selling_price} không được bỏ trống.`)
-        .default(0)
-        .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`),
     attribute_id: yup.array(yup.number().required()),
     attributes: yup.mixed<string | IAttributeValuesList[]>().nullable(),
     technical_specifications: yup.array()
@@ -100,6 +66,41 @@ export const schema = toTypedSchema(yup.object({
                 title: yup.string().required(`${label.technical_specifications.title} không được bỏ trống.`),
                 content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
             }).default({ title: '', content: '' })
+        ),
+    variants: yup.array()
+        .of(
+            yup.object().shape({
+                is_default: yup.boolean(),
+                label: yup.string(),
+                sku: yup.string().required(`${label.sku} không được bỏ trống.`),
+                price: yup
+                    .number()
+                    .required(`${label.price} không được bỏ trống.`)
+                    .min(0, ({ min }) => `${label.price} phải lớn hơn hoặc bằng ${min}.`),
+                quantity: yup
+                    .number()
+                    .required(`${label.quantity} không được bỏ trống.`)
+                    .min(0, ({ min }) => `${label.quantity} phải lớn hơn hoặc bằng ${min}.`),
+                special_price_type: yup
+                    .number()
+                    .required(`${label.special_price_type} không được bỏ trống.`),
+                special_price: yup
+                    .number()
+                    .required(`${label.special_price} không được bỏ trống.`)
+                    .min(0, ({ min }) => `${label.special_price} phải lớn hơn hoặc bằng ${min}.`)
+                    .when('special_price_type', {
+                        is: SPECIAL_PRICE.PERCENT,
+                        // eslint-disable-next-line @typescript-eslint/no-shadow
+                        then: schema => schema
+                            .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
+                            .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
+                    }),
+                in_stock: yup.number(),
+                selling_price: yup
+                    .number()
+                    .required(`${label.selling_price} không được bỏ trống.`)
+                    .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`)
+            })
         ),
     related_products: yup.array(yup.number().required()),
     upsell_products: yup.array(yup.number().required()),

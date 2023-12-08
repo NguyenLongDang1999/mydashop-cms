@@ -16,12 +16,14 @@ export interface IProductForm {
     name: string
     slug: string
     image_uri?: string
-    price: number
-    special_price: number
-    special_price_type: number
-    quantity: number
+
+    // price: number
+    // special_price: number
+    // special_price_type: number
+    // quantity: number
     category_id?: number
     attributes?: string | IAttributeValuesList[]
+    variants?: string | IProductVariant[]
     technical_specifications?: string | IProductSpecification[]
     short_description?: string
     description?: string
@@ -60,8 +62,6 @@ export interface IProduct {
     price: string
     special_price: string
     special_price_type: number
-    special_price_start: string
-    special_price_end: string
     selling_price: string
     quantity: number
     status: number
@@ -81,4 +81,16 @@ export interface IProductUpload {
     index: number
     slug: string
     image_uri: File | string
+}
+
+export interface IProductVariant {
+    label: string
+    is_default: boolean
+    sku: string
+    price: number
+    special_price: number
+    special_price_type: number
+    selling_price: number
+    quantity: number
+    in_stock: number
 }
