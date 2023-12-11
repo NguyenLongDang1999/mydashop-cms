@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
+import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import type { IRow } from '~/types/core.type'
 import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
 
@@ -36,6 +37,18 @@ const columns = [
     }
 ]
 
+const items: DropdownItem[][] = [
+    [{
+        label: 'Sản Phẩm Mới',
+        icon: 'i-heroicons-arrow-small-right',
+        click: () => navigateTo('/product/create?product_type=10')
+    }, {
+        label: 'Sản Phẩm Biến Thể',
+        icon: 'i-heroicons-arrow-small-right',
+        click: () => navigateTo('/product/create?product_type=20')
+    }]
+]
+
 const search = reactive<IProductSearch>({
     page: PAGE.CURRENT,
     pageSize: PAGE.SIZE
@@ -66,15 +79,19 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                             Danh sách sản phẩm
                         </h2>
 
-                        <UButton
-                            icon="i-heroicons-plus"
-                            size="sm"
-                            color="primary"
-                            variant="solid"
-                            label="Thêm Mới"
-                            :trailing="false"
-                            to="/product/create"
-                        />
+                        <UDropdown
+                            :items="items"
+                            :popper="{ placement: 'bottom-start' }"
+                        >
+                            <UButton
+                                icon="i-heroicons-plus"
+                                size="sm"
+                                color="primary"
+                                variant="solid"
+                                label="Thêm Mới"
+                                :trailing="false"
+                            />
+                        </UDropdown>
                     </div>
                 </template>
 

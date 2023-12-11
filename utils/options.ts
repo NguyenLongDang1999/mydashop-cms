@@ -52,3 +52,14 @@ export const optionInventoryStatus = [
         name: 'Hết hàng'
     }
 ]
+
+export const optionProductType = [
+    {
+        id: PRODUCT_TYPE.SINGLE,
+        name: 'Sản phẩm đơn'
+    },
+    {
+        id: PRODUCT_TYPE.VARIANT,
+        name: 'Sản phẩm biến thể'
+    }
+]

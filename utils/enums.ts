@@ -28,6 +28,11 @@ export enum SPECIAL_PRICE {
     PERCENT = 20
 }
 
+export enum PRODUCT_TYPE {
+    SINGLE = 10,
+    VARIANT = 20
+}
+
 export enum AUTH {
     TOKEN = 'accessToken',
     USER_DATA = 'userData',
