@@ -3,6 +3,7 @@
 // ** Props & Emits
 interface Props {
     label?: string
+    labelToggle?: string
     name: string
     modelValue?: boolean
 }
@@ -25,9 +26,13 @@ const error = computed(() => errorMessage.value)
         :name="name"
         :error="error"
     >
-        <UToggle
-            v-model="value"
-            v-bind="$attrs"
-        />
+        <div class="flex items-center gap-2">
+            <UToggle
+                v-model="value"
+                v-bind="$attrs"
+            />
+
+            <span>{{ labelToggle }}</span>
+        </div>
     </UFormGroup>
 </template>

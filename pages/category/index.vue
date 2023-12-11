@@ -78,7 +78,10 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         :alt="row.name"
                                     />
 
-                                    <span class="capitalize text-primary flex-1 truncate">{{ row.name }}</span>
+                                    <div class="flex flex-col flex-1 truncate">
+                                        <span class="capitalize text-primary truncate">{{ row.name }}</span>
+                                        <span>{{ row.Product.length }} Sản Phẩm</span>
+                                    </div>
                                 </div>
                             </ULink>
                         </template>
@@ -94,7 +97,10 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                                         :alt="row.parent.name"
                                     />
 
-                                    <span class="capitalize text-primary flex-1 truncate">{{ row.parent.name }}</span>
+                                    <div class="flex flex-col flex-1 truncate">
+                                        <span class="capitalize text-primary truncate">{{ row.parent.name }}</span>
+                                        <span>{{ row.parent.Product?.length }} Sản Phẩm</span>
+                                    </div>
                                 </div>
                             </ULink>
 

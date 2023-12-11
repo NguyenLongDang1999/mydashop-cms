@@ -18,12 +18,18 @@ export interface ICategoryList {
     id: number
     name: string
     image_uri: string
+    Product?: {
+        id: number
+    }[]
 }
 
 export interface ICategory {
     id: number
     name: string
     parent: ICategoryList
+    Product: {
+        id: number
+    }[]
     image_uri: string
     status: number
     popular: number

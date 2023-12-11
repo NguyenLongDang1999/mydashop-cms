@@ -151,6 +151,14 @@ const getSellingPrice = (index?: number) => {
         return setFieldValue('selling_price', (product.price as number) - discount)
     }
 }
+
+const handleIsDefault = (index: number) => {
+    if (product.variants?.length) {
+        product.variants.forEach((_item, _index: number) => {
+            return setFieldValue(`variants.${_index}.is_default`, index === _index)
+        })
+    }
+}
 </script>
 
 <template>
@@ -470,24 +478,17 @@ const getSellingPrice = (index?: number) => {
                                     :key="variant.label"
                                     class="grid grid-cols-12 gap-4"
                                 >
-                                    <div class="md:col-span-2 sm:col-span-4 col-span-6">
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                         <FormToggle
                                             v-model="variant.is_default"
                                             label="Mặc định"
                                             :name="`variants.${index}.is_default`"
+                                            :label-toggle="variant.label"
+                                            @update:model-value="handleIsDefault(index)"
                                         />
                                     </div>
 
-                                    <div class="md:col-span-2 sm:col-span-4 col-span-6">
-                                        <FormInput
-                                            v-model="variant.label"
-                                            label="Tiêu đề"
-                                            :name="`variants.${index}.label`"
-                                            disabled
-                                        />
-                                    </div>
-
-                                    <div class="md:col-span-2 sm:col-span-4 col-span-6">
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                         <FormInput
                                             v-model="variant.sku"
                                             label="Mã sản phẩm"
