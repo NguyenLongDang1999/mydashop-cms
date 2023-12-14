@@ -25,7 +25,7 @@ export default [
             },
             {
                 title: 'Chiến dịch',
-                to: '/flash-sale'
+                to: '/flash-deals'
             },
             {
                 title: 'Coupons',

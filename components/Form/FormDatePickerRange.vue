@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashSaleForm } from '~/types/flash-sale.type'
+import type { IFlashSaleForm } from '~/types/flash-deals.type'
 
 // ** Props & Emits
 interface Props {

@@ -1,7 +1,7 @@
 // ** Types Imports
 import type { IAggregations, IPagination } from '~/types/core.type'
 
-export interface IFlashSaleForm {
+export interface IFlashDealsForm {
     id?: number
     campaign_name: string
     product_id: number[]
@@ -10,12 +10,12 @@ export interface IFlashSaleForm {
     discount: number
 }
 
-export interface IFlashSaleSearch extends IPagination {
+export interface IFlashDealsSearch extends IPagination {
     campaign_name?: string
     product_id?: string
 }
 
-export interface IFlashSale {
+export interface IFlashDeals {
     id: number
     campaign_name: string
     start_date: string
@@ -23,6 +23,6 @@ export interface IFlashSale {
     discount: number
 }
 
-export interface IFlashSaleTable extends IAggregations {
-    data: IFlashSale[]
+export interface IFlashDealsTable extends IAggregations {
+    data: IFlashDeals[]
 }

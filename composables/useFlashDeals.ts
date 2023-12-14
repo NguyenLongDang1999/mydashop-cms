@@ -1,10 +1,10 @@
 // ** Types Imports
-import type { IFlashSaleSearch } from '~/types/flash-sale.type'
+import type { IFlashDealsSearch } from '~/types/flash-deals.type'
 
 // ** State
-const path = ref<string>(ROUTE.FLASH_SALE)
+const path = ref<string>(ROUTE.FLASH_DEALS)
 
-const search = reactive<IFlashSaleSearch>({
+const search = reactive<IFlashDealsSearch>({
     page: PAGE.CURRENT,
     pageSize: PAGE.SIZE
 })

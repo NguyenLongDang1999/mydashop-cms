@@ -8,10 +8,12 @@ import type { IProduct, IProductSearch, IProductTable } from '~/types/product.ty
 interface Props {
     label?: string
     name: string
-    modelValue?: string | number[]
+    modelValue?: number[]
 }
 
 const props = defineProps<Props>()
+
+defineEmits(['selected'])
 
 // ** Data
 const columns = [
@@ -59,7 +61,7 @@ const { value, errorMessage, handleChange } = useField(() => props.name, undefin
 })
 
 // ** Watch
-watchEffect(() => handleChange(dataTable.value.filter(_d => props.modelValue?.includes(_d.id))))
+watchEffect(() => props.modelValue ? handleChange(dataTable.value.filter((_d: IProduct) => props.modelValue?.includes(_d.id))) : undefined)
 
 // ** Computed
 const error = computed(() => errorMessage.value)
@@ -67,13 +69,12 @@ const error = computed(() => errorMessage.value)
 
 <template>
     <UFormGroup
-        :label="label"
         :name="name"
         :error="error"
     >
         <div class="grid gap-4 grid-cols-12">
             <div class="col-span-12">
-                <UDivider />
+                <UDivider :label="label" />
             </div>
 
             <div class="col-span-12">
@@ -89,6 +90,7 @@ const error = computed(() => errorMessage.value)
                         :columns="columns"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
+                        @update:model-value="$emit('selected', value)"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
                             <ULink :to="`${ROUTER.PRODUCT}/${row.id}`">

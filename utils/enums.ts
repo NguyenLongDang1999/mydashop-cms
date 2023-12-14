@@ -45,7 +45,7 @@ export enum ROUTE {
     SLIDER = 'slider',
     ATTRIBUTE = 'attribute',
     PRODUCT = 'product',
-    FLASH_SALE = 'flash-sale',
+    FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',
 }
 
@@ -57,7 +57,7 @@ export enum ROUTER {
     ATTRIBUTE = '/attribute',
     PRODUCT = '/product',
     COUPONS = '/coupons',
-    FLASH_SALE = '/flash-sale',
+    FLASH_DEALS = '/flash-deals',
 }
 
 export enum IMAGE {

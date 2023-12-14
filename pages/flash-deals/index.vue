@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IFlashSale, IFlashSaleSearch, IFlashSaleTable } from '~/types/flash-sale.type'
+import type { IFlashSale, IFlashSaleSearch, IFlashSaleTable } from '~/types/flash-deals.type'
 
 const columns = [
     {
@@ -54,7 +54,7 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                             variant="solid"
                             label="Thêm Mới"
                             :trailing="false"
-                            to="/flash-sale/create"
+                            to="/flash-deals/create"
                         />
                     </div>
                 </template>

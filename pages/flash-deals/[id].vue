@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashSaleForm } from '~/types/flash-sale.type'
+import type { IFlashSaleForm } from '~/types/flash-deals.type'
 import type { IProduct } from '~/types/product.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/flash-sale'
+import { label, schema } from '~/validations/flash-deals'
 
 // ** useHooks
 const route = useRoute()
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(async values => {
                         <div class="col-span-12">
                             <FormDatePickerRange
                                 :label="label.date_range"
-                                :flash-sale="flashSale"
+                                :flash-deals="flashSale"
                                 name="date_range"
                             />
                         </div>
@@ -103,3 +103,4 @@ const onSubmit = handleSubmit(async values => {
         </div>
     </section>
 </template>
+~/validations/flash-deals
