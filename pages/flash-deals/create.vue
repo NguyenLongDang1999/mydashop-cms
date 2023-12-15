@@ -11,7 +11,7 @@ import { label, schema } from '~/validations/flash-deals'
 const { path } = useFlashDeals()
 const { path: pathProduct } = useProduct()
 const { isLoading, dataFormInput } = useCrudFormInput<IFlashDealsForm>(path.value)
-const { handleSubmit, values: flashDeals, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, values: flashDeals } = useForm({ validationSchema: schema })
 
 // ** Data
 const selected = ref<IProduct[]>()
@@ -27,26 +27,6 @@ const onSubmit = handleSubmit(async values => {
 
     navigateTo(ROUTER.FLASH_DEALS)
 })
-
-const getSellingPrice = (index: number, productItem: IProduct) => {
-    if (flashDeals.flashDealsProduct?.length) {
-        let discount = 0
-
-        const productFlashDeals = flashDeals.flashDealsProduct[index as number]
-
-        if (productFlashDeals?.discount_type === SPECIAL_PRICE.PERCENT) {
-            discount = Number(productItem.price) / 100 * Number(productFlashDeals.discount_amount)
-        }
-
-        if (productFlashDeals.discount_type === SPECIAL_PRICE.PRICE) {
-            discount = Number(productFlashDeals.discount_amount)
-        }
-
-        return setFieldValue(`flashDealsProduct.${index as number}.selling_price`, Number(productItem.price) - discount)
-    }
-
-    return setFieldValue(`flashDealsProduct.${index as number}.selling_price`, 0)
-}
 </script>
 
 <template>
@@ -101,7 +81,7 @@ const getSellingPrice = (index: number, productItem: IProduct) => {
                             <div
                                 v-for="(productItem, index) in selected"
                                 :key="productItem.id"
-                                class="grid grid-cols-12 gap-4"
+                                class="grid grid-cols-12 items-center gap-4"
                             >
                                 <div class="col-span-3">
                                     <div class="flex items-center gap-1">
@@ -112,7 +92,7 @@ const getSellingPrice = (index: number, productItem: IProduct) => {
 
                                         <div class="flex flex-col flex-1 truncate">
                                             <span class="capitalize truncate">{{ productItem.name }}</span>
-                                            <span>{{ formatCurrency(Number(productItem.price)) }}</span>
+                                            <span>{{ productItem.sku }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -122,22 +102,22 @@ const getSellingPrice = (index: number, productItem: IProduct) => {
                                         :label="label.discount_type"
                                         :options="optionTypeDiscount"
                                         :name="`flashDealsProduct.${index}.discount_type`"
-                                        @update:model-value="getSellingPrice(index, productItem)"
                                     />
                                 </div>
 
                                 <div class="col-span-3">
-                                    <FormInput
+                                    <FormMoney
+                                        v-model="productItem.price"
+                                        :label="label.price"
+                                        :name="`flashDealsProduct.${index}.price`"
+                                        disabled
+                                    />
+                                </div>
+
+                                <div class="col-span-3">
+                                    <FormMoney
                                         :label="label.discount_amount"
                                         :name="`flashDealsProduct.${index}.discount_amount`"
-                                        @update:model-value="getSellingPrice(index, productItem)"
-                                    />
-                                </div>
-
-                                <div class="col-span-3">
-                                    <FormInput
-                                        :label="label.selling_price"
-                                        :name="`flashDealsProduct.${index}.selling_price`"
                                     />
                                 </div>
 

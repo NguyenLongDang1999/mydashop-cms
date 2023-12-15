@@ -12,7 +12,7 @@ export const label = {
     product_selected: 'Lựa chọn sản phẩm',
     discount_type: 'Loại ưu đãi',
     discount_amount: 'Giá ưu đãi',
-    selling_price: 'Giá bán'
+    price: 'Giá gốc'
 }
 
 export const schema = toTypedSchema(yup.object({
@@ -48,11 +48,7 @@ export const schema = toTypedSchema(yup.object({
                         then: schema => schema
                             .min(0, `${label.discount_amount} phải lớn hơn hoặc bằng 0.`)
                             .max(100, `${label.discount_amount} phải nhỏ hơn hoặc bằng 100.`)
-                    }),
-                selling_price: yup
-                    .number()
-                    .required(`${label.selling_price} không được bỏ trống.`)
-                    .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`)
+                    })
             })
         )
 }))
