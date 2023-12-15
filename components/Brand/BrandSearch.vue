@@ -2,17 +2,15 @@
 
 // ** Types Imports
 import type { IBrandSearch } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label } from '~/validations/brand'
 
 // ** useHooks
-const { search } = useBrand()
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
+const categoryList = useCategoryDataList()
 
 // ** Data
+const search = inject('search') as IBrandSearch
 const searchTemp = reactive<IBrandSearch>(_clone(search))
 
 // ** Methods

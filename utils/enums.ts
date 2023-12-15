@@ -67,3 +67,9 @@ export enum IMAGE {
 export enum FORMAT {
     DATE_TIME = 'DD-MM-YYYY HH:mm'
 }
+
+export enum MESSAGE {
+    SUCCESS = 'Dữ liệu đã được lưu thành công!',
+    ERROR = 'Đã xảy ra lỗi trong quá trình xử lý!',
+    DELETE = 'Xóa dữ liệu thành công!'
+}

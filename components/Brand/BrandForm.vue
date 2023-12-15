@@ -2,24 +2,21 @@
 
 // ** Types Imports
 import type { IBrandForm } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/brand'
 
 // ** useHooks
-const { path } = useBrand()
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isLoading, dataFormInput } = useCrudFormInput<IBrandForm>(path.value)
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useBrandFormInput()
+const { handleSubmit, setFieldValue } = useForm<IBrandForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput({
+    await mutateAsync({
         ...values,
         category_id: JSON.stringify(values.category_id)
     })
@@ -125,7 +122,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isLoading"
+                            :loading="isPending"
                             :trailing="false"
                         />
 

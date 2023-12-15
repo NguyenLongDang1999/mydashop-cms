@@ -16,11 +16,6 @@ export interface IProductForm {
     name: string
     slug: string
     image_uri?: string
-
-    // price: number
-    // special_price: number
-    // special_price_type: number
-    // quantity: number
     category_id?: number
     attributes?: string | IAttributeValuesList[]
     variants?: string | IProductVariant[]

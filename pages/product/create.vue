@@ -2,43 +2,30 @@
 
 // ** Types Imports
 import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
-import type { IBrandList } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
-import type { IProductForm, IProductVariant } from '~/types/product.type'
+import type { IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
 
 // ** Data
 const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
-const category_id = ref<number>()
 
 // ** useHooks
 const route = useRoute()
-const { path } = useProduct()
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path: pathAttribute, attribute_id } = useAttribute()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isFetching: isFetchingBrand, dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
-const { isFetching: isFetchingAttribute, dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
+const categoryList = useCategoryDataList()
+const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
 const { handleSubmit, values: product, setFieldValue } = useForm({ validationSchema: schema })
-const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
-const attributeValueList = useAttributeValueList()
-
-// ** SetData
-attribute_id.value = []
+const { isPending, mutateAsync } = useProductFormInput()
+const { attribute_id, attributeValueList } = useAttributeValueList()
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
-
-// ** Computed
 const productTypeSingleValue = computed(() => Number(route.query.product_type))
 const productTypeSingle = computed(() => productTypeSingleValue.value === PRODUCT_TYPE.SINGLE)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    dataFormInput({
+    mutateAsync({
         ...values,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
@@ -417,7 +404,6 @@ const handleIsDefault = (index: number) => {
                                 />
                             </div>
 
-
                             <div
                                 v-if="attribute_id.length"
                                 class="col-span-12 flex flex-col gap-4"
@@ -612,7 +598,7 @@ const handleIsDefault = (index: number) => {
                                 size="sm"
                                 variant="solid"
                                 label="Thêm Mới"
-                                :loading="isLoading"
+                                :loading="isPending"
                                 :trailing="false"
                             />
 

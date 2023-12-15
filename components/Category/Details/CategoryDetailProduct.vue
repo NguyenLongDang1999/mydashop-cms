@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProduct } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
@@ -38,19 +38,15 @@ const columns = [
     }
 ]
 
-const search = reactive<IProductSearch>({
-    category_id: props.categoryId,
-    page: PAGE.CURRENT,
-    pageSize: PAGE.SIZE
-})
-
-provide('search', search)
-
 // ** useHooks
-const { path } = useProduct()
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
+const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
+
+// ** Watch
+watchEffect(() => search.category_id = props.categoryId)
+
+provide('search', search)
 </script>
 
 <template>

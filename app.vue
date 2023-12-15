@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+
 useHead({
     htmlAttrs: {
         lang: 'vi',
@@ -21,6 +23,7 @@ useHead({
         <NuxtPage />
     </NuxtLayout>
 
+    <VueQueryDevtools />
     <UNotifications />
 </template>
 

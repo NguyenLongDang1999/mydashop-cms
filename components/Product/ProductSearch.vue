@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategoryList } from '~/types/category.type'
 import type { IProductSearch } from '~/types/product.type'
 
 // ** Validations Imports
@@ -15,8 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
+const categoryList = useCategoryDataList()
 
 // ** Data
 const search = inject('search') as IProductSearch

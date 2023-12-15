@@ -2,17 +2,15 @@
 
 // ** Types Imports
 import type { IAttributeSearch } from '~/types/attribute.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label } from '~/validations/attribute'
 
 // ** useHooks
-const { search } = useAttribute()
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
+const categoryList = useCategoryDataList()
 
 // ** Data
+const search = inject('search') as IAttributeSearch
 const searchTemp = reactive<IAttributeSearch>(_clone(search))
 
 // ** Methods

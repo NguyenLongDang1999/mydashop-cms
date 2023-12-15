@@ -1,11 +1,22 @@
-export default function (description = 'Unknown', isFailed = false) {
+export default function (description = 'Thao tác thành công!') {
     // ** Hooks
     const toast = useToast()
 
     toast.add({
-        title: isFailed ? 'Thất Bại' : 'Thành Công',
+        title: 'Thành Công',
+        description,
+        icon: 'i-heroicons-check-circle'
+    })
+}
+
+export const useNotificationError = (description = 'Có lỗi xảy ra. Vui lòng kiểm tra lại!') => {
+    // ** Hooks
+    const toast = useToast()
+
+    toast.add({
+        title: 'Thất Bại',
         description: description,
-        icon: isFailed ? 'i-heroicons-x-circle' : 'i-heroicons-check-circle',
-        color: isFailed ? 'red' : undefined
+        icon: 'i-heroicons-x-circle',
+        color: 'red'
     })
 }

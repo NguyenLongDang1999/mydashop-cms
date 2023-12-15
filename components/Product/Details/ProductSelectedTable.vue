@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductForm, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProduct, IProductForm } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
@@ -40,29 +40,23 @@ const columns = [
     }
 ]
 
-const selected = ref<IProductForm[]>([])
+const selected = ref<IProduct[]>([])
 
-const search = reactive<IProductSearch>({
-    page: PAGE.CURRENT,
-    pageSize: PAGE.SIZE
-})
+// ** useHooks
+const { path: pathBrand } = useBrand()
+const { path: pathCategory } = useCategory()
+const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { isPending, mutateAsync } = useProductFormInput('PATCH')
+const { handleSubmit } = useForm()
 
 provide('search', search)
 
-// ** useHooks
-const { path } = useProduct()
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
-const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
-const { handleSubmit } = useForm()
-
 // ** Watch
-watchEffect(() => selected.value = dataTable.value.filter(_d => props.modelValue?.includes(_d.id)))
+watchEffect(() => selected.value = dataTable.value.filter((_d: IProduct) => (props.modelValue as number[])?.includes(_d.id)))
 
 // ** Methods
 const onSubmit = handleSubmit(() => {
-    dataFormInput({
+    mutateAsync({
         ...props.data,
         attributes: undefined,
         technical_specifications: undefined,
@@ -210,7 +204,7 @@ const onSubmit = handleSubmit(() => {
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

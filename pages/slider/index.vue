@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { ISlider, ISliderSearch, ISliderTable } from '~/types/slider.type'
+import type { ISlider } from '~/types/slider.type'
 
 const columns = [
     {
@@ -22,9 +22,10 @@ const columns = [
 ]
 
 // ** useHooks
-const { path, search } = useSlider()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<ISliderTable, ISliderSearch>(path.value, { params: search })
-const { isLoading, dataDelete } = useCrudDelete(path.value)
+const { path, search, isFetching, dataTable, dataAggregations } = useSliderDataTable()
+const { isPending, mutateAsync } = useSliderFormDelete()
+
+provide('search', search)
 </script>
 
 <template>
@@ -46,13 +47,11 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
                     </div>
                 </template>
 
-                <SliderSearch />
-
                 <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
                         :columns="columns"
-                        :loading="isFetching || isLoading"
+                        :loading="isFetching || isPending"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
@@ -73,8 +72,12 @@ const { isLoading, dataDelete } = useCrudDelete(path.value)
 
                         <template #actions-data="{ row }">
                             <div class="flex gap-2">
-                                <SliderUpdate :slider="row" />
-                                <Confirm :remove="() => dataDelete(row.id)" />
+                                <SliderUpdate
+                                    :path="path"
+                                    :slider="row"
+                                />
+
+                                <Confirm :remove="() => mutateAsync(row.id)" />
                             </div>
                         </template>
                     </UTable>

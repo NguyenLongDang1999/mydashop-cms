@@ -2,7 +2,6 @@
 
 // ** Types Imports
 import type { TabItem } from '@nuxt/ui/dist/runtime/types'
-import type { IProductForm } from '~/types/product.type'
 
 // ** Data
 const items: TabItem[] = [{
@@ -21,8 +20,7 @@ const items: TabItem[] = [{
 
 // ** useHooks
 const route = useRoute()
-const { path } = useProduct()
-const { data } = await useCrudDetail<IProductForm>(path.value, route.params.id as string)
+const { data } = await useProductDetail()
 
 // ** Computed
 const defaultIndex = computed(() => items.findIndex(item => item.slot === route.query.tab))

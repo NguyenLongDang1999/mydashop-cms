@@ -1,23 +1,22 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategoryForm, ICategoryList } from '~/types/category.type'
+import type { ICategoryForm } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/category'
 
 // ** useHooks
-const { path } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(path.value)
-const { isLoading, dataFormInput } = useCrudFormInput<ICategoryForm>(path.value)
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useCategoryFormInput()
+const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput(values)
+    await mutateAsync(values)
     isOpen.value = false
 })
 </script>
@@ -126,7 +125,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isLoading"
+                            :loading="isPending"
                             :trailing="false"
                         />
 

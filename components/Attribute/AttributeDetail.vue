@@ -2,7 +2,6 @@
 
 // ** Types Imports
 import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
@@ -16,9 +15,8 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isLoading, dataFormInput } = useCrudFormInput<IAttributeForm>(props.path)
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useAttributeFormInput('PATCH')
 
 const { handleSubmit, values: attribute, setFieldValue } = useForm({
     validationSchema: schema,
@@ -26,7 +24,7 @@ const { handleSubmit, values: attribute, setFieldValue } = useForm({
 })
 
 // ** Methods
-const onSubmit = handleSubmit(async values => dataFormInput({
+const onSubmit = handleSubmit(async values => mutateAsync({
     ...values,
     category_id: JSON.stringify(values.category_id),
     attribute_value_id: attribute.attribute_value_id
@@ -136,7 +134,7 @@ const onSubmit = handleSubmit(async values => dataFormInput({
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

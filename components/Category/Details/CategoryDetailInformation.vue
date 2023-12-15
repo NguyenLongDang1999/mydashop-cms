@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategoryForm, ICategoryList } from '~/types/category.type'
+import type { ICategoryForm } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/category'
@@ -15,16 +15,16 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(props.path)
-const { isLoading, dataFormInput } = useCrudFormInput<ICategoryForm>(props.path)
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useCategoryFormInput('PATCH')
 
-const { handleSubmit, values: category, setFieldValue } = useForm({
+const { handleSubmit, values: category, setFieldValue } = useForm<ICategoryForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** Methods
-const onSubmit = handleSubmit(values => dataFormInput(values))
+const onSubmit = handleSubmit(values => mutateAsync(values))
 </script>
 
 <template>
@@ -114,7 +114,7 @@ const onSubmit = handleSubmit(values => dataFormInput(values))
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

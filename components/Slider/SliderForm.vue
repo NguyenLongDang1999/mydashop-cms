@@ -1,14 +1,10 @@
 <script setup lang="ts">
 
-// ** Types Imports
-import type { ISliderForm } from '~/types/slider.type'
-
 // ** Validations Imports
 import { label, schema } from '~/validations/slider'
 
 // ** useHooks
-const { path } = useSlider()
-const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
+const { isPending, mutateAsync } = useSliderFormInput()
 const { handleSubmit } = useForm({ validationSchema: schema })
 
 // ** Data
@@ -16,7 +12,7 @@ const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput(values)
+    await mutateAsync(values)
     isOpen.value = false
 })
 </script>
@@ -86,7 +82,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isLoading"
+                            :loading="isPending"
                             :trailing="false"
                         />
 

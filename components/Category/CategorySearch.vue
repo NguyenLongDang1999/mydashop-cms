@@ -1,16 +1,16 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategoryList, ICategorySearch } from '~/types/category.type'
+import type { ICategorySearch } from '~/types/category.type'
 
 // ** Validations Imports
 import { label } from '~/validations/category'
 
 // ** useHooks
-const { search, path } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(path.value)
+const categoryList = useCategoryDataList()
 
 // ** Data
+const search = inject('search') as ICategorySearch
 const searchTemp = reactive<ICategorySearch>(_clone(search))
 
 // ** Methods

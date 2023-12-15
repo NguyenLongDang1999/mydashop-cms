@@ -2,12 +2,9 @@
 
 // ** Types Imports
 import type { TabItem } from '@nuxt/ui/dist/runtime/types'
-import type { ICategoryForm } from '~/types/category.type'
 
 // ** useHooks
-const route = useRoute()
-const { path } = useCategory()
-const { data } = await useCrudDetail<ICategoryForm>(path.value, route.params.id as string)
+const { path, data } = await useCategoryDetail()
 
 // ** Data
 const items: TabItem[] = [{
@@ -39,7 +36,7 @@ const items: TabItem[] = [{
                 </template>
 
                 <template #product>
-                    <CategoryDetailProduct :category-id="Number(route.params.id)" />
+                    <CategoryDetailProduct :category-id="(data.id as number)" />
                 </template>
             </UTabs>
         </div>

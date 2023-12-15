@@ -1,9 +1,13 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
+
 // ** useHooks
 const { refetch } = useAuthLogout()
 
-const items = [
+// ** Data
+const items: DropdownItem[][] = [
     [
         {
             label: 'ben@example.com',
@@ -35,7 +39,15 @@ const items = [
         {
             label: 'Sign out',
             icon: 'i-heroicons-arrow-left-on-rectangle',
-            click: () => refetch()
+            click: async () => {
+                await refetch()
+
+                removeToken()
+                removeUserData()
+
+                navigateTo(ROUTER.LOGIN)
+                useNotification('Đăng xuất thành công!')
+            }
         }
     ]
 ]

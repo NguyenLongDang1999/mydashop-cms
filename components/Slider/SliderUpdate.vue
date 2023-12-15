@@ -8,14 +8,14 @@ import { label, schema } from '~/validations/slider'
 
 // ** Props & Emits
 interface Props {
+    path: string
     slider: ISliderForm
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path } = useSlider()
-const { isLoading, dataFormInput } = useCrudFormInput<ISliderForm>(path.value)
+const { isPending, mutateAsync } = useSliderFormInput('PATCH')
 
 const { handleSubmit } = useForm({
     validationSchema: schema,
@@ -27,7 +27,7 @@ const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput(values)
+    await mutateAsync(values)
     isOpen.value = false
 })
 </script>
@@ -100,7 +100,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Cập Nhật"
-                            :loading="isLoading"
+                            :loading="isPending"
                             :trailing="false"
                         />
 

@@ -1,15 +1,13 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm } from '~/types/attribute.type'
+import type { TabItem } from '@nuxt/ui/dist/runtime/types'
 
 // ** useHooks
-const route = useRoute()
-const { path } = useAttribute()
-const { data } = await useCrudDetail<IAttributeForm>(path.value, route.params.id as string)
+const { path, data } = await useAttributeDetail()
 
 // ** Data
-const items = [{
+const items: TabItem[] = [{
     slot: 'detail',
     label: 'Thông tin chi tiết'
 }, {

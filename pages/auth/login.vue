@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IAuthForm } from '~/types/auth.type'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/auth'
 
@@ -7,11 +10,11 @@ import { label, schema } from '~/validations/auth'
 definePageMeta({ layout: 'auth' })
 
 // ** useHooks
-const { isLoading, authLogin } = useAuthLogin()
-const { handleSubmit } = useForm({ validationSchema: schema })
+const { handleSubmit } = useForm<IAuthForm>({ validationSchema: schema })
+const { isPending, mutateAsync } = useAuthLogin()
 
 // ** Methods
-const onSubmit = handleSubmit(values => authLogin(values))
+const onSubmit = handleSubmit(values => mutateAsync(values))
 </script>
 
 <template>
@@ -52,7 +55,7 @@ const onSubmit = handleSubmit(values => authLogin(values))
                                 block
                                 variant="solid"
                                 label="Đăng Nhập"
-                                :loading="isLoading"
+                                :loading="isPending"
                                 :trailing="false"
                             />
                         </div>

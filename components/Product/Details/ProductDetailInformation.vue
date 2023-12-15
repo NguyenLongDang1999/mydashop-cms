@@ -14,8 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path } = useProduct()
-const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
+const { isPending, mutateAsync } = useProductFormInput('PATCH')
 
 const { handleSubmit, values: product, setFieldValue } = useForm({
     validationSchema: schema,
@@ -23,7 +22,7 @@ const { handleSubmit, values: product, setFieldValue } = useForm({
 })
 
 // ** Methods
-const onSubmit = handleSubmit(values => dataFormInput({
+const onSubmit = handleSubmit(values => mutateAsync({
     ...values,
     attributes: undefined,
     variants: undefined,
@@ -53,7 +52,7 @@ const getSellingPrice = () => {
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div
-                    v-if="product.flashSaleProduct.length"
+                    v-if="product.FlashDealsProduct.length"
                     class="col-span-12"
                 >
                     <UAlert
@@ -66,7 +65,7 @@ const getSellingPrice = () => {
                 </div>
 
                 <div
-                    v-if="product.flashSaleProduct.length"
+                    v-if="product.FlashDealsProduct.length"
                     class="col-span-12"
                 >
                     <UAlert
@@ -301,7 +300,7 @@ const getSellingPrice = () => {
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

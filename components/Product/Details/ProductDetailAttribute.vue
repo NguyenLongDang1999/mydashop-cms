@@ -2,8 +2,6 @@
 
 // ** Types Imports
 import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
-import type { IBrandList } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
 import type { IProductForm, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
@@ -18,18 +16,12 @@ const props = defineProps<Props>()
 
 // ** Data
 const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
-const category_id = ref<number>(props.data.category_id as number)
 
 // ** useHooks
-const { path } = useProduct()
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path: pathAttribute, attribute_id } = useAttribute()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isFetching: isFetchingBrand, dataList: brandList } = useCrudListWithParams<IBrandList>(pathBrand.value, category_id)
-const { isFetching: isFetchingAttribute, dataList: attributeList } = useCrudListWithParams<IAttributeList>(pathAttribute.value, category_id)
-const { isLoading, dataFormInput } = useCrudFormInput<IProductForm>(path.value)
-const attributeValueList = useAttributeValueList()
+const categoryList = useCategoryDataList()
+const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
+const { isPending, mutateAsync } = useProductFormInput('PATCH')
+const { attribute_id, attributeValueList } = useAttributeValueList()
 
 const { handleSubmit, values: product, setFieldValue } = useForm({
     validationSchema: schema,
@@ -38,18 +30,20 @@ const { handleSubmit, values: product, setFieldValue } = useForm({
 
 // ** SetData
 watchEffect(() => {
+    category_id.value = props.data.category_id as number
+
     const attributes: IAttributeValuesList[] = product.attributes as IAttributeValuesList[]
 
     attribute_id.value = attributes.map(_attributeItem => _attributeItem.id)
 
     for (const index in attributes) {
-        attributeValueName.value[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => attributes[index].values?.includes(_v.id))
+        attributeValueName.value[index] = (attributeValueList.value[index].data as IAttributeValuesList[])?.filter(_v => attributes[index].values?.includes(_v.id))
     }
 })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    dataFormInput({
+    mutateAsync({
         ...values,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
@@ -344,7 +338,7 @@ const handleIsDefault = (index: number) => {
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

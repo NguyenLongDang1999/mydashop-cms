@@ -2,7 +2,6 @@
 
 // ** Types Imports
 import type { IBrandForm } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/brand'
@@ -16,17 +15,16 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isLoading, dataFormInput } = useCrudFormInput<IBrandForm>(props.path)
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useBrandFormInput('PATCH')
 
-const { handleSubmit, values: brand, setFieldValue } = useForm({
+const { handleSubmit, values: brand, setFieldValue } = useForm<IBrandForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** Methods
-const onSubmit = handleSubmit(values => dataFormInput({
+const onSubmit = handleSubmit(values => mutateAsync({
     ...values,
     category_id: JSON.stringify(values.category_id)
 }))
@@ -113,7 +111,7 @@ const onSubmit = handleSubmit(values => dataFormInput({
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isLoading"
+                        :loading="isPending"
                         :trailing="false"
                     />
 

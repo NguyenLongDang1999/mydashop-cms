@@ -2,12 +2,9 @@
 
 // ** Types Imports
 import type { TabItem } from '@nuxt/ui/dist/runtime/types'
-import type { IBrandForm } from '~/types/brand.type'
 
 // ** useHooks
-const route = useRoute()
-const { path } = useBrand()
-const { data } = await useCrudDetail<IBrandForm>(path.value, route.params.id as string)
+const { path, data } = await useBrandDetail()
 
 // ** Data
 const items: TabItem[] = [{

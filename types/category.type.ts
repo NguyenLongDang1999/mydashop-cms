@@ -2,6 +2,7 @@
 import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface ICategoryForm {
+    id?: number
     name: string
     slug: string
     parent_id?: number

@@ -2,24 +2,21 @@
 
 // ** Types Imports
 import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
-import type { ICategoryList } from '~/types/category.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
 
 // ** useHooks
-const { path } = useAttribute()
-const { path: pathCategory } = useCategory()
-const { dataList: categoryList } = useCrudDataList<ICategoryList>(pathCategory.value)
-const { isLoading, dataFormInput } = useCrudFormInput<IAttributeForm>(path.value)
-const { handleSubmit, values: attribute, setFieldValue } = useForm({ validationSchema: schema })
+const categoryList = useCategoryDataList()
+const { isPending, mutateAsync } = useAttributeFormInput()
+const { handleSubmit, values: attribute, setFieldValue } = useForm<IAttributeForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput({
+    await mutateAsync({
         ...values,
         category_id: JSON.stringify(values.category_id),
         attribute_value_id: attribute.attribute_value_id
@@ -152,7 +149,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isLoading"
+                            :loading="isPending"
                             :trailing="false"
                         />
 
