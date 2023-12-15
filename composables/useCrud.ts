@@ -14,21 +14,6 @@ export default function () {
     }
 }
 
-export const useCrudDataList = <T>(path: string, subPath = '/data-list', subKey = 'DataList') => {
-    // ** Hooks
-    const _fetcher = useFetchData()
-
-    const { isLoading, data } = useQuery<T[]>({
-        queryKey: [path + subKey],
-        queryFn: () => _fetcher(path + subPath)
-    })
-
-    // ** Computed
-    const dataList = computed(() => data.value || [])
-
-    return { dataList, isLoading }
-}
-
 export const useCrudDataTable = <T, U>(path: string, params: ICrudTable<U>) => {
     // ** Hooks
     const _fetcher = useFetchData()

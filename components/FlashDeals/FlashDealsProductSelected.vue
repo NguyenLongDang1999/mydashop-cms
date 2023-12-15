@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProduct } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
@@ -42,23 +42,17 @@ const columns = [
     }
 ]
 
-const search = reactive<IProductSearch>({
-    page: PAGE.CURRENT,
-    pageSize: PAGE.SIZE
-})
-
-provide('search', search)
-
 // ** useHooks
-const { path } = useProduct()
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
-const { isFetching, dataTable, dataAggregations } = useCrudDataTable<IProductTable, IProductSearch>(path.value, { params: search })
+const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
 
 const { value, errorMessage, handleChange } = useField(() => props.name, undefined, {
     syncVModel: true,
     initialValue: props.modelValue || []
 })
+
+provide('search', search)
 
 // ** Watch
 watchEffect(() => props.modelValue ? handleChange(dataTable.value.filter((_d: IProduct) => props.modelValue?.includes(_d.id))) : undefined)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
+import type { ISearchDropdown } from '~/types/core.type'
 import type { IProductList } from '~/types/product.type'
 
 // ** Props & Emits
@@ -14,7 +15,6 @@ const props = defineProps<Props>()
 
 // ** useHooks
 const { path } = useProduct()
-const _fetcher = useFetchData()
 
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
@@ -22,15 +22,15 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 })
 
 // ** Data
-const productList = ref<{ id: number; label: string; avatar: { src: string; }; }[]>([])
-const productSelected = ref<{ id: number; label: string; avatar: { src: string; }; }[]>([])
+const productList = ref<ISearchDropdown[]>([])
+const productSelected = ref<ISearchDropdown[]>([])
 
 // ** Computed
 const error = computed(() => errorMessage.value)
 
 const search = async (q?: string) => {
     if (q) {
-        const dataList = await _fetcher<IProductList[]>(`${path.value}/data-list`, { params: { q } })
+        const dataList = await useFetcher<IProductList[]>(`${path.value}/data-list`, { params: { q } })
 
         productList.value = dataList.map(_p => ({
             id: _p.id,

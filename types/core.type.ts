@@ -16,3 +16,11 @@ export interface IOptions {
 export interface IRow<T> {
     row: T
 }
+
+export interface ISearchDropdown {
+    id: number
+    label: string
+    avatar: {
+        src: string
+    }
+}

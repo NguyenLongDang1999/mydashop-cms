@@ -1,16 +1,14 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashDealsForm } from '~/types/flash-deals.type'
 import type { IProduct } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/flash-deals'
 
 // ** useHooks
-const { path } = useFlashDeals()
-const { path: pathProduct } = useProduct()
-const { isLoading, dataFormInput } = useCrudFormInput<IFlashDealsForm>(path.value)
+const { path } = useProduct()
+const { isPending, mutateAsync } = useFlashDealFormInput()
 const { handleSubmit, values: flashDeals } = useForm({ validationSchema: schema })
 
 // ** Data
@@ -18,7 +16,7 @@ const selected = ref<IProduct[]>()
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput({
+    await mutateAsync({
         ...values,
         start_date: flashDeals.date_range?.start,
         end_date: flashDeals.date_range?.end,
@@ -86,7 +84,7 @@ const onSubmit = handleSubmit(async values => {
                                 <div class="col-span-3">
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(pathProduct, productItem.image_uri)"
+                                            :src="getImageFile(path, productItem.image_uri)"
                                             :alt="productItem.name"
                                         />
 
@@ -135,7 +133,7 @@ const onSubmit = handleSubmit(async values => {
                                 size="sm"
                                 variant="solid"
                                 label="Thêm Mới"
-                                :loading="isLoading"
+                                :loading="isPending"
                                 :trailing="false"
                             />
 

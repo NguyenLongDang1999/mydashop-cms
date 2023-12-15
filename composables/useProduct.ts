@@ -1,9 +1,9 @@
 // ** Third Party Imports
 import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
-import type { IAttributeList } from '~/types/attribute.type'
-import type { IBrandList } from '~/types/brand.type'
 
 // ** Types Imports
+import type { IAttributeList } from '~/types/attribute.type'
+import type { IBrandList } from '~/types/brand.type'
 import type { IProductForm, IProductList, IProductSearch, IProductTable, IProductUpload } from '~/types/product.type'
 
 // ** State
