@@ -13,8 +13,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-defineEmits(['selected'])
-
 // ** Data
 const columns = [
     {
@@ -84,7 +82,6 @@ const error = computed(() => errorMessage.value)
                         :columns="columns"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
-                        @update:model-value="$emit('selected', value)"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
                             <ULink :to="`${ROUTER.PRODUCT}/${row.id}`">

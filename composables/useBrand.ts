@@ -45,7 +45,8 @@ export const useBrandDataList = () => {
 export const useBrandDetail = async () => {
     // ** useHooks
     const route = useRoute()
-    const { data, suspense } = useQueryFetch<IBrandForm>(path.value, `/${route.params.id}`, 'Detail', { id: route.params.id })
+    const id = Number(route.params.id)
+    const { data, suspense } = useQueryFetch<IBrandForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()
 

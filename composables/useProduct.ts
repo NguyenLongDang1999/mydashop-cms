@@ -79,7 +79,8 @@ export const useProductDataList = () => {
 export const useProductDetail = async () => {
     // ** useHooks
     const route = useRoute()
-    const { data, suspense } = useQueryFetch<IProductForm>(path.value, `/${route.params.id}`, 'Detail', { id: route.params.id })
+    const id = Number(route.params.id)
+    const { data, suspense } = useQueryFetch<IProductForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()
 
@@ -98,7 +99,7 @@ export const useProductFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
 
             if (methods === 'PATCH') {
-                queryClient.setQueryData([`${path.value}Detail`, { id: variables.id }], data)
+                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)

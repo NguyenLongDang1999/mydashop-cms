@@ -66,7 +66,8 @@ export const useAttributeDataList = () => {
 export const useAttributeDetail = async () => {
     // ** useHooks
     const route = useRoute()
-    const { data, suspense } = useQueryFetch<IAttributeForm>(path.value, `/${route.params.id}`, 'Detail', { id: route.params.id })
+    const id = Number(route.params.id)
+    const { data, suspense } = useQueryFetch<IAttributeForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()
 

@@ -11,9 +11,6 @@ const { path } = useProduct()
 const { isPending, mutateAsync } = useFlashDealFormInput()
 const { handleSubmit, values: flashDeals } = useForm({ validationSchema: schema })
 
-// ** Data
-const selected = ref<IProduct[]>()
-
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
@@ -67,7 +64,6 @@ const onSubmit = handleSubmit(async values => {
                             <FlashDealsProductSelected
                                 :label="label.product_selected"
                                 name="product_id"
-                                @selected="val => selected = val"
                             />
                         </div>
 
@@ -77,7 +73,7 @@ const onSubmit = handleSubmit(async values => {
 
                         <div class="col-span-12 flex flex-col gap-4">
                             <div
-                                v-for="(productItem, index) in selected"
+                                v-for="(productItem, index) in flashDeals.product_id"
                                 :key="productItem.id"
                                 class="grid grid-cols-12 items-center gap-4"
                             >
@@ -90,7 +86,7 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="flex flex-col flex-1 truncate">
                                             <span class="capitalize truncate">{{ productItem.name }}</span>
-                                            <span>{{ productItem.sku }}</span>
+                                            <span>{{ formatCurrency(Number(productItem.price)) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -100,15 +96,6 @@ const onSubmit = handleSubmit(async values => {
                                         :label="label.discount_type"
                                         :options="optionTypeDiscount"
                                         :name="`flashDealsProduct.${index}.discount_type`"
-                                    />
-                                </div>
-
-                                <div class="col-span-3">
-                                    <FormMoney
-                                        v-model="productItem.price"
-                                        :label="label.price"
-                                        :name="`flashDealsProduct.${index}.price`"
-                                        disabled
                                     />
                                 </div>
 
