@@ -53,10 +53,13 @@ export interface IProduct {
     id: number
     sku: string
     name: string
-    discount: number
     price: string
     special_price: string
     special_price_type: number
+    discount_start_date: string
+    discount_end_date: string
+    discount_type: number
+    discount_amount: string
     quantity: number
     status: number
     popular: number

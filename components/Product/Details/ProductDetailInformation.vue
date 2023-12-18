@@ -46,7 +46,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         color="primary"
                         variant="outline"
                         title="Thông Báo!"
-                        description="Sản phẩm này đang trong quá trình Flash Sale."
+                        description="Sản phẩm này đang trong giai đoạn Chiến Dịch."
                     />
                 </div>
 
@@ -61,9 +61,9 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         title="Lưu Ý!"
                     >
                         <template #description>
-                            <p>Khi sản phẩm được kích hoạt chiến dịch Flash Sale thì <b class="line-through">Giá Ưu Đãi</b> sẽ không hoạt động.</p>
+                            <p>Khi sản phẩm được kích hoạt Chiến Dịch thì <b class="line-through">Giá Ưu Đãi</b> sẽ không hoạt động.</p>
                             <p class="mt-1">
-                                Giá bán sẽ được tính lại từ Giá gốc và Giá giảm từ Flash Sale.
+                                Giá bán sẽ được tính lại từ Giá gốc và Giá giảm từ Chiến Dịch.
                             </p>
                         </template>
                     </UAlert>

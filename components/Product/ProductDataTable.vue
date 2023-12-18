@@ -4,7 +4,6 @@
 import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
-import { formatSellingPrice } from '~/utils'
 
 // ** Data
 const columns = [
@@ -16,7 +15,7 @@ const columns = [
     {
         key: 'price',
         label: 'Giá tiền',
-        class: 'min-w-[160px]'
+        class: 'min-w-[250px]'
     },
     {
         key: 'category_id',
@@ -116,7 +115,7 @@ provide('search', search)
                             {{ formatCurrency(Number(row.price)) }}
                         </li>
 
-                        <li>
+                        <li :class="compareDateTime(row) ? 'line-through' : ''">
                             <span class="font-semibold capitalize">Giá giảm: </span>
 
                             <template v-if="row.special_price_type === SPECIAL_PRICE.PERCENT">
@@ -129,13 +128,30 @@ provide('search', search)
                         </li>
 
                         <li>
-                            <span class="font-semibold capitalize">Giá sale:</span>
-                            {{ row.discount || 0 }}%
+                            <span class="font-semibold capitalize">Ngày bắt đầu Sale:</span>
+                            {{ formatDateTime(row.discount_start_date) }}
+                        </li>
+
+                        <li>
+                            <span class="font-semibold capitalize">Ngày kết thúc Sale:</span>
+                            {{ formatDateTime(row.discount_end_date) }}
+                        </li>
+
+                        <li>
+                            <span class="font-semibold capitalize">Giá giảm Sale: </span>
+
+                            <template v-if="row.discount_type === SPECIAL_PRICE.PERCENT">
+                                {{ row.discount_amount }}%
+                            </template>
+
+                            <template v-else>
+                                {{ formatCurrency(Number(row.discount_amount)) }}
+                            </template>
                         </li>
 
                         <li>
                             <span class="font-semibold capitalize">Giá bán:</span>
-                            {{ formatSellingPrice(row.price, row.special_price, row.special_price_type) }}
+                            {{ formatSellingPrice(row) }}
                         </li>
                     </ul>
                 </template>

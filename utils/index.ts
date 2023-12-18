@@ -1,5 +1,6 @@
 // ** Types Imports
 import type { IOptions } from '~/types/core.type'
+import type { IProduct } from '~/types/product.type'
 
 export const valueTransform = (dataList: IOptions[], value: number) => dataList.find(val => val.id === value)
 
@@ -21,26 +22,45 @@ export const getImageFile = (path: string, name?: string) => {
     return IMAGE.DEFAULT
 }
 
-export const formatSellingPrice = (price?: string, special_price?: string, special_price_type: number) => {
+export const compareDateTime = (row: IProduct) => {
+    const startDate = new Date(row.discount_start_date).getTime()
+    const endDate = new Date(row.discount_end_date).getTime()
+    const today = new Date().getTime()
+
+    return today >= startDate && today <= endDate
+}
+
+export const formatSellingPrice = (row: IProduct) => {
     let discount = 0
     let sellingPrice = 0
 
-    const formatPrice = Number(price)
-    const formatSpecialPrice = Number(special_price)
+    const formatPrice = Number(row.price)
+    const formatSpecialPrice = Number(row.special_price)
 
-    if (special_price_type === SPECIAL_PRICE.PERCENT) {
+    if (row.special_price_type === SPECIAL_PRICE.PERCENT) {
         discount = (formatPrice / 100) * formatSpecialPrice
         sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
     }
 
-    if (special_price_type === SPECIAL_PRICE.PRICE) {
+    if (row.special_price_type === SPECIAL_PRICE.PRICE) {
         discount = formatSpecialPrice
         sellingPrice = formatPrice - discount
     }
 
-    return sellingPrice.toLocaleString('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-        minimumFractionDigits: 0
-    })
+    // ** Sale Price
+    if (compareDateTime(row)) {
+        const formatDiscountAmount = Number(row.discount_amount)
+
+        if (row.discount_type === SPECIAL_PRICE.PERCENT) {
+            discount = (formatPrice / 100) * formatDiscountAmount
+            sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
+        }
+
+        if (row.discount_type === SPECIAL_PRICE.PRICE) {
+            discount = formatDiscountAmount
+            sellingPrice = formatPrice - discount
+        }
+    }
+
+    return formatCurrency(sellingPrice)
 }
