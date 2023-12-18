@@ -4,6 +4,7 @@
 import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
+import { formatSellingPrice } from '~/utils'
 
 // ** Data
 const columns = [
@@ -134,7 +135,7 @@ provide('search', search)
 
                         <li>
                             <span class="font-semibold capitalize">Giá bán:</span>
-                            {{ formatCurrency(Number(row.selling_price)) }}
+                            {{ formatSellingPrice(row.price, row.special_price, row.special_price_type) }}
                         </li>
                     </ul>
                 </template>

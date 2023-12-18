@@ -8,7 +8,6 @@ import type { IProduct } from '~/types/product.type'
 interface Props {
     label?: string
     name: string
-    modelValue?: number[]
 }
 
 const props = defineProps<Props>()
@@ -44,16 +43,16 @@ const columns = [
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
 const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
-
-const { value, errorMessage, handleChange } = useField(() => props.name, undefined, {
-    syncVModel: true,
-    initialValue: props.modelValue || []
-})
+const { value, errorMessage, handleChange } = useField<IProduct[]>(() => props.name, undefined, { syncVModel: true })
 
 provide('search', search)
 
 // ** Watch
-watchEffect(() => props.modelValue ? handleChange(dataTable.value.filter((_d: IProduct) => props.modelValue?.includes(_d.id))) : undefined)
+watch(dataTable, newValue => {
+    const product_id = value.value.map(_p => _p.id)
+
+    handleChange(newValue.filter(_d => product_id.includes(_d.id)))
+})
 
 // ** Computed
 const error = computed(() => errorMessage.value)
@@ -125,7 +124,7 @@ const error = computed(() => errorMessage.value)
 
                                 <li>
                                     <span class="font-semibold capitalize">Giá bán:</span>
-                                    {{ formatCurrency(Number(row.selling_price)) }}
+                                    {{ formatSellingPrice(row.price, row.special_price, row.special_price_type) }}
                                 </li>
                             </ul>
                         </template>

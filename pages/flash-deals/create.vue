@@ -1,8 +1,5 @@
 <script setup lang="ts">
 
-// ** Types Imports
-import type { IProduct } from '~/types/product.type'
-
 // ** Validations Imports
 import { label, schema } from '~/validations/flash-deals'
 
@@ -16,8 +13,7 @@ const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
         start_date: flashDeals.date_range?.start,
-        end_date: flashDeals.date_range?.end,
-        product_id: (flashDeals.product_id as IProduct[])?.map(_p => _p.id)
+        end_date: flashDeals.date_range?.end
     })
 
     navigateTo(ROUTER.FLASH_DEALS)
@@ -67,7 +63,10 @@ const onSubmit = handleSubmit(async values => {
                             />
                         </div>
 
-                        <div class="col-span-12">
+                        <div
+                            v-if="flashDeals.product_id?.length"
+                            class="col-span-12"
+                        >
                             <UDivider icon="i-heroicons-chevron-double-down" />
                         </div>
 
@@ -77,7 +76,7 @@ const onSubmit = handleSubmit(async values => {
                                 :key="productItem.id"
                                 class="grid grid-cols-12 items-center gap-4"
                             >
-                                <div class="col-span-3">
+                                <div class="md:col-span-3 col-span-6">
                                     <div class="flex items-center gap-1">
                                         <UAvatar
                                             :src="getImageFile(path, productItem.image_uri)"
@@ -91,7 +90,7 @@ const onSubmit = handleSubmit(async values => {
                                     </div>
                                 </div>
 
-                                <div class="col-span-3">
+                                <div class="md:col-span-3 col-span-6">
                                     <FormSelect
                                         :label="label.discount_type"
                                         :options="optionTypeDiscount"
@@ -99,10 +98,18 @@ const onSubmit = handleSubmit(async values => {
                                     />
                                 </div>
 
-                                <div class="col-span-3">
+                                <div class="md:col-span-3 col-span-6">
                                     <FormMoney
                                         :label="label.discount_amount"
                                         :name="`flashDealsProduct.${index}.discount_amount`"
+                                    />
+                                </div>
+
+                                <div class="col-span-1">
+                                    <FormInput
+                                        type="hidden"
+                                        :model-value="productItem.id"
+                                        :name="`flashDealsProduct.${index}.id`"
                                     />
                                 </div>
 

@@ -28,20 +28,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
     variants: undefined,
     technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
 }))
-
-const getSellingPrice = () => {
-    let discount = 0
-
-    if (product.special_price_type === SPECIAL_PRICE.PERCENT) {
-        discount = (product.price as number / 100) * (product.special_price as number)
-    }
-
-    if (product.special_price_type === SPECIAL_PRICE.PRICE) {
-        discount = (product.special_price as number)
-    }
-
-    return setFieldValue('selling_price', (product.price as number) - discount)
-}
 </script>
 
 <template>
@@ -158,7 +144,6 @@ const getSellingPrice = () => {
                             :label="label.special_price_type"
                             :options="optionTypeDiscount"
                             name="special_price_type"
-                            @update:model-value="getSellingPrice"
                         />
                     </div>
 
@@ -168,7 +153,6 @@ const getSellingPrice = () => {
                             name="price"
                             text-trailing="VNĐ"
                             help="Giá Gốc"
-                            @update:model-value="getSellingPrice"
                         />
                     </div>
 
@@ -177,13 +161,12 @@ const getSellingPrice = () => {
                             :label="label.special_price"
                             name="special_price"
                             :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
-                            @update:model-value="getSellingPrice"
                         />
                     </div>
 
                     <div class="md:col-span-4 sm:col-span-6 col-span-12">
                         <FormMoney
-                            v-model="product.selling_price"
+                            :value="formatSellingPrice(product.price?.toString(), product.special_price?.toString(), product.special_price_type as number)"
                             :label="label.selling_price"
                             name="selling_price"
                             :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"

@@ -20,9 +20,6 @@ export const schema = toTypedSchema(yup.object({
         .string()
         .required(`${label.campaign_name} không được bỏ trống.`)
         .max(60, `${label.campaign_name} không được vượt quá 60 ký tự.`),
-    discount: yup
-        .number()
-        .required(`${label.discount} không được bỏ trống.`),
     date_range: yup
         .object({
             start: yup.string(),

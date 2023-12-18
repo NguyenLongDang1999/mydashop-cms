@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashSaleForm } from '~/types/flash-deals.type'
+import type { IFlashDealsForm } from '~/types/flash-deals.type'
 
 // ** Props & Emits
 interface Props {
     label?: string
     name: string
-    flashSale?: IFlashSaleForm
+    flashDeals?: IFlashDealsForm
 }
 
 const props = defineProps<Props>()
@@ -16,8 +16,8 @@ const props = defineProps<Props>()
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
     initialValue: {
-        start: props.flashSale ? new Date(props.flashSale.start_date) : new Date(),
-        end: props.flashSale ? new Date(props.flashSale.end_date) : new Date()
+        start: props.flashDeals ? new Date(props.flashDeals.start_date) : new Date(),
+        end: props.flashDeals ? new Date(props.flashDeals.end_date) : new Date()
     }
 })
 

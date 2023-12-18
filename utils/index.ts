@@ -20,3 +20,27 @@ export const getImageFile = (path: string, name?: string) => {
 
     return IMAGE.DEFAULT
 }
+
+export const formatSellingPrice = (price?: string, special_price?: string, special_price_type: number) => {
+    let discount = 0
+    let sellingPrice = 0
+
+    const formatPrice = Number(price)
+    const formatSpecialPrice = Number(special_price)
+
+    if (special_price_type === SPECIAL_PRICE.PERCENT) {
+        discount = (formatPrice / 100) * formatSpecialPrice
+        sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
+    }
+
+    if (special_price_type === SPECIAL_PRICE.PRICE) {
+        discount = formatSpecialPrice
+        sellingPrice = formatPrice - discount
+    }
+
+    return sellingPrice.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+        minimumFractionDigits: 0
+    })
+}

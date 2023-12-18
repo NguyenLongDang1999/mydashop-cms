@@ -1,33 +1,27 @@
 <script setup lang="ts">
 
-// ** Types Imports
-import type { IFlashSaleForm } from '~/types/flash-deals.type'
-import type { IProduct } from '~/types/product.type'
-
 // ** Validations Imports
 import { label, schema } from '~/validations/flash-deals'
 
 // ** useHooks
-const route = useRoute()
-const { path } = useFlashSale()
-const { data } = await useCrudDetail<IFlashSaleForm>(path.value, route.params.id as string)
-const { isLoading, dataFormInput } = useCrudFormInput<IFlashSaleForm>(path.value)
+const { path } = useProduct()
+const { data } = await useFlashDealDetail()
+const { isPending, mutateAsync } = useFlashDealFormInput('PATCH')
 
-const { handleSubmit, values: flashSale } = useForm({
+const { handleSubmit, values: flashDeals } = useForm({
     validationSchema: schema,
     initialValues: _omitBy(data.value, _isNil)
 })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await dataFormInput({
+    await mutateAsync({
         ...values,
-        start_date: flashSale.date_range?.start,
-        end_date: flashSale.date_range?.end,
-        product_id: (flashSale.product_id as IProduct[])?.map(_p => _p.id)
+        start_date: flashDeals.date_range?.start,
+        end_date: flashDeals.date_range?.end
     })
 
-    navigateTo(ROUTER.FLASH_SALE)
+    navigateTo(ROUTER.FLASH_DEALS)
 })
 </script>
 
@@ -53,26 +47,74 @@ const onSubmit = handleSubmit(async values => {
                         </div>
 
                         <div class="sm:col-span-6 col-span-12">
-                            <FormMoney
-                                :label="label.discount"
-                                name="discount"
-                            />
-                        </div>
-
-                        <div class="col-span-12">
                             <FormDatePickerRange
                                 :label="label.date_range"
-                                :flash-deals="flashSale"
+                                :flash-deals="flashDeals"
                                 name="date_range"
                             />
                         </div>
 
                         <div class="col-span-12">
-                            <FlashSaleProductSelected
-                                :model-value="data.product_id"
+                            <FlashDealsProductSelected
                                 :label="label.product_selected"
                                 name="product_id"
                             />
+                        </div>
+
+                        <div
+                            v-if="flashDeals.product_id?.length"
+                            class="col-span-12"
+                        >
+                            <UDivider icon="i-heroicons-chevron-double-down" />
+                        </div>
+
+                        <div class="col-span-12 flex flex-col gap-4">
+                            <div
+                                v-for="(productItem, index) in flashDeals.product_id"
+                                :key="productItem.id"
+                                class="grid grid-cols-12 items-center gap-4"
+                            >
+                                <div class="md:col-span-3 col-span-6">
+                                    <div class="flex items-center gap-1">
+                                        <UAvatar
+                                            :src="getImageFile(path, productItem.image_uri)"
+                                            :alt="productItem.name"
+                                        />
+
+                                        <div class="flex flex-col flex-1 truncate">
+                                            <span class="capitalize truncate">{{ productItem.name }}</span>
+                                            <span>{{ formatCurrency(Number(productItem.price)) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 col-span-6">
+                                    <FormSelect
+                                        :label="label.discount_type"
+                                        :options="optionTypeDiscount"
+                                        :name="`flashDealsProduct.${index}.discount_type`"
+                                    />
+                                </div>
+
+                                <div class="md:col-span-3 col-span-6">
+                                    <FormMoney
+                                        :label="label.discount_amount"
+                                        :name="`flashDealsProduct.${index}.discount_amount`"
+                                    />
+                                </div>
+
+                                <div class="col-span-1">
+                                    <FormInput
+                                        type="hidden"
+                                        :model-value="productItem.id"
+                                        :name="`flashDealsProduct.${index}.id`"
+                                    />
+                                </div>
+
+                                <div class="col-span-12">
+                                    <UDivider />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -83,7 +125,7 @@ const onSubmit = handleSubmit(async values => {
                                 size="sm"
                                 variant="solid"
                                 label="Cập Nhật"
-                                :loading="isLoading"
+                                :loading="isPending"
                                 :trailing="false"
                             />
 
@@ -103,4 +145,3 @@ const onSubmit = handleSubmit(async values => {
         </div>
     </section>
 </template>
-~/validations/flash-deals

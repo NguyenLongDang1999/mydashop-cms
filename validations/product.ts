@@ -98,11 +98,6 @@ export const schema = toTypedSchema(yup.object({
     in_stock: yup
         .number()
         .default(INVENTORY_STATUS.OUT_OF_STOCK),
-    selling_price: yup
-        .number()
-        .required(`${label.selling_price} không được bỏ trống.`)
-        .default(0)
-        .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`),
     variants: yup.array()
         .of(
             yup.object().shape({
@@ -131,11 +126,7 @@ export const schema = toTypedSchema(yup.object({
                             .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
                             .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
                     }),
-                in_stock: yup.number(),
-                selling_price: yup
-                    .number()
-                    .required(`${label.selling_price} không được bỏ trống.`)
-                    .min(0, ({ min }) => `${label.selling_price} phải lớn hơn hoặc bằng ${min}.`)
+                in_stock: yup.number()
             })
         ),
     related_products: yup.array(yup.number().required()),

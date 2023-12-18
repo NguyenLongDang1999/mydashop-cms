@@ -82,8 +82,7 @@ const generateProductVariants = () => {
                     in_stock: INVENTORY_STATUS.OUT_OF_STOCK,
                     is_default: false,
                     special_price: 0,
-                    special_price_type: SPECIAL_PRICE.PRICE,
-                    selling_price: 0
+                    special_price_type: SPECIAL_PRICE.PRICE
                 })
 
                 return
@@ -103,40 +102,6 @@ const generateProductVariants = () => {
     generateCombinations(0, [])
 
     setFieldValue('variants', combinations)
-}
-
-const getSellingPrice = (index?: number) => {
-    if (product.product_type === PRODUCT_TYPE.VARIANT) {
-        if (product.variants?.length) {
-            let discount = 0
-
-            const productVariant = product.variants[index as number]
-
-            if (productVariant?.special_price_type === SPECIAL_PRICE.PERCENT) {
-                discount = (productVariant.price as number / 100) * (productVariant.special_price as number)
-            }
-
-            if (productVariant.special_price_type === SPECIAL_PRICE.PRICE) {
-                discount = (productVariant.special_price as number)
-            }
-
-            return setFieldValue(`variants.${index as number}.selling_price`, (productVariant.price as number) - discount)
-        }
-
-        return setFieldValue(`variants.${index as number}.selling_price`, 0)
-    } else {
-        let discount = 0
-
-        if (product.special_price_type === SPECIAL_PRICE.PERCENT) {
-            discount = (product.price as number / 100) * (product.special_price as number)
-        }
-
-        if (product.special_price_type === SPECIAL_PRICE.PRICE) {
-            discount = (product.special_price as number)
-        }
-
-        return setFieldValue('selling_price', (product.price as number) - discount)
-    }
 }
 
 const handleIsDefault = (index: number) => {
@@ -250,7 +215,6 @@ const handleIsDefault = (index: number) => {
                                     :label="label.special_price_type"
                                     :options="optionTypeDiscount"
                                     name="special_price_type"
-                                    @update:model-value="getSellingPrice"
                                 />
                             </div>
 
@@ -260,7 +224,6 @@ const handleIsDefault = (index: number) => {
                                     name="price"
                                     text-trailing="VNĐ"
                                     help="Giá Gốc"
-                                    @update:model-value="getSellingPrice"
                                 />
                             </div>
 
@@ -269,17 +232,17 @@ const handleIsDefault = (index: number) => {
                                     :label="label.special_price"
                                     name="special_price"
                                     :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
-                                    @update:model-value="getSellingPrice"
                                 />
                             </div>
 
                             <div class="md:col-span-4 sm:col-span-6 col-span-12">
                                 <FormMoney
-                                    v-model="product.selling_price"
+                                    :value="formatSellingPrice(product.price?.toString(), product.special_price?.toString(), product.special_price_type as number)"
                                     :label="label.selling_price"
-                                    name="selling_price"
                                     :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                    name="selling_price"
                                     text-trailing="VNĐ"
+                                    disabled
                                 />
                             </div>
                         </template>
@@ -503,16 +466,6 @@ const handleIsDefault = (index: number) => {
                                             :label="label.special_price_type"
                                             :options="optionTypeDiscount"
                                             :name="`variants.${index}.special_price_type`"
-                                            @update:model-value="getSellingPrice(index)"
-                                        />
-                                    </div>
-
-                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
-                                        <FormMoney
-                                            :label="label.special_price"
-                                            :name="`variants.${index}.special_price`"
-                                            :text-trailing="variant.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
-                                            @update:model-value="getSellingPrice(index)"
                                         />
                                     </div>
 
@@ -522,17 +475,25 @@ const handleIsDefault = (index: number) => {
                                             :name="`variants.${index}.price`"
                                             text-trailing="VNĐ"
                                             help="Giá Gốc"
-                                            @update:model-value="getSellingPrice(index)"
                                         />
                                     </div>
 
                                     <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                         <FormMoney
-                                            v-model="variant.selling_price"
+                                            :label="label.special_price"
+                                            :name="`variants.${index}.special_price`"
+                                            :text-trailing="variant.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                        <FormMoney
+                                            :value="formatSellingPrice(variant.price?.toString(), variant.special_price?.toString(), variant.special_price_type as number)"
                                             :label="label.selling_price"
                                             :name="`variants.${index}.selling_price`"
                                             :help="`${variant.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
                                             text-trailing="VNĐ"
+                                            disabled
                                         />
                                     </div>
 

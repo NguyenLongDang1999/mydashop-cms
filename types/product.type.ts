@@ -57,7 +57,6 @@ export interface IProduct {
     price: string
     special_price: string
     special_price_type: number
-    selling_price: string
     quantity: number
     status: number
     popular: number
@@ -85,7 +84,6 @@ export interface IProductVariant {
     price: number
     special_price: number
     special_price_type: number
-    selling_price: number
     quantity: number
     in_stock: number
 }
