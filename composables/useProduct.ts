@@ -56,7 +56,7 @@ export const useProductDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<IProductTable>(path.value, '', 'DataTable', search, {
+    const { data, isFetching, suspense } = useQueryFetch<IProductTable>(path.value, '', 'DataTable', search, {
         placeholderData: keepPreviousData
     })
 
@@ -65,7 +65,8 @@ export const useProductDataTable = () => {
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),
-        dataAggregations: computed(() => data.value?.aggregations || 0)
+        dataAggregations: computed(() => data.value?.aggregations || 0),
+        suspense
     }
 }
 

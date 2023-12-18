@@ -86,7 +86,7 @@ export const useAttributeFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
 
             if (methods === 'PATCH') {
-                queryClient.setQueryData([`${path.value}Detail`, { id: variables.id }], data)
+                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)

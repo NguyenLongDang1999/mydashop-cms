@@ -42,16 +42,17 @@ const columns = [
 // ** useHooks
 const { path: pathBrand } = useBrand()
 const { path: pathCategory } = useCategory()
-const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { path, search, isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
 const { value, errorMessage, handleChange } = useField<IProduct[]>(() => props.name, undefined, { syncVModel: true })
 
 provide('search', search)
 
-// ** Watch
-watch(dataTable, newValue => {
+onMounted(async () => {
+    await suspense()
+
     const product_id = value.value.map(_p => _p.id)
 
-    handleChange(newValue.filter(_d => product_id.includes(_d.id)))
+    handleChange(dataTable.value.filter(_d => product_id.includes(_d.id)))
 })
 
 // ** Computed
