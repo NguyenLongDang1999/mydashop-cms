@@ -127,17 +127,17 @@ provide('search', search)
                             </template>
                         </li>
 
-                        <li>
+                        <li v-if="row.discount_start_date">
                             <span class="font-semibold capitalize">Ngày bắt đầu Sale:</span>
                             {{ formatDateTime(row.discount_start_date) }}
                         </li>
 
-                        <li>
+                        <li v-if="row.discount_end_date">
                             <span class="font-semibold capitalize">Ngày kết thúc Sale:</span>
                             {{ formatDateTime(row.discount_end_date) }}
                         </li>
 
-                        <li>
+                        <li v-if="row.discount_type">
                             <span class="font-semibold capitalize">Giá giảm Sale: </span>
 
                             <template v-if="row.discount_type === SPECIAL_PRICE.PERCENT">

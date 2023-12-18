@@ -22,7 +22,7 @@ const columns = [
     {
         key: 'price',
         label: 'Giá tiền',
-        class: 'min-w-[160px]'
+        class: 'min-w-[250px]'
     },
     {
         key: 'category_id',
@@ -106,7 +106,7 @@ const error = computed(() => errorMessage.value)
                                     {{ formatCurrency(Number(row.price)) }}
                                 </li>
 
-                                <li>
+                                <li :class="compareDateTime(row) ? 'line-through' : ''">
                                     <span class="font-semibold capitalize">Giá giảm: </span>
 
                                     <template v-if="row.special_price_type === SPECIAL_PRICE.PERCENT">
@@ -118,14 +118,31 @@ const error = computed(() => errorMessage.value)
                                     </template>
                                 </li>
 
-                                <li>
-                                    <span class="font-semibold capitalize">Giá sale:</span>
-                                    {{ row.discount || 0 }}%
+                                <li v-if="row.discount_start_date">
+                                    <span class="font-semibold capitalize">Ngày bắt đầu Sale:</span>
+                                    {{ formatDateTime(row.discount_start_date) }}
+                                </li>
+
+                                <li v-if="row.discount_end_date">
+                                    <span class="font-semibold capitalize">Ngày kết thúc Sale:</span>
+                                    {{ formatDateTime(row.discount_end_date) }}
+                                </li>
+
+                                <li v-if="row.discount_type">
+                                    <span class="font-semibold capitalize">Giá giảm Sale: </span>
+
+                                    <template v-if="row.discount_type === SPECIAL_PRICE.PERCENT">
+                                        {{ row.discount_amount }}%
+                                    </template>
+
+                                    <template v-else>
+                                        {{ formatCurrency(Number(row.discount_amount)) }}
+                                    </template>
                                 </li>
 
                                 <li>
                                     <span class="font-semibold capitalize">Giá bán:</span>
-                                    {{ formatSellingPrice(row.price, row.special_price, row.special_price_type) }}
+                                    {{ formatSellingPrice(row) }}
                                 </li>
                             </ul>
                         </template>
