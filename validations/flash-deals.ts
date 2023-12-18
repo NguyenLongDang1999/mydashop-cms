@@ -12,7 +12,9 @@ export const label = {
     product_selected: 'Lựa chọn sản phẩm',
     discount_type: 'Loại ưu đãi',
     discount_amount: 'Giá ưu đãi',
-    price: 'Giá gốc'
+    price: 'Giá gốc',
+    status: 'Trạng thái',
+    popular: 'Phổ biến'
 }
 
 export const schema = toTypedSchema(yup.object({

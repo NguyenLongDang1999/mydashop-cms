@@ -6,37 +6,6 @@ import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
 
 // ** Data
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin sản phẩm',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'price',
-        label: 'Giá tiền',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'category_id',
-        label: 'Danh mục',
-        class: 'min-w-[160px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'popular',
-        label: 'Phổ biến'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
-    }
-]
-
 const items: DropdownItem[][] = [
     [{
         label: 'Sản Phẩm Mới',
@@ -87,7 +56,7 @@ provide('search', search)
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable
                 :rows="dataTable"
-                :columns="columns"
+                :columns="productColumns"
                 :loading="isFetching || isPending"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"

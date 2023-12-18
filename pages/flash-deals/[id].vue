@@ -54,6 +54,22 @@ const onSubmit = handleSubmit(async values => {
                             />
                         </div>
 
+                        <div class="sm:col-span-6 col-span-12">
+                            <FormSelect
+                                :label="label.status"
+                                :options="optionStatus"
+                                name="status"
+                            />
+                        </div>
+
+                        <div class="sm:col-span-6 col-span-12">
+                            <FormSelect
+                                :label="label.popular"
+                                :options="optionPopular"
+                                name="popular"
+                            />
+                        </div>
+
                         <div class="col-span-12">
                             <FlashDealsProductSelected
                                 :label="label.product_selected"

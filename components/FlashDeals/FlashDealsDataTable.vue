@@ -16,6 +16,14 @@ const columns = [
         class: 'min-w-[250px]'
     },
     {
+        key: 'status',
+        label: 'Trạng thái'
+    },
+    {
+        key: 'popular',
+        label: 'Phổ biến'
+    },
+    {
         key: 'actions',
         label: 'Thao tác',
         class: 'min-w-[100px]'
@@ -67,6 +75,14 @@ provide('search', search)
 
                 <template #date_range-data="{ row }: IRow<IFlashDeals>">
                     <span>{{ formatDateTime(row.start_date) }} - {{ formatDateTime(row.end_date) }}</span>
+                </template>
+
+                <template #status-data="{ row }: IRow<IFlashDeals>">
+                    <UToggle :model-value="row.status === STATUS.ACTIVE" />
+                </template>
+
+                <template #popular-data="{ row }: IRow<IFlashDeals>">
+                    <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                 </template>
 
                 <template #actions-data="{ row }">

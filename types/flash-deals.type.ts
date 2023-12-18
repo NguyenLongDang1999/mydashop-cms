@@ -8,6 +8,8 @@ export interface IFlashDealsForm {
     start_date: string | Date
     end_date: string | Date
     discount: number
+    status: number
+    popular: number
 }
 
 export interface IFlashDealsSearch extends IPagination {
@@ -21,6 +23,8 @@ export interface IFlashDeals {
     start_date: string
     end_date: string
     discount: number
+    status: number
+    popular: number
 }
 
 export interface IFlashDealsTable extends IAggregations {
