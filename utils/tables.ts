@@ -159,7 +159,7 @@ export const couponsColumns: Columns[] = [
     {
         key: 'discount',
         label: 'Số tiền giảm',
-        class: minWithColumn(250)
+        class: minWithColumn(160)
     },
     {
         key: 'date_range',
