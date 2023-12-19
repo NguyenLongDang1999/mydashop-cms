@@ -133,13 +133,13 @@ export const useProductSelectedWithCategory = () => {
     const { path: pathAttribute } = useAttribute()
 
     const { isFetching: isFetchingBrand, data: dataBrand } = useQueryFetch<IBrandList[]>(pathBrand.value, endPoint, queryKey, {}, {
-        queryKey: [pathBrand.value + queryKey, category_id.value],
+        queryKey: [pathBrand.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathBrand.value + endPoint}/${category_id.value}`),
         enabled: computed(() => !!category_id.value)
     })
 
     const { isFetching: isFetchingAttribute, data: dataAttribute } = useQueryFetch<IAttributeList[]>(pathAttribute.value, endPoint, queryKey, {}, {
-        queryKey: [pathAttribute.value + queryKey, category_id.value],
+        queryKey: [pathAttribute.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathAttribute.value + endPoint}/${category_id.value}`),
         enabled: computed(() => !!category_id.value)
     })
