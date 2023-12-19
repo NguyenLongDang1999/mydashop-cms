@@ -4,28 +4,6 @@
 import type { IAttribute } from '~/types/attribute.type'
 import type { IRow } from '~/types/core.type'
 
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin thuộc tính',
-        class: 'min-w-[180px]'
-    },
-    {
-        key: 'category_id',
-        label: 'Danh mục',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
-    }
-]
-
 // ** useHooks
 const { search, isFetching, dataTable, dataAggregations } = useAttributeDataTable()
 const { isPending, mutateAsync } = useAttributeFormDelete()
@@ -50,7 +28,7 @@ provide('search', search)
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable
                 :rows="dataTable"
-                :columns="columns"
+                :columns="attributeColumns"
                 :loading="isFetching || isPending"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"

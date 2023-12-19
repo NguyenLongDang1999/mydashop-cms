@@ -17,6 +17,9 @@ export default defineNuxtConfig({
             'Quicksand': [400, 500, 600, 700]
         }
     },
+    tailwindcss: {
+        configPath: 'tailwind.config.ts'
+    },
     lodash: {
         prefix: '_',
         prefixSkip: ['string'],

@@ -4,32 +4,6 @@
 import type { IRow } from '~/types/core.type'
 import type { IFlashDeals } from '~/types/flash-deals.type'
 
-const columns = [
-    {
-        key: 'name',
-        label: 'Tên chiến dịch',
-        class: 'min-w-[200px]'
-    },
-    {
-        key: 'date_range',
-        label: 'Ngày áp dụng',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'popular',
-        label: 'Phổ biến'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
-    }
-]
-
 // ** useHooks
 const { search, isFetching, dataTable, dataAggregations } = useFlashDealDataTable()
 const { isPending, mutateAsync } = useFlashDealFormDelete()
@@ -60,7 +34,7 @@ provide('search', search)
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable
                 :rows="dataTable"
-                :columns="columns"
+                :columns="flashDealsColumns"
                 :loading="isFetching || isPending"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"

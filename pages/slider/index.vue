@@ -4,23 +4,6 @@
 import type { IRow } from '~/types/core.type'
 import type { ISlider } from '~/types/slider.type'
 
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin slider',
-        class: 'min-w-[200px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
-    }
-]
-
 // ** useHooks
 const { path, search, isFetching, dataTable, dataAggregations } = useSliderDataTable()
 const { isPending, mutateAsync } = useSliderFormDelete()
@@ -50,7 +33,7 @@ provide('search', search)
                 <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
-                        :columns="columns"
+                        :columns="sliderColumns"
                         :loading="isFetching || isPending"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"

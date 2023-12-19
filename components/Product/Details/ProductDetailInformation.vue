@@ -166,7 +166,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
 
                     <div class="md:col-span-4 sm:col-span-6 col-span-12">
                         <FormMoney
-                            :value="formatSellingPrice(product.price?.toString(), product.special_price?.toString(), product.special_price_type as number)"
+                            :value="formatSellingPrice(product)"
                             :label="label.selling_price"
                             name="selling_price"
                             :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"

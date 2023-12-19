@@ -14,32 +14,6 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** Data
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin sản phẩm',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'price',
-        label: 'Giá tiền',
-        class: 'min-w-[250px]'
-    },
-    {
-        key: 'category_id',
-        label: 'Danh mục',
-        class: 'min-w-[160px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'popular',
-        label: 'Phổ biến'
-    }
-]
-
 const selected = ref<IProduct[]>([])
 
 // ** useHooks
@@ -82,7 +56,7 @@ const onSubmit = handleSubmit(() => {
                             v-model="selected"
                             :rows="dataTable"
                             :loading="isFetching"
-                            :columns="columns"
+                            :columns="productNoActionColumns"
                             class="w-full"
                             :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                         >

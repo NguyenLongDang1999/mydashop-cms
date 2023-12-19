@@ -315,7 +315,7 @@ const handleIsDefault = (index: number) => {
 
                             <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                 <FormMoney
-                                    :value="formatSellingPrice(variant.price?.toString(), variant.special_price?.toString(), variant.special_price_type as number)"
+                                    :value="formatSellingPrice(variant)"
                                     :label="label.selling_price"
                                     :name="`variants.${index}.selling_price`"
                                     :help="`${variant.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"

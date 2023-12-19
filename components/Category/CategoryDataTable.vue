@@ -4,37 +4,6 @@
 import type { ICategory } from '~/types/category.type'
 import type { IRow } from '~/types/core.type'
 
-const columns = [
-    {
-        key: 'name',
-        label: 'Thông tin danh mục',
-        class: 'min-w-[200px]'
-    },
-    {
-        key: 'parent_id',
-        label: 'Danh mục cha',
-        class: 'min-w-[200px]'
-    },
-    {
-        key: 'status',
-        label: 'Trạng thái'
-    },
-    {
-        key: 'popular',
-        label: 'Phổ biến'
-    },
-    {
-        key: 'created_at',
-        label: 'Ngày tạo',
-        class: 'min-w-[120px]'
-    },
-    {
-        key: 'actions',
-        label: 'Thao tác',
-        class: 'min-w-[100px]'
-    }
-]
-
 // ** useHooks
 const { path, search, isFetching, dataTable, dataAggregations } = useCategoryDataTable()
 const { isPending, mutateAsync } = useCategoryFormDelete()
@@ -59,7 +28,7 @@ provide('search', search)
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable
                 :rows="dataTable"
-                :columns="columns"
+                :columns="categoryColumns"
                 :loading="isFetching || isPending"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
