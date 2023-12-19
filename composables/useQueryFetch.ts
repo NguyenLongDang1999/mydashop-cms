@@ -35,10 +35,11 @@ export const useQueryMutation = <T, U extends Record<string, any> = Record<strin
 
 export const useQueryMutationDelete = <T>(
     path: string,
-    options?: MaybeRefDeep<MutationObserverOptions<unknown, Error, T, unknown>>
+    options?: MaybeRefDeep<MutationObserverOptions<unknown, Error, T, unknown>>,
+    method: 'DELETE' | 'PATCH' = 'PATCH'
 ) => {
     return useMutation<unknown, Error, T, unknown>({
-        mutationFn: body => useFetcher<T>(`${path}/${body}`, { method: 'PATCH' }),
+        mutationFn: body => useFetcher<T>(`${path}/${body}`, { method }),
         ...options
     })
 }

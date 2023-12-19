@@ -1,5 +1,3 @@
-
-import useCoupons from '~/composables/useCoupons';
 <script setup lang="ts">
 
 // ** Types Imports
@@ -8,18 +6,14 @@ import type { ICouponsSearch } from '~/types/coupons.type'
 // ** Validations Imports
 import { label } from '~/validations/coupons'
 
-// ** useHooks
-const { search, path } = useCoupons()
-
 // ** Data
+const search = inject('search') as ICouponsSearch
 const searchTemp = reactive<ICouponsSearch>(_clone(search))
 
 // ** Methods
 const handleReset = () => {
     _assign(searchTemp, {
-        name: undefined,
         code: undefined,
-        status: undefined,
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
@@ -31,26 +25,9 @@ const handleReset = () => {
         <div class="grid gap-4 grid-cols-12">
             <div class="md:col-span-3 sm:col-span-6 col-span-12">
                 <FormInput
-                    v-model="searchTemp.name"
-                    :label="label.name"
-                    name="name"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormInput
                     v-model="searchTemp.code"
                     :label="label.code"
                     name="code"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormSelect
-                    v-model="searchTemp.status"
-                    :label="label.status"
-                    :options="optionStatus"
-                    name="status"
                 />
             </div>
 

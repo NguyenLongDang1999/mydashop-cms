@@ -144,3 +144,27 @@ export const flashDealsColumns: Columns[] = [
     popular,
     actions
 ]
+
+export const couponsColumns: Columns[] = [
+    {
+        key: 'code',
+        label: 'Code',
+        class: minWithColumn(160)
+    },
+    {
+        key: 'min_buy',
+        label: 'Đơn hàng tối thiểu',
+        class: minWithColumn(160)
+    },
+    {
+        key: 'discount',
+        label: 'Số tiền giảm',
+        class: minWithColumn(250)
+    },
+    {
+        key: 'date_range',
+        label: 'Ngày áp dụng',
+        class: minWithColumn(250)
+    },
+    actions
+]

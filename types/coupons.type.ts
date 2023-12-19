@@ -2,23 +2,19 @@
 import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface ICouponsForm {
-    name: string
     code: string
-    discount: number
+    min_buy: string
     discount_type: number
-    expire_date: string
-    status?: number
+    discount_amount: string
+    discount_start_date: string
+    discount_end_date: string
 }
 
-export interface ICoupons {
-    id: number
-    name: string
-    code: string
-    status: number
+export interface ICoupons extends ICouponsForm {
+    id?: number
 }
 
 export interface ICouponsSearch extends IPagination {
-    name?: string
     code?: number
 }
 
