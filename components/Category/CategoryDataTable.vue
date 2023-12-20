@@ -100,24 +100,7 @@ provide('search', search)
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                    @update:model-value="navigateTo(`?page=${$event}`)"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>

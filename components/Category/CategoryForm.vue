@@ -11,12 +11,13 @@ const isOpen = ref<boolean>(false)
 
 // ** useHooks
 const categoryList = useCategoryDataList(isOpen.value)
-const { isPending, mutateAsync } = useCategoryFormInput()
+
+// const { isPending, mutateAsync } = useCategoryFormInput()
 const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await mutateAsync(values)
+    await useCategoryFormInput(values)
     isOpen.value = false
 })
 </script>
@@ -125,7 +126,6 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isPending"
                             :trailing="false"
                         />
 

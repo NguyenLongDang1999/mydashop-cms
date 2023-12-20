@@ -15,7 +15,7 @@ export default function () {
 }
 
 export const useCategoryDataTable = () => {
-    const { query } = useRoute()
+    const { query, fullPath } = useRoute()
 
     // ** Data
     const search = reactive<ICategorySearch>({
@@ -24,12 +24,9 @@ export const useCategoryDataTable = () => {
         pageSize: PAGE.SIZE
     })
 
-    const watch = objectToQueryString(search)
-
     // ** useHooks
     const { data, pending: isFetching } = useFetchAPI<ICategoryTable>(path.value, {
-        key: key + watch,
-        watch: [watch],
+        key: key,
         query: search
     })
 
@@ -67,26 +64,31 @@ export const useCategoryDetail = async () => {
     }
 }
 
-export const useCategoryFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
-    // const { data } = useFetchAPI<ICategoryForm>(path.value, {
+export const useCategoryFormInput = (values: ICategoryForm) => {
+    return useFetchAPI<ICategoryForm>(path.value, {
+        method: 'post',
+        body: values,
+        async onResponse() {
+            await refreshNuxtData(key)
+            await refreshNuxtData(key + 'DataList')
+        }
+    })
 
-    // })
+    // const queryClient = useQueryClient()
 
-    const queryClient = useQueryClient()
+    // return useQueryMutation<ICategoryForm>(path.value, {
+    //     onSuccess: (data, variables) => {
+    //         queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
+    //         queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
 
-    return useQueryMutation<ICategoryForm>(path.value, {
-        onSuccess: (data, variables) => {
-            queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
-            queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
+    //         if (methods === 'PATCH') {
+    //             queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
+    //         }
 
-            if (methods === 'PATCH') {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-            }
-
-            useNotification(MESSAGE.SUCCESS)
-        },
-        onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    //         useNotification(MESSAGE.SUCCESS)
+    //     },
+    //     onError: () => useNotificationError(MESSAGE.ERROR)
+    // }, methods)
 }
 
 export const useCategoryFormDelete = () => {
