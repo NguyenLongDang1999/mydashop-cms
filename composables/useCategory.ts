@@ -25,6 +25,32 @@ export const useCategoryDataTable = () => {
         placeholderData: keepPreviousData
     })
 
+    // const config = useRuntimeConfig()
+    // const nuxtApp = useNuxtApp()
+
+    // const { pending, data } = useFetch<ICategoryTable>(path.value, {
+    //     baseURL: config.public.apiBase,
+    //     lazy: true,
+    //     server: false,
+    //     params: search,
+    //     key: path.value + JSON.stringify(search),
+    //     onRequest: ({ options, request }) => {
+    //         if (request !== 'auth/sign-in') {
+    //             const access_token = JSON.parse(getToken() || 'null')
+
+    //             if (access_token) {
+    //                 options.headers = {
+    //                     ...options.headers,
+    //                     Authorization: `Bearer ${access_token}`
+    //                 }
+    //             }
+    //         }
+    //     },
+    //     getCachedData(key) {
+    //         return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+    //     }
+    // })
+
     return {
         path,
         search,
@@ -36,9 +62,36 @@ export const useCategoryDataTable = () => {
 
 export const useCategoryDataList = () => {
     // ** useHooks
-    const { data } = useQueryFetch<ICategoryList[]>(path.value)
+    // const { data } = useQueryFetch<ICategoryList[]>(path.value)
 
-    return computed(() => data.value || [])
+    // return computed(() => data.value || [])
+
+    const config = useRuntimeConfig()
+    const nuxtApp = useNuxtApp()
+
+    const { data } = useFetch<ICategoryList[]>(path.value, {
+        baseURL: config.public.apiBase,
+        lazy: true,
+        server: false,
+        key: path.value + 'DataList',
+        onRequest: ({ options, request }) => {
+            if (request !== 'auth/sign-in') {
+                const access_token = JSON.parse(getToken() || 'null')
+
+                if (access_token) {
+                    options.headers = {
+                        ...options.headers,
+                        Authorization: `Bearer ${access_token}`
+                    }
+                }
+            }
+        },
+        getCachedData(key) {
+            return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+        }
+    })
+
+    return computed(() => data.value?.data || [])
 }
 
 export const useCategoryDetail = async () => {

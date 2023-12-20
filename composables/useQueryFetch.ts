@@ -28,7 +28,23 @@ export const useQueryMutation = <T, U extends Record<string, any> = Record<strin
     method: 'POST' | 'PATCH' = 'POST'
 ) => {
     return useMutation<T, Error, U, unknown>({
-        mutationFn: body => useFetcher<T>(method === 'PATCH' ? `${path}/${body.id}` : path, { method, body }),
+        mutationFn: body => {
+            const { imageURL } = useImage()
+            const formData = new FormData()
+
+            for (const item in body) {
+                const value = (body as Record<string, string>)[item]
+                if (value) formData.append(item, value)
+            }
+
+            if (imageURL.value) formData.append('image_uri', imageURL.value)
+
+            formData.delete('id')
+
+            const newPath = body.id ? `${path}/${body.id}` : path
+
+            return useFetcher<T>(newPath, { method, body: imageURL.value ? formData : body })
+        },
         ...options
     })
 }

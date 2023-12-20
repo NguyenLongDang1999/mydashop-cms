@@ -1,0 +1,12 @@
+<template>
+    <section>
+        <TheTitle
+            label="Quản lý sản phẩm"
+            title="Quản lý File"
+        />
+
+        <div class="mt-8 pb-24 max-w-none">
+            <FileManagerDataTable />
+        </div>
+    </section>
+</template>

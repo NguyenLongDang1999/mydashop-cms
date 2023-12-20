@@ -32,9 +32,11 @@ export default defineNuxtConfig({
         }
     ],
     runtimeConfig: {
+        bunnyAccessKey: process.env.BUNNY_ACCESS_KEY,
         public: {
             apiBase: process.env.NUXT_PUBLIC_API_BASE,
-            previewCdn: process.env.NUXT_PUBLIC_BUNNY_CDN_URL
+            previewCdn: process.env.NUXT_PUBLIC_BUNNY_CDN_URL,
+            bunnyApiBase: process.env.NUXT_PUBLIC_BUNNY_API_BASE
         }
     }
 })

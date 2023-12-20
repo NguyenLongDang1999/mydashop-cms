@@ -38,6 +38,15 @@ export default [
         ]
     },
     {
+        label: 'Quản lý Files',
+        children: [
+            {
+                title: 'Danh sách Files',
+                to: '/file-manager'
+            }
+        ]
+    },
+    {
         label: 'Quản lý giao diện',
         children: [
             {

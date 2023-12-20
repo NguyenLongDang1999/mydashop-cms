@@ -13,7 +13,7 @@ const file = ref<File | null>()
 const { base64: fileURL } = useBase64(file)
 
 // ** useHooks
-const { imageURL } = useCrud()
+const { imageURL } = useImage()
 
 // ** Methods
 function onFileInput(e: Event) {

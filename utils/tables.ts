@@ -168,3 +168,22 @@ export const couponsColumns: Columns[] = [
     },
     actions
 ]
+
+export const fileColumns: Columns[] = [
+    {
+        key: 'name',
+        label: 'Tiêu đề',
+        class: minWithColumn(160)
+    },
+    {
+        key: 'size',
+        label: 'Kích thước',
+        class: minWithColumn(160)
+    },
+    {
+        key: 'date_modified',
+        label: 'Ngày chỉnh sửa',
+        class: minWithColumn(250)
+    },
+    actions
+]
