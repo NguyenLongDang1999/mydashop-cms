@@ -115,6 +115,7 @@ provide('search', search)
                             },
                         },
                     }"
+                    @update:model-value="navigateTo(`?page=${$event}`)"
                 />
             </div>
         </template>

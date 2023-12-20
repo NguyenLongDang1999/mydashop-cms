@@ -6,13 +6,13 @@ import type { ICategoryForm } from '~/types/category.type'
 // ** Validations Imports
 import { label, schema } from '~/validations/category'
 
-// ** useHooks
-const categoryList = useCategoryDataList()
-const { isPending, mutateAsync } = useCategoryFormInput()
-const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
-
 // ** Data
 const isOpen = ref<boolean>(false)
+
+// ** useHooks
+const categoryList = useCategoryDataList(isOpen.value)
+const { isPending, mutateAsync } = useCategoryFormInput()
+const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {

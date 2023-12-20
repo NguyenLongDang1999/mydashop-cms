@@ -14,6 +14,15 @@ const search = inject('search') as ICategorySearch
 const searchTemp = reactive<ICategorySearch>(_clone(search))
 
 // ** Methods
+const handleSearch = () => {
+    _assign(search, {
+        ...searchTemp,
+        page: PAGE.CURRENT
+    })
+
+    navigateTo(`?${objectToQueryString({ ...search })}`)
+}
+
 const handleReset = () => {
     _assign(searchTemp, {
         name: undefined,
@@ -23,6 +32,8 @@ const handleReset = () => {
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
+
+    navigateTo('?')
 }
 </script>
 
@@ -73,7 +84,7 @@ const handleReset = () => {
                         variant="solid"
                         label="Tìm Kiếm"
                         :trailing="false"
-                        @click="_assign(search, searchTemp)"
+                        @click="handleSearch"
                     />
 
                     <UButton

@@ -64,3 +64,17 @@ export const formatSellingPrice = (row: IProduct) => {
 
     return formatCurrency(sellingPrice)
 }
+
+export const objectToQueryString = (obj: Record<string, string | number | undefined | null | boolean>): string => {
+    const cleanedObj: Record<string, string> = {}
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key] !== undefined && obj[key] !== null) {
+            cleanedObj[key] = String(obj[key])
+        }
+    }
+
+    return Object.keys(cleanedObj)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(cleanedObj[key])}`)
+        .join('&')
+}

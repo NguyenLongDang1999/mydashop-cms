@@ -1,11 +1,12 @@
 // ** Third Party Imports
-import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
+import { useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { ICategoryForm, ICategoryList, ICategorySearch, ICategoryTable } from '~/types/category.type'
 
 // ** State
 const path = ref<string>(ROUTE.CATEGORY)
+const key = `${path.value}:`
 
 export default function () {
     return {
@@ -14,42 +15,23 @@ export default function () {
 }
 
 export const useCategoryDataTable = () => {
+    const { query } = useRoute()
+
     // ** Data
     const search = reactive<ICategorySearch>({
-        page: PAGE.CURRENT,
+        ...query,
+        page: Number(query.page) || PAGE.CURRENT,
         pageSize: PAGE.SIZE
     })
 
+    const watch = objectToQueryString(search)
+
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<ICategoryTable>(path.value, '', 'DataTable', search, {
-        placeholderData: keepPreviousData
+    const { data, pending: isFetching } = useFetchAPI<ICategoryTable>(path.value, {
+        key: key + watch,
+        watch: [watch],
+        query: search
     })
-
-    // const config = useRuntimeConfig()
-    // const nuxtApp = useNuxtApp()
-
-    // const { pending, data } = useFetch<ICategoryTable>(path.value, {
-    //     baseURL: config.public.apiBase,
-    //     lazy: true,
-    //     server: false,
-    //     params: search,
-    //     key: path.value + JSON.stringify(search),
-    //     onRequest: ({ options, request }) => {
-    //         if (request !== 'auth/sign-in') {
-    //             const access_token = JSON.parse(getToken() || 'null')
-
-    //             if (access_token) {
-    //                 options.headers = {
-    //                     ...options.headers,
-    //                     Authorization: `Bearer ${access_token}`
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     getCachedData(key) {
-    //         return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-    //     }
-    // })
 
     return {
         path,
@@ -60,47 +42,24 @@ export const useCategoryDataTable = () => {
     }
 }
 
-export const useCategoryDataList = () => {
+export const useCategoryDataList = (immediate = true) => {
     // ** useHooks
-    // const { data } = useQueryFetch<ICategoryList[]>(path.value)
-
-    // return computed(() => data.value || [])
-
-    const config = useRuntimeConfig()
-    const nuxtApp = useNuxtApp()
-
-    const { data } = useFetch<ICategoryList[]>(path.value, {
-        baseURL: config.public.apiBase,
-        lazy: true,
-        server: false,
-        key: path.value + 'DataList',
-        onRequest: ({ options, request }) => {
-            if (request !== 'auth/sign-in') {
-                const access_token = JSON.parse(getToken() || 'null')
-
-                if (access_token) {
-                    options.headers = {
-                        ...options.headers,
-                        Authorization: `Bearer ${access_token}`
-                    }
-                }
-            }
-        },
-        getCachedData(key) {
-            return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-        }
+    const { data } = useFetchAPI<ICategoryList[]>(`${path.value}/data-list`, {
+        key: key + 'DataList',
+        immediate
     })
 
-    return computed(() => data.value?.data || [])
+    return computed(() => data.value || [])
 }
 
 export const useCategoryDetail = async () => {
     // ** useHooks
-    const route = useRoute()
-    const id = Number(route.params.id)
-    const { data, suspense } = useQueryFetch<ICategoryForm>(path.value, `/${id}`, 'Detail', { id })
+    const { id } = useRoute().params
 
-    await suspense()
+    const { data } = await useFetchAPI<ICategoryForm>(`${path.value}/${id}`, {
+        key: key + id,
+        lazy: false
+    })
 
     return {
         path,
@@ -109,6 +68,10 @@ export const useCategoryDetail = async () => {
 }
 
 export const useCategoryFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+    // const { data } = useFetchAPI<ICategoryForm>(path.value, {
+
+    // })
+
     const queryClient = useQueryClient()
 
     return useQueryMutation<ICategoryForm>(path.value, {

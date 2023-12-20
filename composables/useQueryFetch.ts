@@ -1,10 +1,11 @@
 // ** Third Party Imports
 import { useMutation, useQuery, type MutationObserverOptions } from '@tanstack/vue-query'
+import type { FetchError } from 'ofetch'
 
 // ** Types Imports
 import type { MaybeRefDeep } from '@tanstack/vue-query/build/legacy/types'
 import type { UseFetchOptions } from 'nuxt/dist/app/composables'
-import type { KeysOf } from 'nuxt/dist/app/composables/asyncData'
+import type { AsyncData, KeysOf } from 'nuxt/dist/app/composables/asyncData'
 import type { IAuthProfile } from '~/types/auth.type'
 
 export default function <T>(
@@ -117,4 +118,55 @@ export const useFetcher = async <T>(
     } catch (err: unknown) {
         throw new Error(err instanceof Error ? err.message : 'An error occurred during data fetching.')
     }
+}
+
+export const useFetchAPI = <T>(
+    path: string,
+    opts?: UseFetchOptions<unknown, unknown, KeysOf<unknown>, null, string, 'get'> | undefined
+): AsyncData<T, FetchError<unknown> | null> => {
+    const nuxtApp = useNuxtApp()
+    const config = useRuntimeConfig()
+
+    return useFetch(path, {
+        baseURL: config.public.apiBase,
+        credentials: 'include',
+        headers: useRequestHeaders(),
+        retry: 1,
+        keepalive: true,
+        lazy: true,
+        server: false,
+        getCachedData(key) {
+            return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+        },
+        onRequest: ({ options, request }) => {
+            if (request !== 'auth/sign-in') {
+                const access_token = JSON.parse(getToken() || 'null')
+
+                if (access_token) {
+                    options.headers = {
+                        ...options.headers,
+                        Authorization: `Bearer ${access_token}`
+                    }
+                }
+            }
+        },
+        onResponseError: async ({ response }) => {
+            if (
+                response.status === 401 &&
+                !response.ok
+            ) {
+                try {
+                    const { data } = await useFetchAPI<IAuthProfile>('/auth/refresh')
+
+                    setToken(data.value?.accessToken as string)
+                } catch {
+                    removeToken()
+                    removeUserData()
+
+                    navigateTo(ROUTER.LOGIN)
+                }
+            }
+        },
+        ...opts
+    })
 }

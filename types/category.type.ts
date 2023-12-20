@@ -38,10 +38,10 @@ export interface ICategory {
 }
 
 export interface ICategorySearch extends IPagination {
-    name?: string
-    parent_id?: number
-    status?: number
-    popular?: number
+    name?: string;
+    parent_id?: number | string | boolean; // Update the type here
+    status?: number | string | boolean;    // Update the type here
+    popular?: number | string | boolean;   // Update the type here
 }
 
 export interface ICategoryTable extends IAggregations {
