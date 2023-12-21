@@ -71,7 +71,6 @@ export const useFetcher = async <T>(
             baseURL: config.public.apiBase,
             credentials: 'include',
             headers: useRequestHeaders(),
-            retry: 1,
             keepalive: true,
             onRequest: ({ options, request }) => {
                 if (request !== 'auth/sign-in') {
