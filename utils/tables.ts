@@ -173,7 +173,7 @@ export const fileColumns: Columns[] = [
     {
         key: 'name',
         label: 'Tiêu đề',
-        class: minWithColumn(160)
+        class: minWithColumn(350)
     },
     {
         key: 'size',

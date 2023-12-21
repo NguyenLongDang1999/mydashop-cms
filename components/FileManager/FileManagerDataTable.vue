@@ -1,33 +1,31 @@
 <script setup lang="ts">
 
-// ** Third Party Imports
-
 // ** Types Imports
-// import type { ICategory } from '~/types/category.type'
-// import type { IRow } from '~/types/core.type'
+import type { BreadcrumbLink } from '@nuxt/ui/dist/runtime/types'
 
 // ** useHooks
-const config = useRuntimeConfig()
+const { route, search, dataTable, isFetching, pathName } = useFileManagerDataTable()
 
-// const { data } = useQuery({
-//     queryKey: ['fileManagerDataList'],
-//     queryFn: () => useFetcher(config.public.bunnyApiBase + '/images-data/category', {
-//         headers: {
-//             AccessKey: 'e8625dd4-00c8-488c-8fef-aeeae2d1a9e44fdb3e47-695c-46a8-abc0-3e5608b72b8c'
-//         }
-//     })
-// })
+// ** Data
+const links: BreadcrumbLink[] = [{
+    label: 'Home',
+    icon: 'i-heroicons-home',
+    to: '/file-manager'
+}]
 
-// const { data } = useFetch('https://sg.storage.bunnycdn.com/images-data', {
-//     headers: {
-//         Accesskey: 'e8625dd4-00c8-488c-8fef-aeeae2d1a9e44fdb3e47-695c-46a8-abc0-3e5608b72b8c'
-//     }
-// })
+if (route.params.path && route.params.path.length) {
+    let currentPath = '/file-manager';
 
-const { data } = useQueryFetch('category', '/data-list-123123', 'ababa')
+    (route.params.path as string[]).forEach(_p => {
+        currentPath += '/' + _p
 
-// ** Computed
-const fileManagerDataList = computed(() => data.value || [])
+        links.push({
+            label: _p,
+            icon: 'i-heroicons-folder',
+            to: currentPath
+        })
+    })
+}
 </script>
 
 <template>
@@ -41,24 +39,80 @@ const fileManagerDataList = computed(() => data.value || [])
         </template>
 
         <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-12">
+                <div class="bg-slate-100 px-3 py-2 rounded-md">
+                    <UBreadcrumb :links="links" />
+                </div>
+            </div>
+
+            <div class="col-span-12">
+                <div class="flex gap-2">
+                    <FileManagerCreateFolder />
+                    <FileManagerUploadFile />
+                </div>
+            </div>
+
             <div class="col-span-3">
                 <FormInput
+                    v-model="search"
                     label="Tìm Kiếm"
-                    name="search"
+                    name="search_file"
+                    autocomplete="off"
                 />
             </div>
         </div>
 
-        {{ fileManagerDataList }}
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable
-                :rows="[]"
+                :rows="dataTable"
                 :columns="fileColumns"
+                :loading="isFetching"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >
                 <template #name-data="{ row }">
-                    <span />
+                    <ULink
+                        v-if="!row.Length"
+                        class="flex items-center gap-2 font-medium text-primary hover:underline"
+                        :to="`${$route.path}/${row.ObjectName}`"
+                    >
+                        <UIcon name="i-heroicons-folder" />
+                        <span class="truncate flex-1">{{ row.ObjectName }}</span>
+                    </ULink>
+
+                    <UPopover
+                        v-else
+                        mode="hover"
+                    >
+                        <div class="flex items-center gap-2 font-medium">
+                            <UIcon name="i-heroicons-document" />
+                            <span class="truncate flex-1">{{ row.ObjectName }}</span>
+                        </div>
+
+                        <template #panel>
+                            <div class="p-2">
+                                <UAvatar
+                                    :src="getImageFile(pathName, row.ObjectName)"
+                                    :alt="row.ObjectName"
+                                    size="lg"
+                                />
+                            </div>
+                        </template>
+                    </UPopover>
+                </template>
+
+                <template #size-data="{ row }">
+                    <span>{{ row.Length ? (row.Length / 1000).toFixed(2) + ' kB' : '-' }} </span>
+                </template>
+
+                <template #date_modified-data="{ row }">
+                    <span>{{ formatDateTime(row.DateCreated) }}</span>
+                </template>
+
+                <template #actions-data="{ row }">
+                    <div class="flex gap-2">
+                        <Confirm :remove="() => useFileManagerDelete(row.ObjectName, !row.Length)" />
+                    </div>
                 </template>
             </UTable>
         </div>

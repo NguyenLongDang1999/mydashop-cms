@@ -1,0 +1,32 @@
+<script setup lang="ts">
+
+// ** Data
+const fileInput = ref()
+
+// ** Methods
+async function onFileInput(e: Event) {
+    const fileValue = (e.target as HTMLInputElement).files![0]
+
+    await useFileManagerUploadFile(fileValue.name, fileValue)
+}
+</script>
+
+<template>
+    <UButton
+        icon="i-heroicons-arrow-up-tray"
+        size="sm"
+        square
+        label="Tải Hình"
+        color="gray"
+        variant="solid"
+        @click="fileInput.click()"
+    />
+
+    <input
+        ref="fileInput"
+        type="file"
+        class="sr-only"
+        v-bind="$attrs"
+        @input="onFileInput"
+    >
+</template>

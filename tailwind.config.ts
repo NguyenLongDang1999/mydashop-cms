@@ -6,6 +6,6 @@ export default <Partial<Config>>{
         './utils/tables.ts'
     ],
     safelist: [
-        ...[100, 120, 160, 200, 180, 250].map(_i => `min-w-[${_i}px]`)
+        ...[100, 120, 160, 200, 180, 250, 350].map(_i => `min-w-[${_i}px]`)
     ]
 }
