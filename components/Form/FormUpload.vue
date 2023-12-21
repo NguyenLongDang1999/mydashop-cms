@@ -12,6 +12,9 @@ const props = defineProps<Props>()
 const file = ref<File | null>()
 const { base64: fileURL } = useBase64(file)
 
+const isOpen = ref<boolean>(false)
+
+
 // ** useHooks
 const { imageURL } = useImage()
 
@@ -57,21 +60,24 @@ function onFileInput(e: Event) {
         </div>
 
         <div class="w-40 h-40">
-            <label class="flex w-full h-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
+            <label
+                class="flex w-full h-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300"
+                @click="isOpen = true"
+            >
                 <div class="space-y-1 text-center">
                     <UIcon
                         name="i-heroicons-plus"
                         class="w-7 h-7 text-gray-400"
                     />
                 </div>
-
-                <input
-                    type="file"
-                    class="sr-only"
-                    v-bind="$attrs"
-                    @input="onFileInput"
-                >
             </label>
         </div>
+
+        <UModal
+            v-model="isOpen"
+            fullscreen
+        >
+            <FileManagerDataTable :close-button="() => isOpen = false" />
+        </UModal>
     </div>
 </template>

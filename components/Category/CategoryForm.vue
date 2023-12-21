@@ -32,7 +32,10 @@ const onSubmit = handleSubmit(async values => {
         @click="isOpen = true"
     />
 
-    <UModal v-model="isOpen">
+    <UModal
+        v-model="isOpen"
+        prevent-close
+    >
         <UForm
             :state="{}"
             @submit="onSubmit"

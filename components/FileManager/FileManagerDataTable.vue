@@ -3,6 +3,13 @@
 // ** Types Imports
 import type { BreadcrumbLink } from '@nuxt/ui/dist/runtime/types'
 
+// ** Props & Emits
+interface Props {
+    closeButton?: () => void
+}
+
+defineProps<Props>()
+
 // ** useHooks
 const { route, search, dataTable, isFetching, pathName } = useFileManagerDataTable()
 
@@ -35,6 +42,14 @@ if (route.params.path && route.params.path.length) {
                 <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
                     Danh sách Files
                 </h2>
+
+                <UButton
+                    color="gray"
+                    variant="ghost"
+                    icon="i-heroicons-x-mark-20-solid"
+                    class="-my-1"
+                    @click="closeButton"
+                />
             </div>
         </template>
 
