@@ -20,7 +20,7 @@ const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
-const { isPending, mutateAsync } = useProductFormInput('PATCH')
+const { isPending, mutateAsync } = useProductFormInput()
 const { attribute_id, attributeValueList } = useAttributeValueList()
 
 const { handleSubmit, values: product, setFieldValue } = useForm({

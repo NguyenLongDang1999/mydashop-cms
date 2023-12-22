@@ -40,7 +40,7 @@ provide('search', search)
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >
                 <template #name-data="{ row }: IRow<IFlashDeals>">
-                    <ULink :to="`${ROUTER.FLASH_DEALS}/${row.id}`">
+                    <ULink :to="goToPage(row.id)">
                         <div class="flex items-center gap-1">
                             <span class="capitalize text-primary flex-1 truncate">{{ row.campaign_name }}</span>
                         </div>
@@ -59,7 +59,7 @@ provide('search', search)
                     <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                 </template>
 
-                <template #actions-data="{ row }">
+                <template #actions-data="{ row }: IRow<IFlashDeals>">
                     <div class="flex gap-2">
                         <UButton
                             icon="i-heroicons-pencil-square"
@@ -67,33 +67,17 @@ provide('search', search)
                             color="orange"
                             square
                             variant="solid"
-                            :to="`${ROUTER.FLASH_DEALS}/${row.id}`"
+                            :to="goToPage(row.id)"
                         />
 
-                        <Confirm :remove="() => mutateAsync(row.id)" />
+                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
             </UTable>
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>

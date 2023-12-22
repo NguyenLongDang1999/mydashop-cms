@@ -4,7 +4,7 @@
 import type { TabItem } from '@nuxt/ui/dist/runtime/types'
 
 // ** useHooks
-const { path, data } = await useBrandDetail()
+const { data } = await useBrandDetail()
 
 // ** Data
 const items: TabItem[] = [{
@@ -29,10 +29,7 @@ const items: TabItem[] = [{
                 class="w-full"
             >
                 <template #detail>
-                    <BrandDetail
-                        :data="data"
-                        :path="path"
-                    />
+                    <BrandDetail :data="data" />
                 </template>
 
                 <template #product>

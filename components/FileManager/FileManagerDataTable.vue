@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 defineEmits(['imageUrl'])
 
 // ** useHooks
-const { route, search, dataTable, isFetching, pathName, pathSplit } = useFileManagerDataTable()
+const { route, search, dataTable, isFetching, pathSplit } = useFileManagerDataTable()
 
 // ** Data
 const links = ref<BreadcrumbLink[]>([{
@@ -134,7 +134,7 @@ const generateDynamicPath = (objectName: string) => {
                         <template #panel>
                             <div class="p-2">
                                 <UAvatar
-                                    :src="getImageFile(pathName, row.ObjectName)"
+                                    :src="getPathImageFile(formatPathFile(row.Path, row.ObjectName))"
                                     :alt="row.ObjectName"
                                     size="lg"
                                 />

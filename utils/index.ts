@@ -12,16 +12,6 @@ export const formatCurrency = (amount: number) => amount.toLocaleString('vi-VN',
     minimumFractionDigits: 0
 })
 
-export const getImageFile = (path: string, name?: string) => {
-    if (name) {
-        return name.includes('https://') ?
-            name :
-            `${config.previewCDN}/${path}/${name}`
-    }
-
-    return IMAGE.DEFAULT
-}
-
 export const compareDateTime = (row: IProduct) => {
     const startDate = new Date(row.discount_start_date).getTime()
     const endDate = new Date(row.discount_end_date).getTime()

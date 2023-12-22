@@ -3,10 +3,10 @@ import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { IBrandForm, IBrandList, IBrandSearch, IBrandTable } from '~/types/brand.type'
+import type { IDeleteRecord } from '~/types/core.type'
 
 // ** State
 const path = ref<string>(ROUTE.BRAND)
-
 
 export default function () {
     return {
@@ -27,7 +27,6 @@ export const useBrandDataTable = () => {
     })
 
     return {
-        path,
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),
@@ -44,19 +43,17 @@ export const useBrandDataList = () => {
 
 export const useBrandDetail = async () => {
     // ** useHooks
-    const route = useRoute()
-    const id = Number(route.params.id)
+    const id = Number(useRoute().params.id)
     const { data, suspense } = useQueryFetch<IBrandForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()
 
     return {
-        path,
         data: computed(() => data.value as IBrandForm || {})
     }
 }
 
-export const useBrandFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+export const useBrandFormInput = () => {
     const queryClient = useQueryClient()
 
     return useQueryMutation<IBrandForm>(path.value, {
@@ -64,20 +61,20 @@ export const useBrandFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
 
-            if (methods === 'PATCH') {
+            if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    })
 }
 
 export const useBrandFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value + '/remove', {
+    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })

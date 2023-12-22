@@ -14,7 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isPending, mutateAsync } = useProductFormInput('PATCH')
+const { isPending, mutateAsync } = useProductFormInput()
 
 const { handleSubmit, values: product, setFieldValue } = useForm({
     validationSchema: schema,

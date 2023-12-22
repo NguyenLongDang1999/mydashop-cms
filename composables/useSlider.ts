@@ -36,8 +36,7 @@ export const useSliderDataTable = () => {
 
 export const useSliderDetail = async () => {
     // ** useHooks
-    const route = useRoute()
-    const id = Number(route.params.id)
+    const id = Number(useRoute().params.id)
     const { data, suspense } = useQueryFetch<ISliderForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()

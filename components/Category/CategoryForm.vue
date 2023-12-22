@@ -1,15 +1,12 @@
 <script setup lang="ts">
 
-// ** Types Imports
-import type { ICategoryForm } from '~/types/category.type'
-
 // ** Validations Imports
 import { label, schema } from '~/validations/category'
 
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useCategoryFormInput()
-const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
+const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)

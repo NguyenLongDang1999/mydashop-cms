@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
+import type { IAttributeValues } from '~/types/attribute.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
@@ -9,7 +9,7 @@ import { label, schema } from '~/validations/attribute'
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useAttributeFormInput()
-const { handleSubmit, values: attribute, setFieldValue } = useForm<IAttributeForm>({ validationSchema: schema })
+const { handleSubmit, values: attribute, setFieldValue } = useForm({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)

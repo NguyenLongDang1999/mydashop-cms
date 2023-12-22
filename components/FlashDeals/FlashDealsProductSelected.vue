@@ -13,9 +13,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path, search, isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
+const { search, isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
 const { value, errorMessage, handleChange } = useField<IProduct[]>(() => props.name, undefined, { syncVModel: true })
 
 provide('search', search)
@@ -57,10 +55,10 @@ const error = computed(() => errorMessage.value)
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
-                            <ULink :to="`${ROUTER.PRODUCT}/${row.id}`">
+                            <ULink :to="goToPage(row.id, ROUTER.PRODUCT)">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
-                                        :src="getImageFile(path, row.image_uri)"
+                                        :src="getPathImageFile(row.image_uri)"
                                         :alt="row.name"
                                     />
 
@@ -101,7 +99,10 @@ const error = computed(() => errorMessage.value)
                                     {{ formatDateTime(row.discount_end_date) }}
                                 </li>
 
-                                <li v-if="row.discount_type">
+                                <li
+                                    v-if="row.discount_type"
+                                    :class="compareDateTime(row) ? '' : 'line-through'"
+                                >
                                     <span class="font-semibold capitalize">Giá giảm Sale: </span>
 
                                     <template v-if="row.discount_type === SPECIAL_PRICE.PERCENT">
@@ -124,11 +125,11 @@ const error = computed(() => errorMessage.value)
                             <div class="flex flex-col gap-1">
                                 <ULink
                                     v-if="row.brand"
-                                    :to="`${ROUTER.BRAND}/${row.brand.id}`"
+                                    :to="goToPage(row.brand.id, ROUTER.BRAND)"
                                 >
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(pathBrand, row.brand.image_uri)"
+                                            :src="getPathImageFile(row.brand.image_uri)"
                                             :alt="row.brand.name"
                                         />
 
@@ -138,11 +139,11 @@ const error = computed(() => errorMessage.value)
 
                                 <ULink
                                     v-if="row.category"
-                                    :to="`${ROUTER.CATEGORY}/${row.category.id}`"
+                                    :to="goToPage(row.category.id, ROUTER.CATEGORY)"
                                 >
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(pathCategory, row.category.image_uri)"
+                                            :src="getPathImageFile(row.category.image_uri)"
                                             :alt="row.category.name"
                                         />
 
@@ -164,23 +165,7 @@ const error = computed(() => errorMessage.value)
             </div>
 
             <div class="col-span-12">
-                <div class="flex flex-wrap justify-center items-center">
-                    <UPagination
-                        v-model="search.page"
-                        :page-count="search.pageSize"
-                        :total="dataAggregations"
-                        :ui="{
-                            wrapper: 'flex items-center gap-1',
-                            rounded:
-                                '!rounded-full min-w-[32px] justify-center',
-                            default: {
-                                activeButton: {
-                                    variant: 'outline',
-                                },
-                            },
-                        }"
-                    />
-                </div>
+                <Pagination :data-aggregations="dataAggregations" />
             </div>
         </div>
     </UFormGroup>

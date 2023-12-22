@@ -8,7 +8,6 @@ import { label, schema } from '~/validations/attribute'
 
 // ** Props & Emits
 interface Props {
-    path: string
     data: IAttributeForm
 }
 
@@ -16,7 +15,7 @@ const props = defineProps<Props>()
 
 // ** useHooks
 const categoryList = useCategoryDataList()
-const { isPending, mutateAsync } = useAttributeFormInput('PATCH')
+const { isPending, mutateAsync } = useAttributeFormInput()
 
 const { handleSubmit, values: attribute, setFieldValue } = useForm({
     validationSchema: schema,

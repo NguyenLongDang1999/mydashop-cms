@@ -4,6 +4,7 @@ import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
 // ** Types Imports
 import type { IAttributeList } from '~/types/attribute.type'
 import type { IBrandList } from '~/types/brand.type'
+import type { IDeleteRecord } from '~/types/core.type'
 import type { IProductForm, IProductList, IProductSearch, IProductTable, IProductUpload } from '~/types/product.type'
 
 // ** State
@@ -61,7 +62,6 @@ export const useProductDataTable = () => {
     })
 
     return {
-        path,
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),
@@ -79,19 +79,17 @@ export const useProductDataList = () => {
 
 export const useProductDetail = async () => {
     // ** useHooks
-    const route = useRoute()
-    const id = Number(route.params.id)
+    const id = Number(useRoute().params.id)
     const { data, suspense } = useQueryFetch<IProductForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()
 
     return {
-        path,
         data: computed(() => data.value as IProductForm || {})
     }
 }
 
-export const useProductFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+export const useProductFormInput = () => {
     const queryClient = useQueryClient()
 
     return useQueryMutation<IProductForm>(path.value, {
@@ -99,20 +97,20 @@ export const useProductFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
 
-            if (methods === 'PATCH') {
+            if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    })
 }
 
 export const useProductFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value + '/remove', {
+    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })

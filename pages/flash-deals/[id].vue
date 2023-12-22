@@ -4,9 +4,8 @@
 import { label, schema } from '~/validations/flash-deals'
 
 // ** useHooks
-const { path } = useProduct()
 const { data } = await useFlashDealDetail()
-const { isPending, mutateAsync } = useFlashDealFormInput('PATCH')
+const { isPending, mutateAsync } = useFlashDealFormInput()
 
 const { handleSubmit, values: flashDeals } = useForm({
     validationSchema: schema,
@@ -93,7 +92,7 @@ const onSubmit = handleSubmit(async values => {
                                 <div class="md:col-span-3 col-span-6">
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(path, productItem.image_uri)"
+                                            :src="getPathImageFile(productItem.image_uri)"
                                             :alt="productItem.name"
                                         />
 
@@ -152,7 +151,7 @@ const onSubmit = handleSubmit(async values => {
                                 variant="solid"
                                 label="Quay Lại"
                                 :trailing="false"
-                                @click="$router.go(-1)"
+                                :to="goToPage('', ROUTER.FLASH_DEALS)"
                             />
                         </div>
                     </template>

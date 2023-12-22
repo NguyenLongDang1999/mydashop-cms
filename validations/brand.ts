@@ -21,7 +21,7 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    image_uri: yup.string(),
+    image_uri: yup.string().notRequired(),
     category_id: yup
         .mixed<number[] | string>()
         .test('category_id', `${label.category_id} không được bỏ trống.`, value => {

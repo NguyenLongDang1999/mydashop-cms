@@ -35,7 +35,7 @@ provide('search', search)
             >
                 <template #name-data="{ row }: IRow<IAttribute>">
                     <ULink
-                        :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
+                        :to="goToPage(row.id)"
                         class="flex"
                     >
                         <span class="capitalize text-primary flex-1 truncate">{{ row.name }}</span>
@@ -51,7 +51,7 @@ provide('search', search)
                             v-for="category in row.categories"
                             :key="category.id"
                             :label="category.name"
-                            :to="`${ROUTER.CATEGORY}/${category.id}`"
+                            :to="goToPage(category.id, ROUTER.CATEGORY)"
                             size="xs"
                             color="gray"
                             variant="solid"
@@ -73,33 +73,17 @@ provide('search', search)
                             color="orange"
                             square
                             variant="solid"
-                            :to="`${ROUTER.ATTRIBUTE}/${row.id}`"
+                            :to="goToPage(row.id)"
                         />
 
-                        <Confirm :remove="() => mutateAsync(row.id)" />
+                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
             </UTable>
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>

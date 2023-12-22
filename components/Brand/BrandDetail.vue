@@ -8,7 +8,6 @@ import { label, schema } from '~/validations/brand'
 
 // ** Props & Emits
 interface Props {
-    path: string
     data: IBrandForm
 }
 
@@ -16,9 +15,9 @@ const props = defineProps<Props>()
 
 // ** useHooks
 const categoryList = useCategoryDataList()
-const { isPending, mutateAsync } = useBrandFormInput('PATCH')
+const { isPending, mutateAsync } = useBrandFormInput()
 
-const { handleSubmit, values: brand, setFieldValue } = useForm<IBrandForm>({
+const { handleSubmit, values: brand, setFieldValue } = useForm({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -38,7 +37,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
-                    <FormUpload :image-src="getImageFile(path, brand.image_uri)" />
+                    <FormUpload />
                 </div>
 
                 <div class="sm:col-span-6 col-span-12">
@@ -122,7 +121,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="$router.go(-1)"
+                        :to="goToPage('', ROUTER.BRAND)"
                     />
                 </div>
             </template>

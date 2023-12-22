@@ -43,8 +43,7 @@ export const useCategoryDataList = () => {
 
 export const useCategoryDetail = async () => {
     // ** useHooks
-    const route = useRoute()
-    const id = Number(route.params.id)
+    const id = Number(useRoute().params.id)
     const { data, suspense } = useQueryFetch<ICategoryForm>(path.value, `/${id}`, 'Detail', { id })
 
     await suspense()

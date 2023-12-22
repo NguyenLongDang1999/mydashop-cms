@@ -25,7 +25,7 @@ const productTypeSingle = computed(() => productTypeSingleValue.value === PRODUC
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    mutateAsync({
+    await mutateAsync({
         ...values,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
@@ -570,7 +570,7 @@ const handleIsDefault = (index: number) => {
                                 variant="solid"
                                 label="Huỷ Bỏ"
                                 :trailing="false"
-                                @click="navigateTo(ROUTER.PRODUCT)"
+                                :to="goToPage('', ROUTER.PRODUCT)"
                             />
                         </div>
                     </template>

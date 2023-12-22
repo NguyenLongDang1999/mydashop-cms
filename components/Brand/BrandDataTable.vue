@@ -5,7 +5,7 @@ import type { IBrand } from '~/types/brand.type'
 import type { IRow } from '~/types/core.type'
 
 // ** useHooks
-const { path, search, isFetching, dataTable, dataAggregations } = useBrandDataTable()
+const { search, isFetching, dataTable, dataAggregations } = useBrandDataTable()
 const { isPending, mutateAsync } = useBrandFormDelete()
 
 provide('search', search)
@@ -34,10 +34,10 @@ provide('search', search)
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >
                 <template #name-data="{ row }: IRow<IBrand>">
-                    <ULink :to="`${ROUTER.BRAND}/${row.id}`">
+                    <ULink :to="goToPage(row.id)">
                         <div class="flex items-center gap-1">
                             <UAvatar
-                                :src="getImageFile(path, row.image_uri)"
+                                :src="getPathImageFile(row.image_uri)"
                                 :alt="row.name"
                             />
 
@@ -55,7 +55,7 @@ provide('search', search)
                             v-for="category in row.categories"
                             :key="category.id"
                             :label="category.name"
-                            :to="`${ROUTER.CATEGORY}/${category.id}`"
+                            :to="goToPage(category.id, ROUTER.CATEGORY)"
                             size="xs"
                             color="gray"
                             variant="solid"
@@ -81,33 +81,17 @@ provide('search', search)
                             color="orange"
                             square
                             variant="solid"
-                            :to="`${ROUTER.BRAND}/${row.id}`"
+                            :to="goToPage(row.id)"
                         />
 
-                        <Confirm :remove="() => mutateAsync(row.id)" />
+                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
             </UTable>
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>
