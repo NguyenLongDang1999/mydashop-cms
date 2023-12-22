@@ -24,3 +24,7 @@ export interface ISearchDropdown {
         src: string
     }
 }
+
+export interface IDeleteRecord {
+    id: number
+}

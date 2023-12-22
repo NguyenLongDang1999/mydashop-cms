@@ -5,7 +5,7 @@ import type { ICategory } from '~/types/category.type'
 import type { IRow } from '~/types/core.type'
 
 // ** useHooks
-const { path, search, isFetching, dataTable, dataAggregations } = useCategoryDataTable()
+const { search, isFetching, dataTable, dataAggregations } = useCategoryDataTable()
 const { isPending, mutateAsync } = useCategoryFormDelete()
 
 provide('search', search)
@@ -34,10 +34,10 @@ provide('search', search)
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >
                 <template #name-data="{ row }: IRow<ICategory>">
-                    <ULink :to="`${ROUTER.CATEGORY}/${row.id}`">
+                    <ULink :to="goToPage(row.id)">
                         <div class="flex items-center gap-1">
                             <UAvatar
-                                :src="getImageFile(path, row.image_uri)"
+                                :src="getPathImageFile(row.image_uri)"
                                 :alt="row.name"
                             />
 
@@ -52,11 +52,11 @@ provide('search', search)
                 <template #parent_id-data="{ row }: IRow<ICategory>">
                     <ULink
                         v-if="row.parent"
-                        :to="`${ROUTER.CATEGORY}/${row.parent.id}`"
+                        :to="goToPage(row.parent.id)"
                     >
                         <div class="flex items-center gap-1">
                             <UAvatar
-                                :src="getImageFile(path, row.parent.image_uri)"
+                                :src="getPathImageFile(row.parent.image_uri)"
                                 :alt="row.parent.name"
                             />
 
@@ -90,33 +90,17 @@ provide('search', search)
                             color="orange"
                             square
                             variant="solid"
-                            :to="`${ROUTER.CATEGORY}/${row.id}`"
+                            :to="goToPage(row.id)"
                         />
 
-                        <Confirm :remove="() => mutateAsync(row.id)" />
+                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
             </UTable>
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>

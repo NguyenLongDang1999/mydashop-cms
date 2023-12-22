@@ -25,25 +25,21 @@ export default function <T>(
 export const useQueryMutation = <T, U extends Record<string, any> = Record<string, any>>(
     path: string,
     options?: MaybeRefDeep<MutationObserverOptions<T, Error, U, unknown>>,
-    method: 'POST' | 'PATCH' = 'POST'
+    purgeDelete = false
 ) => {
     return useMutation<T, Error, U, unknown>({
         mutationFn: body => {
-            const { imageURL } = useImage()
-            const formData = new FormData()
-
-            for (const item in body) {
-                const value = (body as Record<string, string>)[item]
-                if (value) formData.append(item, value)
+            const opts = {
+                newPath: path,
+                method: 'POST'
             }
 
-            if (imageURL.value) formData.append('image_uri', imageURL.value)
+            if (body.id) {
+                opts.method = purgeDelete ? 'DELETE' : 'PATCH'
+                opts.newPath = `${path}/${body.id}`
+            }
 
-            formData.delete('id')
-
-            const newPath = body.id ? `${path}/${body.id}` : path
-
-            return useFetcher<T>(newPath, { method, body: imageURL.value ? formData : body })
+            return useFetcher<T>(opts.newPath, { method: opts.method, body })
         },
         ...options
     })

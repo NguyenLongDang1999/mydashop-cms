@@ -8,10 +8,11 @@ const isOpen = ref<boolean>(false)
 
 // ** useHooks
 const { handleSubmit } = useForm({ validationSchema: schema })
+const { mutateAsync } = useFileManagerCreateFolder()
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await useFileManagerCreateFolder(values.folder_name)
+    await mutateAsync(values.folder_name)
     isOpen.value = false
 })
 </script>

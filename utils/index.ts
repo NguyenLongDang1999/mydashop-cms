@@ -64,3 +64,27 @@ export const formatSellingPrice = (row: IProduct) => {
 
     return formatCurrency(sellingPrice)
 }
+
+export const formatPathFile = (originalPath: string, ObjectName: string) => originalPath.replace(/^\/images-data/, '') + ObjectName
+
+export const getPathImageFile = (name?: string) => {
+    const config = useRuntimeConfig()
+
+    if (name) {
+        return name.includes('https://') ?
+            name :
+            config.public.previewCdn + name
+    }
+
+    return IMAGE.DEFAULT
+}
+
+export const goToPage = (pageName?: number | string, path?: string) => {
+    const route = useRoute()
+
+    if (pageName) {
+        return `${path || route.path}/${pageName}`
+    }
+
+    return `${path || route.path}`
+}

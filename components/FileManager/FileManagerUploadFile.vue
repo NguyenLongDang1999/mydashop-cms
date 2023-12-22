@@ -2,12 +2,16 @@
 
 // ** Data
 const fileInput = ref()
+const { mutateAsync } = useFileManagerUploadFile()
 
 // ** Methods
 async function onFileInput(e: Event) {
     const fileValue = (e.target as HTMLInputElement).files![0]
 
-    await useFileManagerUploadFile(fileValue.name, fileValue)
+    await mutateAsync({
+        fileName: fileValue.name,
+        fileRaw: fileValue
+    })
 }
 </script>
 

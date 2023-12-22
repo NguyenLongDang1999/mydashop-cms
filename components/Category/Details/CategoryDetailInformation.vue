@@ -8,7 +8,6 @@ import { label, schema } from '~/validations/category'
 
 // ** Props & Emits
 interface Props {
-    path: string
     data: ICategoryForm
 }
 
@@ -16,9 +15,9 @@ const props = defineProps<Props>()
 
 // ** useHooks
 const categoryList = useCategoryDataList()
-const { isPending, mutateAsync } = useCategoryFormInput('PATCH')
+const { isPending, mutateAsync } = useCategoryFormInput()
 
-const { handleSubmit, values: category, setFieldValue } = useForm<ICategoryForm>({
+const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -35,7 +34,7 @@ const onSubmit = handleSubmit(values => mutateAsync(values))
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
-                    <FormUpload :image-src="getImageFile(path, category.image_uri)" />
+                    <FormUpload />
                 </div>
 
                 <div class="sm:col-span-6 col-span-12">
@@ -125,7 +124,7 @@ const onSubmit = handleSubmit(values => mutateAsync(values))
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="$router.go(-1)"
+                        :to="goToPage('', ROUTER.CATEGORY)"
                     />
                 </div>
             </template>

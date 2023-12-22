@@ -22,8 +22,7 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    image_uri: yup
-        .string(),
+    image_uri: yup.string(),
     description: yup
         .string()
         .max(160, `${label.description} không được vượt quá 160 ký tự.`),

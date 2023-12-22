@@ -8,30 +8,48 @@ interface Props {
     closeButton?: () => void
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+defineEmits(['imageUrl'])
 
 // ** useHooks
-const { route, search, dataTable, isFetching, pathName } = useFileManagerDataTable()
+const { route, search, dataTable, isFetching, pathName, pathSplit } = useFileManagerDataTable()
 
 // ** Data
-const links: BreadcrumbLink[] = [{
+const links = ref<BreadcrumbLink[]>([{
     label: 'Home',
     icon: 'i-heroicons-home',
-    to: '/file-manager'
-}]
+    to: route.path
+}])
 
-if (route.params.path && route.params.path.length) {
-    let currentPath = '/file-manager';
+// ** Watch
+watch(() => route.query, () => {
+    links.value.splice(1)
 
-    (route.params.path as string[]).forEach(_p => {
-        currentPath += '/' + _p
-
-        links.push({
-            label: _p,
-            icon: 'i-heroicons-folder',
-            to: currentPath
+    if (pathSplit.value && pathSplit.value.length) {
+        pathSplit.value.forEach((_p, index) => {
+            links.value.push({
+                label: _p,
+                icon: 'i-heroicons-folder',
+                to: `?path=${pathSplit.value.slice(0, index + 1).join(',')}`
+            })
         })
-    })
+    }
+})
+
+watch(() => props.closeButton, () => navigateTo(route.path))
+
+// ** useHooks
+const { mutateAsync, isPending } = useFileManagerDelete()
+
+// ** Methods
+const generateDynamicPath = (objectName: string) => {
+    const currentPath = route.query.path || ''
+    const  pathArray = (currentPath as string).split(',').filter(segment => segment.trim() !== '')
+
+    pathArray.push(objectName)
+
+    return `?path=${pathArray.join(',')}`
 }
 </script>
 
@@ -81,7 +99,7 @@ if (route.params.path && route.params.path.length) {
             <UTable
                 :rows="dataTable"
                 :columns="fileColumns"
-                :loading="isFetching"
+                :loading="isFetching || isPending"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >
@@ -89,7 +107,7 @@ if (route.params.path && route.params.path.length) {
                     <ULink
                         v-if="!row.Length"
                         class="flex items-center gap-2 font-medium text-primary hover:underline"
-                        :to="`${$route.path}/${row.ObjectName}`"
+                        :to="generateDynamicPath(row.ObjectName)"
                     >
                         <UIcon name="i-heroicons-folder" />
                         <span class="truncate flex-1">{{ row.ObjectName }}</span>
@@ -99,9 +117,18 @@ if (route.params.path && route.params.path.length) {
                         v-else
                         mode="hover"
                     >
-                        <div class="flex items-center gap-2 font-medium">
-                            <UIcon name="i-heroicons-document" />
-                            <span class="truncate flex-1">{{ row.ObjectName }}</span>
+                        <div
+                            class="flex items-center gap-2 font-medium"
+                            @click="closeButton"
+                        >
+                            <UIcon
+                                name="i-heroicons-document"
+                                @click="$emit('imageUrl', formatPathFile(row.Path, row.ObjectName))"
+                            />
+                            <span
+                                class="truncate flex-1"
+                                @click="$emit('imageUrl', formatPathFile(row.Path, row.ObjectName))"
+                            >{{ row.ObjectName }}</span>
                         </div>
 
                         <template #panel>
@@ -126,7 +153,12 @@ if (route.params.path && route.params.path.length) {
 
                 <template #actions-data="{ row }">
                     <div class="flex gap-2">
-                        <Confirm :remove="() => useFileManagerDelete(row.ObjectName, !row.Length)" />
+                        <Confirm
+                            :remove="() => mutateAsync({
+                                fileName: row.ObjectName,
+                                isFolder: !row.Length
+                            })"
+                        />
                     </div>
                 </template>
             </UTable>

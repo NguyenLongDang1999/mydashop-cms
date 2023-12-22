@@ -1,5 +1,8 @@
+// ** Third Party Imports
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+
 // ** State
-const storageName = 'images-data/'
+const storageName = '/images-data/'
 
 // ** Interface
 interface IFileManagerFormInput {
@@ -7,12 +10,17 @@ interface IFileManagerFormInput {
     Message: string
 }
 
-const key: string = 'file-manager:'
-
-export default function () {
-    return {
-    }
+interface IFileManagerUploadFile {
+    fileName: string
+    fileRaw: File
 }
+
+interface IFileManagerDeleteFile {
+    isFolder: boolean
+    fileName: string
+}
+
+const key: string = 'file-manager:'
 
 export const useFileManagerDataTable = () => {
     // ** useHooks
@@ -23,115 +31,112 @@ export const useFileManagerDataTable = () => {
     const search = ref<string>('')
 
     // ** Computed
-    const checkPath = computed(() => route.params.path && route.params.path.length)
-    const pathName = computed(() => checkPath.value ? `${(route.params.path as string[]).join('/')}/` : '')
+    const pathSplit = computed(() => (route.query.path as string)?.split(','))
+    const pathName = computed(() => pathSplit.value?.join('/') || '/')
 
-    const { data, pending } = useLazyFetch<unknown[]>(storageName + pathName.value, {
-        key: key + pathName.value,
-        baseURL: config.public.bunnyApiBase,
-        headers: {
-            Accesskey: config.public.bunnyAccessKey
-        },
-        server: false,
-        keepalive: true
+    const { data, isFetching, refetch } = useQuery<unknown[]>({
+        queryKey: [key + pathName.value],
+        queryFn: () => useLazyFetch(pathName.value + '/', {
+            baseURL: config.public.bunnyApiBase + storageName,
+            keepalive: true,
+            server: false,
+            headers: {
+                Accesskey: config.public.bunnyAccessKey
+            }
+        })
     })
+
+    // ** Watch
+    watch(() => route.query, () => refetch())
 
     return {
         route,
         search,
         pathName,
-        isFetching: pending,
-        dataTable: computed(() => data.value?.filter(_d => _d.ObjectName.toLowerCase().includes(search.value?.toLowerCase() || '')) || [])
+        pathSplit,
+        isFetching,
+        dataTable: computed(() => data.value?.data?.filter(({ ObjectName }: { ObjectName: string }) => ObjectName.toLowerCase().includes(search.value?.toLowerCase() || '')) || [])
     }
 }
 
-export const useFileManagerCreateFolder = async (folder_name: string, isFolder = true) => {
+export const useFileManagerCreateFolder = (isFolder = true) => {
     // ** useHooks
     const route = useRoute()
     const config = useRuntimeConfig()
+    const queryClient = useQueryClient()
 
     // ** Computed
-    const checkPath = computed(() => route.params.path && route.params.path.length)
-    const pathName = computed(() => checkPath.value ? (route.params.path as string[]).join('/') + '/' + folder_name : folder_name)
-    const pathKey = computed(() => checkPath.value ? `${(route.params.path as string[]).join('/')}/` : '')
+    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
 
-    const { data, pending } = await useLazyFetch<IFileManagerFormInput>(storageName + pathName.value + (isFolder ? '/' : ''), {
-        baseURL: config.public.bunnyApiBase,
-        headers: {
-            Accesskey: config.public.bunnyAccessKey
+    return useMutation<IFileManagerFormInput>({
+        mutationFn: body => useLazyFetch(pathName.value + '/' + `${isFolder ? body + '/' : ''}`, {
+            baseURL: config.public.bunnyApiBase + storageName,
+            keepalive: true,
+            server: false,
+            method: 'PUT',
+            headers: {
+                Accesskey: config.public.bunnyAccessKey
+            },
+            body: {}
+        }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            useNotification(MESSAGE.SUCCESS)
         },
-        server: false,
-        keepalive: true,
-        method: 'PUT',
-        body: {}
+        onError: () => useNotification(MESSAGE.ERROR)
     })
-
-    if (data.value?.HttpCode === 201) {
-        useNotification(MESSAGE.SUCCESS)
-        await refreshNuxtData(key + pathKey.value)
-    }
-
-    return {
-        isFetching: pending
-    }
 }
 
-export const useFileManagerUploadFile = async (folder_name: string, fileName: File) => {
+export const useFileManagerUploadFile = () => {
     // ** useHooks
     const route = useRoute()
     const config = useRuntimeConfig()
+    const queryClient = useQueryClient()
 
     // ** Computed
-    const checkPath = computed(() => route.params.path && route.params.path.length)
-    const pathName = computed(() => checkPath.value ? (route.params.path as string[]).join('/') + '/' + folder_name : folder_name)
-    const pathKey = computed(() => checkPath.value ? `${(route.params.path as string[]).join('/')}/` : '')
+    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
 
-    const { data, pending } = await useLazyFetch<IFileManagerFormInput>(storageName + pathName.value, {
-        baseURL: config.public.bunnyApiBase,
-        headers: {
-            Accesskey: config.public.bunnyAccessKey
+    return useMutation<IFileManagerFormInput, Error, IFileManagerUploadFile>({
+        mutationFn: body => useLazyFetch(pathName.value + '/' + body.fileName, {
+            baseURL: config.public.bunnyApiBase + storageName,
+            method: 'PUT',
+            headers: {
+                Accesskey: config.public.bunnyAccessKey
+            },
+            body: body.fileRaw
+        }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            useNotification(MESSAGE.SUCCESS)
         },
-        method: 'PUT',
-        body: fileName
+        onError: () => useNotification(MESSAGE.ERROR)
     })
-
-    if (data.value?.HttpCode === 201) {
-        useNotification(MESSAGE.SUCCESS)
-        await refreshNuxtData(key + pathKey.value)
-    }
-
-    return {
-        isFetching: pending
-    }
 }
 
-export const useFileManagerDelete = async (folder_name: string, isFolder = true) => {
+export const useFileManagerDelete = () => {
     // ** useHooks
     const route = useRoute()
     const config = useRuntimeConfig()
+    const queryClient = useQueryClient()
 
     // ** Computed
-    const checkPath = computed(() => route.params.path && route.params.path.length)
-    const pathName = computed(() => checkPath.value ? (route.params.path as string[]).join('/') + '/' + folder_name : folder_name)
-    const pathKey = computed(() => checkPath.value ? `${(route.params.path as string[]).join('/')}/` : '')
+    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
 
-    const { data, pending } = await useLazyFetch<IFileManagerFormInput>(storageName + pathName.value + (isFolder ? '/' : ''), {
-        baseURL: config.public.bunnyApiBase,
-        headers: {
-            Accesskey: config.public.bunnyAccessKey
+    return useMutation<IFileManagerFormInput, Error, IFileManagerDeleteFile>({
+        mutationFn: body => useLazyFetch(pathName.value + '/' + `${body.isFolder ? body.fileName + '/' : ''}`, {
+            baseURL: config.public.bunnyApiBase + storageName,
+            keepalive: true,
+            server: false,
+            method: 'DELETE',
+            headers: {
+                Accesskey: config.public.bunnyAccessKey
+            },
+            body: {}
+        }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            useNotification(MESSAGE.SUCCESS)
         },
-        server: false,
-        keepalive: true,
-        method: 'DELETE',
-        body: {}
+        onError: () => useNotification(MESSAGE.ERROR)
     })
-
-    if (data.value?.HttpCode === 200) {
-        useNotification(MESSAGE.SUCCESS)
-        await refreshNuxtData(key + pathKey.value)
-    }
-
-    return {
-        isFetching: pending
-    }
 }

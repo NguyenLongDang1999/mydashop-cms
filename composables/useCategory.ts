@@ -3,6 +3,7 @@ import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { ICategoryForm, ICategoryList, ICategorySearch, ICategoryTable } from '~/types/category.type'
+import type { IDeleteRecord } from '~/types/core.type'
 
 // ** State
 const path = ref<string>(ROUTE.CATEGORY)
@@ -26,7 +27,6 @@ export const useCategoryDataTable = () => {
     })
 
     return {
-        path,
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),
@@ -50,12 +50,11 @@ export const useCategoryDetail = async () => {
     await suspense()
 
     return {
-        path,
         data: computed(() => data.value as ICategoryForm || {})
     }
 }
 
-export const useCategoryFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+export const useCategoryFormInput = () => {
     const queryClient = useQueryClient()
 
     return useQueryMutation<ICategoryForm>(path.value, {
@@ -63,20 +62,20 @@ export const useCategoryFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
 
-            if (methods === 'PATCH') {
+            if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    })
 }
 
 export const useCategoryFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value + '/remove', {
+    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
