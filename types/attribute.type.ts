@@ -19,7 +19,7 @@ export interface IAttributeValues {
 export interface IAttributeValuesList {
     id: number
     name: string
-    values: string[]
+    values: string[] | number[]
 }
 
 export interface IAttribute {

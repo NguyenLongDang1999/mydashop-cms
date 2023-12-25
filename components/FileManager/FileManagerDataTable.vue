@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 defineEmits(['imageUrl'])
 
 // ** useHooks
-const { route, search, dataTable, isFetching, pathSplit } = useFileManagerDataTable()
+const { route, search, dataTable, isFetching, pathSplit, refetch } = useFileManagerDataTable()
 
 // ** Data
 const links = ref<BreadcrumbLink[]>([{
@@ -82,6 +82,15 @@ const generateDynamicPath = (objectName: string) => {
                 <div class="flex gap-2">
                     <FileManagerCreateFolder />
                     <FileManagerUploadFile />
+                    <UButton
+                        icon="i-heroicons-arrow-path"
+                        size="sm"
+                        square
+                        label="Refresh"
+                        color="gray"
+                        variant="solid"
+                        @click="refetch"
+                    />
                 </div>
             </div>
 
@@ -153,6 +162,15 @@ const generateDynamicPath = (objectName: string) => {
 
                 <template #actions-data="{ row }">
                     <div class="flex gap-2">
+                        <UButton
+                            icon="i-heroicons-eye"
+                            size="sm"
+                            square
+                            variant="solid"
+                            target="_blank"
+                            :to="getPathImageFile(formatPathFile(row.Path, row.ObjectName))"
+                        />
+
                         <Confirm
                             :remove="() => mutateAsync({
                                 fileName: row.ObjectName,

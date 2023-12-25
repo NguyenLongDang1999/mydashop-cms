@@ -73,11 +73,7 @@ export interface IProductTable extends IAggregations {
 }
 
 export interface IProductUpload {
-    id?: number
-    image_id?: number
-    index: number
-    slug: string
-    image_uri: File | string
+    image_uri: string
 }
 
 export interface IProductVariant {

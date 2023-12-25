@@ -51,8 +51,8 @@ export const useSliderFormInput = () => {
 
     return useQueryMutation<ISliderForm>(path.value, {
         onSuccess: (data, variables) => {
-            queryClient.refetchQueries({ queryKey: [`${path.value}DataList`] })
-            queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
+            queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
+            queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
 
             if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })

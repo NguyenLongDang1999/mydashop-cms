@@ -52,6 +52,7 @@ export const useFileManagerDataTable = () => {
     return {
         route,
         search,
+        refetch,
         pathName,
         pathSplit,
         isFetching,
@@ -106,7 +107,7 @@ export const useFileManagerUploadFile = () => {
             body: body.fileRaw
         }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            queryClient.refetchQueries({ queryKey: [key + pathName.value] })
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotification(MESSAGE.ERROR)

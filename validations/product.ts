@@ -4,6 +4,7 @@ import * as yup from 'yup'
 
 // ** Types Imports
 import type { IAttributeValuesList } from '~/types/attribute.type'
+import type { IProductUpload } from '~/types/product.type'
 
 export const label = {
     sku: 'Mã sản phẩm',
@@ -68,7 +69,7 @@ export const schema = toTypedSchema(yup.object({
                 content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
             }).default({ title: '', content: '' })
         ),
-    product_type: yup.number(),
+    product_type: yup.number().default(PRODUCT_TYPE.SINGLE),
     price: yup
         .number()
         .required(`${label.price} không được bỏ trống.`)
@@ -129,6 +130,7 @@ export const schema = toTypedSchema(yup.object({
                 in_stock: yup.number()
             })
         ),
+    productImage: yup.mixed<string | IProductUpload[]>().notRequired(),
     related_products: yup.array(yup.number().required()),
     upsell_products: yup.array(yup.number().required()),
     cross_sell_products: yup.array(yup.number().required())

@@ -294,7 +294,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="navigateTo(ROUTER.PRODUCT)"
+                        :to="goToPage('', ROUTER.PRODUCT)"
                     />
                 </div>
             </template>

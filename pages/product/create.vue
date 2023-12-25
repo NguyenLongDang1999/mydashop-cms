@@ -11,7 +11,6 @@ import { label, schema } from '~/validations/product'
 const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
 
 // ** useHooks
-const route = useRoute()
 const categoryList = useCategoryDataList()
 const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
 const { handleSubmit, values: product, setFieldValue } = useForm({ validationSchema: schema })
@@ -20,8 +19,6 @@ const { attribute_id, attributeValueList } = useAttributeValueList()
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
-const productTypeSingleValue = computed(() => Number(route.query.product_type))
-const productTypeSingle = computed(() => productTypeSingleValue.value === PRODUCT_TYPE.SINGLE)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
@@ -185,15 +182,13 @@ const handleIsDefault = (index: number) => {
 
                         <div class="md:col-span-4 sm:col-span-6 col-span-12">
                             <FormSelect
-                                v-model="productTypeSingleValue"
                                 :label="label.product_type"
                                 :options="optionProductType"
                                 name="product_type"
-                                disabled
                             />
                         </div>
 
-                        <template v-if="productTypeSingle">
+                        <template v-if="product.product_type === PRODUCT_TYPE.SINGLE">
                             <div class="md:col-span-4 sm:col-span-6 col-span-12">
                                 <FormMoney
                                     :label="label.quantity"
@@ -354,7 +349,7 @@ const handleIsDefault = (index: number) => {
                             />
                         </div>
 
-                        <template v-if="!productTypeSingle">
+                        <template v-if="product.product_type !== PRODUCT_TYPE.SINGLE">
                             <div class="sm:col-span-4 col-span-12">
                                 <FormSelect
                                     v-model="attribute_id"
@@ -391,7 +386,7 @@ const handleIsDefault = (index: number) => {
                                             :name="`attributes.${index}.values`"
                                             :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
                                             multiple
-                                            @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => (product.attributes as IAttributeValuesList[])[index].values?.includes(_v.id))"
+                                            @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => ((product.attributes as IAttributeValuesList[])[index].values as number[])?.includes(_v.id))"
                                         />
                                     </div>
 

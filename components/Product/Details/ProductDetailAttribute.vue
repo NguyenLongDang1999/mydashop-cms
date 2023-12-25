@@ -37,7 +37,7 @@ watchEffect(() => {
     attribute_id.value = attributes.map(_attributeItem => _attributeItem.id)
 
     for (const index in attributes) {
-        attributeValueName.value[index] = (attributeValueList.value[index].data as IAttributeValuesList[])?.filter(_v => attributes[index].values?.includes(_v.id))
+        attributeValueName.value[index] = (attributeValueList.value[index].data as IAttributeValuesList[])?.filter(_v => (attributes[index].values as number[])?.includes(_v.id))
     }
 })
 
@@ -46,8 +46,7 @@ const onSubmit = handleSubmit(async values => {
     mutateAsync({
         ...values,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
-        variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
-        technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
+        variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined
     })
 
     attribute_id.value = (props.data.attributes as IAttributeValuesList[]).map(_attributeItem => _attributeItem.id)
@@ -197,7 +196,7 @@ const handleIsDefault = (index: number) => {
                                     :name="`attributes.${index}.values`"
                                     :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
                                     multiple
-                                    @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => (product.attributes as IAttributeValuesList[])[index].values?.includes(_v.id))"
+                                    @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => product.attributes[index].values?.includes(_v.id))"
                                 />
                             </div>
 
@@ -328,7 +327,7 @@ const handleIsDefault = (index: number) => {
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="navigateTo(ROUTER.PRODUCT)"
+                        :to="goToPage('', ROUTER.PRODUCT)"
                     />
                 </div>
             </template>

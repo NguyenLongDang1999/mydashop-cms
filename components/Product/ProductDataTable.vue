@@ -1,22 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
-
-// ** Data
-const items: DropdownItem[][] = [
-    [{
-        label: 'Sản Phẩm Mới',
-        icon: 'i-heroicons-arrow-small-right',
-        click: () => navigateTo('/product/create?product_type=10')
-    }, {
-        label: 'Sản Phẩm Biến Thể',
-        icon: 'i-heroicons-arrow-small-right',
-        click: () => navigateTo('/product/create?product_type=20')
-    }]
-]
 
 // ** useHooks
 const { search, isFetching, dataTable, dataAggregations } = useProductDataTable()
@@ -33,19 +19,15 @@ provide('search', search)
                     Danh sách sản phẩm
                 </h2>
 
-                <UDropdown
-                    :items="items"
-                    :popper="{ placement: 'bottom-start' }"
-                >
-                    <UButton
-                        icon="i-heroicons-plus"
-                        size="sm"
-                        color="primary"
-                        variant="solid"
-                        label="Thêm Mới"
-                        :trailing="false"
-                    />
-                </UDropdown>
+                <UButton
+                    icon="i-heroicons-plus"
+                    size="sm"
+                    color="primary"
+                    variant="solid"
+                    label="Thêm Mới"
+                    :trailing="false"
+                    to="/product/create"
+                />
             </div>
         </template>
 

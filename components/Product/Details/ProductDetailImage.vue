@@ -3,6 +3,9 @@
 // ** Types Imports
 import type { IProductForm } from '~/types/product.type'
 
+// ** Validations Imports
+import { schema } from '~/validations/product'
+
 // ** Props & Emits
 interface Props {
     data: IProductForm
@@ -11,26 +14,26 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { galleryURL } = useProduct()
+const { isPending, mutateAsync } = useProductFormInput()
 
-// ** Methods
-function onFileInput(e: Event, index: number, image_id?: number) {
-    const fileValue = (e.target as HTMLInputElement).files![0]
+const { handleSubmit } = useForm({
+    validationSchema: schema,
+    initialValues: _omitBy(props.data, _isNil)
+})
 
-    if (fileValue) {
-        galleryURL[index] = {
-            id: props.data.id,
-            index,
-            image_id,
-            slug: props.data.slug + '-' + new Date().getTime(),
-            image_uri: fileValue
-        }
-    }
-}
+const onSubmit = handleSubmit(values => mutateAsync({
+    ...values,
+    attributes: undefined,
+    variants: undefined,
+    productImage: JSON.stringify(values.productImage)
+}))
 </script>
 
 <template>
-    <UForm :state="{}">
+    <UForm
+        :state="{}"
+        @submit="onSubmit"
+    >
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
@@ -44,23 +47,10 @@ function onFileInput(e: Event, index: number, image_id?: number) {
                             :key="index"
                             class="col-span-12"
                         >
-                            <div class="flex items-center gap-4">
-                                <FormUpload
-                                    :image-src="getPathImageFile(value.image_uri as string)"
-                                    label="Ảnh bổ sung"
-                                    @input="e => onFileInput(e, index, value.id)"
-                                />
-
-                                <UButton
-                                    icon="i-heroicons-pencil-square"
-                                    size="sm"
-                                    variant="solid"
-                                    color="red"
-                                    label="Cập Nhật"
-                                    :trailing="false"
-                                />
-                                <!-- @click="dataFormInput(galleryURL[index])" -->
-                            </div>
+                            <FormUpload
+                                label="Ảnh bổ sung"
+                                :name="`productImage.${index}.image_uri`"
+                            />
                         </div>
 
                         <div
@@ -68,25 +58,37 @@ function onFileInput(e: Event, index: number, image_id?: number) {
                             :key="index"
                             class="col-span-12"
                         >
-                            <div class="flex items-center gap-4">
-                                <FormUpload
-                                    label="Ảnh bổ sung"
-                                    @input="e => onFileInput(e, index + data.productImage.length)"
-                                />
-
-                                <UButton
-                                    icon="i-heroicons-arrow-up-tray"
-                                    size="sm"
-                                    variant="solid"
-                                    label="Tải Lên"
-                                    :trailing="false"
-                                />
-                                <!-- @click="dataFormInput(galleryURL[index + data.productImage.length])" -->
-                            </div>
+                            <FormUpload
+                                label="Ảnh bổ sung"
+                                :name="`productImage.${index}.image_uri`"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
+
+            <template #footer>
+                <div class="flex justify-start gap-4">
+                    <UButton
+                        type="submit"
+                        size="sm"
+                        variant="solid"
+                        label="Cập Nhật"
+                        :loading="Boolean(isPending)"
+                        :trailing="false"
+                    />
+
+                    <UButton
+                        type="reset"
+                        size="sm"
+                        color="gray"
+                        variant="solid"
+                        label="Quay Lại"
+                        :trailing="false"
+                        :to="goToPage('', ROUTER.PRODUCT)"
+                    />
+                </div>
+            </template>
         </UCard>
     </UForm>
 </template>
