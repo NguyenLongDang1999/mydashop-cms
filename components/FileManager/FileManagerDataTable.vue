@@ -13,60 +13,39 @@ const props = defineProps<Props>()
 defineEmits(['imageUrl'])
 
 // ** useHooks
-const { route, search, dataTable, isFetching, pathSplit, refetch } = useFileManagerDataTable()
+const { search, dataTable, isFetching, pathSplit, refetch, pathURL } = useFileManagerDataTable()
+const { mutateAsync, isPending } = useFileManagerDelete()
 
 // ** Data
 const links = ref<BreadcrumbLink[]>([{
     label: 'Home',
-    icon: 'i-heroicons-home',
-    to: route.fullPath
+    icon: 'i-heroicons-home'
 }])
 
 // ** Watch
-watch(() => route.query, () => {
+watch(pathURL, () => {
     links.value.splice(1)
 
-    if (pathSplit.value && pathSplit.value.length) {
+    if (pathURL.value) {
         pathSplit.value.forEach((_p, index) => {
             links.value.push({
                 label: _p,
                 icon: 'i-heroicons-folder',
-                to: {
-                    path: route.fullPath,
-                    query: {
-                        path: pathSplit.value.slice(0, index + 1).join(',')
-                    }
-                }
+                index
             })
         })
     }
 })
 
-watch(() => props.closeButton, () => navigateTo({
-    path: route.fullPath,
-    query: {
-        ...route.query,
-        path: undefined
-    }
-}))
-
-// ** useHooks
-const { mutateAsync, isPending } = useFileManagerDelete()
+watch(() => props.closeButton, () => pathURL.value = '')
 
 // ** Methods
 const generateDynamicPath = (objectName: string) => {
-    const currentPath = route.query.path || ''
-    const  pathArray = (currentPath as string).split(',').filter(segment => segment.trim() !== '')
+    const pathArray = (pathURL.value as string).split(',').filter(segment => segment.trim() !== '')
 
     pathArray.push(objectName)
 
-    return {
-        path: route.fullPath,
-        query: {
-            ...route.query,
-            path: pathArray.join(',')
-        }
-    }
+    pathURL.value = pathArray.join(',')
 }
 </script>
 
@@ -91,7 +70,16 @@ const generateDynamicPath = (objectName: string) => {
         <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
                 <div class="bg-slate-100 px-3 py-2 rounded-md">
-                    <UBreadcrumb :links="links" />
+                    <UBreadcrumb
+                        :links="links"
+                        :ui="{
+                            li: 'cursor-pointer'
+                        }"
+                    >
+                        <template #default="{ link }">
+                            <span @click="pathURL = pathSplit.slice(0, link.index + 1).join(',')">{{ link.label }}</span>
+                        </template>
+                    </UBreadcrumb>
                 </div>
             </div>
 
@@ -133,7 +121,7 @@ const generateDynamicPath = (objectName: string) => {
                     <ULink
                         v-if="!row.Length"
                         class="flex items-center gap-2 font-medium text-primary hover:underline"
-                        :to="generateDynamicPath(row.ObjectName)"
+                        @click="generateDynamicPath(row.ObjectName)"
                     >
                         <UIcon name="i-heroicons-folder" />
                         <span class="truncate flex-1">{{ row.ObjectName }}</span>
@@ -180,6 +168,7 @@ const generateDynamicPath = (objectName: string) => {
                 <template #actions-data="{ row }">
                     <div class="flex gap-2">
                         <UButton
+                            v-if="row.Length"
                             icon="i-heroicons-eye"
                             size="sm"
                             square

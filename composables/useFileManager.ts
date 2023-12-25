@@ -2,6 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** State
+const pathURL = ref<string>('')
 const storageName = '/images-data/'
 
 // ** Interface
@@ -24,15 +25,14 @@ const key: string = 'file-manager:'
 
 export const useFileManagerDataTable = () => {
     // ** useHooks
-    const route = useRoute()
     const config = useRuntimeConfig()
 
     // ** Data
     const search = ref<string>('')
 
     // ** Computed
-    const pathSplit = computed(() => (route.query.path as string)?.split(','))
-    const pathName = computed(() => pathSplit.value?.join('/') || '/')
+    const pathSplit = computed(() => pathURL.value.split(','))
+    const pathName = computed(() => pathSplit.value.join('/') || '/')
 
     const { data, isFetching, refetch } = useQuery<unknown[]>({
         queryKey: [key + pathName.value],
@@ -47,12 +47,17 @@ export const useFileManagerDataTable = () => {
     })
 
     // ** Watch
-    watch(() => route.query, () => refetch())
+    watch(pathURL, () => refetch())
+
+    onMounted(() => {
+        pathURL.value = ''
+        refetch()
+    })
 
     return {
-        route,
         search,
         refetch,
+        pathURL,
         pathName,
         pathSplit,
         isFetching,
@@ -62,12 +67,11 @@ export const useFileManagerDataTable = () => {
 
 export const useFileManagerCreateFolder = (isFolder = true) => {
     // ** useHooks
-    const route = useRoute()
     const config = useRuntimeConfig()
     const queryClient = useQueryClient()
 
     // ** Computed
-    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
+    const pathName = computed(() => pathURL.value.split(',').join('/') || '/')
 
     return useMutation<IFileManagerFormInput>({
         mutationFn: body => useLazyFetch(pathName.value + '/' + `${isFolder ? body + '/' : ''}`, {
@@ -81,7 +85,7 @@ export const useFileManagerCreateFolder = (isFolder = true) => {
             body: {}
         }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            queryClient.refetchQueries({ queryKey: [key + '/'] })
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotification(MESSAGE.ERROR)
@@ -90,12 +94,11 @@ export const useFileManagerCreateFolder = (isFolder = true) => {
 
 export const useFileManagerUploadFile = () => {
     // ** useHooks
-    const route = useRoute()
     const config = useRuntimeConfig()
     const queryClient = useQueryClient()
 
     // ** Computed
-    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
+    const pathName = computed(() => pathURL.value.split(',').join('/') || '/')
 
     return useMutation<IFileManagerFormInput, Error, IFileManagerUploadFile>({
         mutationFn: body => useLazyFetch(pathName.value + '/' + body.fileName, {
@@ -107,7 +110,7 @@ export const useFileManagerUploadFile = () => {
             body: body.fileRaw
         }),
         onSuccess: () => {
-            queryClient.refetchQueries({ queryKey: [key + pathName.value] })
+            queryClient.refetchQueries({ queryKey: [key + '/'] })
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotification(MESSAGE.ERROR)
@@ -116,12 +119,11 @@ export const useFileManagerUploadFile = () => {
 
 export const useFileManagerDelete = () => {
     // ** useHooks
-    const route = useRoute()
     const config = useRuntimeConfig()
     const queryClient = useQueryClient()
 
     // ** Computed
-    const pathName = computed(() => (route.query.path as string)?.split(',').join('/') || '/')
+    const pathName = computed(() => pathURL.value.split(',').join('/') || '/')
 
     return useMutation<IFileManagerFormInput, Error, IFileManagerDeleteFile>({
         mutationFn: body => useLazyFetch(pathName.value + '/' + `${body.isFolder ? body.fileName + '/' : ''}`, {
@@ -135,7 +137,7 @@ export const useFileManagerDelete = () => {
             body: {}
         }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [key + pathName.value] })
+            queryClient.refetchQueries({ queryKey: [key + '/'] })
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotification(MESSAGE.ERROR)
