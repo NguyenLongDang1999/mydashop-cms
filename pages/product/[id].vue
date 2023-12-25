@@ -29,7 +29,12 @@ const defaultIndex = computed(() => items.findIndex(item => item.slot === route.
 const onChange = (index: number) => {
     const item = items[index]
 
-    navigateTo(`${route.path}?tab=${item.slot}`)
+    return navigateTo({
+        path: route.path,
+        query: {
+            tab: item.slot
+        }
+    })
 }
 </script>
 

@@ -19,7 +19,7 @@ const { route, search, dataTable, isFetching, pathSplit, refetch } = useFileMana
 const links = ref<BreadcrumbLink[]>([{
     label: 'Home',
     icon: 'i-heroicons-home',
-    to: route.path
+    to: route.fullPath
 }])
 
 // ** Watch
@@ -31,13 +31,24 @@ watch(() => route.query, () => {
             links.value.push({
                 label: _p,
                 icon: 'i-heroicons-folder',
-                to: `?path=${pathSplit.value.slice(0, index + 1).join(',')}`
+                to: {
+                    path: route.fullPath,
+                    query: {
+                        path: pathSplit.value.slice(0, index + 1).join(',')
+                    }
+                }
             })
         })
     }
 })
 
-watch(() => props.closeButton, () => navigateTo(route.path))
+watch(() => props.closeButton, () => navigateTo({
+    path: route.fullPath,
+    query: {
+        ...route.query,
+        path: undefined
+    }
+}))
 
 // ** useHooks
 const { mutateAsync, isPending } = useFileManagerDelete()
@@ -49,7 +60,13 @@ const generateDynamicPath = (objectName: string) => {
 
     pathArray.push(objectName)
 
-    return `?path=${pathArray.join(',')}`
+    return {
+        path: route.fullPath,
+        query: {
+            ...route.query,
+            path: pathArray.join(',')
+        }
+    }
 }
 </script>
 
