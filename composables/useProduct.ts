@@ -10,6 +10,12 @@ import type { IProductForm, IProductList, IProductSearch, IProductTable } from '
 // ** State
 const path = ref<string>(ROUTE.PRODUCT)
 
+export default function () {
+    return {
+        path
+    }
+}
+
 export const useProductDataTable = () => {
     // ** Data
     const search = reactive<IProductSearch>({
