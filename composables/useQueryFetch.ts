@@ -1,5 +1,5 @@
 // ** Third Party Imports
-import { useMutation, useQuery, type MutationObserverOptions } from '@tanstack/vue-query'
+import { useMutation, useQuery, type MutationObserverOptions, type UseQueryOptions } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { MaybeRefDeep } from '@tanstack/vue-query/build/legacy/types'
@@ -12,7 +12,7 @@ export default function <T>(
     endpoint = '/data-list',
     queryKey = 'DataList',
     params = {},
-    options = {}
+    options?: UseQueryOptions<T, Error, T>
 ) {
     return useQuery<T>({
         queryKey: [path + queryKey, params],

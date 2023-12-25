@@ -29,7 +29,7 @@ provide('search', search)
             <UTable
                 :rows="dataTable"
                 :columns="brandColumns"
-                :loading="isFetching || isPending"
+                :loading="Boolean(isFetching) || Boolean(isPending)"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
             >

@@ -8,7 +8,6 @@ import { label, schema } from '~/validations/slider'
 
 // ** Props & Emits
 interface Props {
-    path: string
     slider: ISliderForm
 }
 
@@ -56,7 +55,7 @@ const onSubmit = handleSubmit(async values => {
 
                 <div class="grid gap-4 grid-cols-12">
                     <div class="col-span-12">
-                        <FormUpload :image-src="getImageFile(path, slider.image_uri)" />
+                        <FormUpload />
                     </div>
 
                     <div class="sm:col-span-6 col-span-12">
@@ -100,7 +99,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Cập Nhật"
-                            :loading="isPending"
+                            :loading="Boolean(isPending)"
                             :trailing="false"
                         />
 

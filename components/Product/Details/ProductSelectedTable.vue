@@ -53,7 +53,7 @@ const onSubmit = handleSubmit(() => {
                         <UTable
                             v-model="selected"
                             :rows="dataTable"
-                            :loading="isFetching"
+                            :loading="Boolean(isFetching)"
                             :columns="productNoActionColumns"
                             class="w-full"
                             :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
@@ -180,7 +180,7 @@ const onSubmit = handleSubmit(() => {
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isPending"
+                        :loading="Boolean(isPending)"
                         :trailing="false"
                     />
 

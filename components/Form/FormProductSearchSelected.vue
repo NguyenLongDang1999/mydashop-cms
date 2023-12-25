@@ -35,7 +35,7 @@ const search = async (q?: string) => {
         productList.value = dataList.map(_p => ({
             id: _p.id,
             label: _p.name,
-            avatar: { src: getImageFile(path.value, _p.image_uri) }
+            avatar: { src: getPathImageFile(_p.image_uri) }
         })).filter(Boolean)
 
         return productList.value

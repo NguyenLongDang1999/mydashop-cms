@@ -12,12 +12,10 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path: pathBrand } = useBrand()
-const { path: pathCategory } = useCategory()
-const { path, search, isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { search, isFetching, dataTable, dataAggregations } = useProductDataTable()
 
-// ** Watch
-watchEffect(() => search.category_id = props.categoryId)
+// ** Set Data
+search.category_id = props.categoryId
 
 provide('search', search)
 </script>
@@ -33,16 +31,16 @@ provide('search', search)
                 <div class="flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
                     <UTable
                         :rows="dataTable"
-                        :loading="isFetching"
+                        :loading="Boolean(isFetching)"
                         :columns="productNoActionColumns"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
-                            <ULink :to="`${ROUTER.PRODUCT}/${row.id}`">
+                            <ULink :to="goToPage(row.id, ROUTER.PRODUCT)">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
-                                        :src="getImageFile(path, row.image_uri)"
+                                        :src="getPathImageFile(row.image_uri)"
                                         :alt="row.name"
                                     />
 
@@ -83,7 +81,10 @@ provide('search', search)
                                     {{ formatDateTime(row.discount_end_date) }}
                                 </li>
 
-                                <li v-if="row.discount_type">
+                                <li
+                                    v-if="row.discount_type"
+                                    :class="compareDateTime(row) ? '' : 'line-through'"
+                                >
                                     <span class="font-semibold capitalize">Giá giảm Sale: </span>
 
                                     <template v-if="row.discount_type === SPECIAL_PRICE.PERCENT">
@@ -106,11 +107,11 @@ provide('search', search)
                             <div class="flex flex-col gap-1">
                                 <ULink
                                     v-if="row.brand"
-                                    :to="`${ROUTER.BRAND}/${row.brand.id}`"
+                                    :to="goToPage(row.brand.id, ROUTER.BRAND)"
                                 >
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(pathBrand, row.brand.image_uri)"
+                                            :src="getPathImageFile(row.brand.image_uri)"
                                             :alt="row.brand.name"
                                         />
 
@@ -120,11 +121,11 @@ provide('search', search)
 
                                 <ULink
                                     v-if="row.category"
-                                    :to="`${ROUTER.CATEGORY}/${row.category.id}`"
+                                    :to="goToPage(row.category.id, ROUTER.CATEGORY)"
                                 >
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getImageFile(pathCategory, row.category.image_uri)"
+                                            :src="getPathImageFile(row.category.image_uri)"
                                             :alt="row.category.name"
                                         />
 
@@ -138,7 +139,7 @@ provide('search', search)
                             <UToggle :model-value="row.status === STATUS.ACTIVE" />
                         </template>
 
-                        <template #popular-data="{ row }">
+                        <template #popular-data="{ row }: IRow<IProduct>">
                             <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                         </template>
                     </UTable>
@@ -146,23 +147,7 @@ provide('search', search)
             </div>
 
             <div class="col-span-12">
-                <div class="flex flex-wrap justify-center items-center">
-                    <UPagination
-                        v-model="search.page"
-                        :page-count="search.pageSize"
-                        :total="dataAggregations"
-                        :ui="{
-                            wrapper: 'flex items-center gap-1',
-                            rounded:
-                                '!rounded-full min-w-[32px] justify-center',
-                            default: {
-                                activeButton: {
-                                    variant: 'outline',
-                                },
-                            },
-                        }"
-                    />
-                </div>
+                <Pagination :data-aggregations="dataAggregations" />
             </div>
         </div>
     </UCard>

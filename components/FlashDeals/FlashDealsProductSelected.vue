@@ -49,7 +49,7 @@ const error = computed(() => errorMessage.value)
                     <UTable
                         v-model="value"
                         :rows="dataTable"
-                        :loading="isFetching"
+                        :loading="Boolean(isFetching)"
                         :columns="productNoActionColumns"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"

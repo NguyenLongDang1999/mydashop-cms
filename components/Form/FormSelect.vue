@@ -24,7 +24,7 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 
 // ** Computed
 const error = computed(() => errorMessage.value)
-const dataList = computed(() => props.options.filter(_p => value.value?.includes(_p.id)))
+const dataList = computed(() => props.options.filter(_p => Array.isArray(value.value) && (value.value as number[])?.includes(_p.id)))
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const dataList = computed(() => props.options.filter(_p => value.value?.includes
             value-attribute="id"
             option-attribute="name"
             :multiple="multiple"
-            :loading="$attrs.loading"
+            :loading="Boolean($attrs.loading)"
             v-bind="$attrs"
         >
             <template #label>

@@ -559,7 +559,7 @@ const handleIsDefault = (index: number) => {
                                 size="sm"
                                 variant="solid"
                                 label="Thêm Mới"
-                                :loading="isPending"
+                                :loading="Boolean(isPending)"
                                 :trailing="false"
                             />
 

@@ -2,6 +2,7 @@
 import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
+import type { IDeleteRecord } from '~/types/core.type'
 import type { ISliderForm, ISliderSearch, ISliderTable } from '~/types/slider.type'
 
 // ** State
@@ -26,7 +27,6 @@ export const useSliderDataTable = () => {
     })
 
     return {
-        path,
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),
@@ -42,12 +42,11 @@ export const useSliderDetail = async () => {
     await suspense()
 
     return {
-        path,
         data: computed(() => data.value as ISliderForm || {})
     }
 }
 
-export const useSliderFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+export const useSliderFormInput = () => {
     const queryClient = useQueryClient()
 
     return useQueryMutation<ISliderForm>(path.value, {
@@ -55,20 +54,20 @@ export const useSliderFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
 
-            if (methods === 'PATCH') {
+            if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    })
 }
 
 export const useSliderFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value + '/remove', {
+    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })

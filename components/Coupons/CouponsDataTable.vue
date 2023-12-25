@@ -29,7 +29,7 @@ provide('search', search)
             <UTable
                 :rows="dataTable"
                 :columns="couponsColumns"
-                :loading="isFetching || isPending"
+                :loading="Boolean(isFetching) || Boolean(isPending)"
                 class="w-full"
                 :ui="{ td: { base: 'max-w-[0] truncate' }, th: { base: 'whitespace-nowrap' } }"
             >
@@ -68,23 +68,7 @@ provide('search', search)
         </div>
 
         <template #footer>
-            <div class="flex flex-wrap justify-center items-center">
-                <UPagination
-                    v-model="search.page"
-                    :page-count="search.pageSize"
-                    :total="dataAggregations"
-                    :ui="{
-                        wrapper: 'flex items-center gap-1',
-                        rounded:
-                            '!rounded-full min-w-[32px] justify-center',
-                        default: {
-                            activeButton: {
-                                variant: 'outline',
-                            },
-                        },
-                    }"
-                />
-            </div>
+            <Pagination :data-aggregations="dataAggregations" />
         </template>
     </UCard>
 </template>

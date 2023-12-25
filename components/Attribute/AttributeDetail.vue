@@ -133,7 +133,7 @@ const onSubmit = handleSubmit(async values => mutateAsync({
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isPending"
+                        :loading="Boolean(isPending)"
                         :trailing="false"
                     />
 

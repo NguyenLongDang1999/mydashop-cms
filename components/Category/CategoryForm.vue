@@ -125,7 +125,7 @@ const onSubmit = handleSubmit(async values => {
                             size="sm"
                             variant="solid"
                             label="Thêm Mới"
-                            :loading="isPending"
+                            :loading="Boolean(isPending)"
                             :trailing="false"
                         />
 

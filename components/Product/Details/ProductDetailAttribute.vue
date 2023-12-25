@@ -276,18 +276,18 @@ const handleIsDefault = (index: number) => {
 
                             <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                 <FormMoney
-                                    :label="label.special_price"
-                                    :name="`variants.${index}.special_price`"
-                                    :text-trailing="variant.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                    :label="label.price"
+                                    :name="`variants.${index}.price`"
+                                    text-trailing="VNĐ"
+                                    help="Giá Gốc"
                                 />
                             </div>
 
                             <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                 <FormMoney
-                                    :label="label.price"
-                                    :name="`variants.${index}.price`"
-                                    text-trailing="VNĐ"
-                                    help="Giá Gốc"
+                                    :label="label.special_price"
+                                    :name="`variants.${index}.special_price`"
+                                    :text-trailing="variant.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
                                 />
                             </div>
 
@@ -317,7 +317,7 @@ const handleIsDefault = (index: number) => {
                         size="sm"
                         variant="solid"
                         label="Cập Nhật"
-                        :loading="isPending"
+                        :loading="Boolean(isPending)"
                         :trailing="false"
                     />
 
