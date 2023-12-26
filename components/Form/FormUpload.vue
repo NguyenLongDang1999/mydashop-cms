@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ** useHooks
-const { value, setValue } = useField(() => props.name, undefined, {
+const { value, setValue, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true
 })
 
@@ -24,6 +24,7 @@ const isOpen = ref<boolean>(false)
     <UFormGroup
         :label="label"
         :name="name"
+        :error="errorMessage"
     >
         <div class="flex items-center gap-3">
             <div

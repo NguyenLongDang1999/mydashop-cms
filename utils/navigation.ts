@@ -47,11 +47,11 @@ export default [
         ]
     },
     {
-        label: 'Quản lý giao diện',
+        label: 'Thiết Lập WEBSITE',
         children: [
             {
-                title: 'Slider',
-                to: '/slider'
+                title: 'Thiết lập trang chủ',
+                to: '/website-setup'
             }
         ]
     }

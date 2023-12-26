@@ -42,11 +42,11 @@ export enum ROUTE {
     AUTHENTICATION = 'auth',
     CATEGORY = 'category',
     BRAND = 'brand',
-    SLIDER = 'slider',
     ATTRIBUTE = 'attribute',
     PRODUCT = 'product',
     FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',
+    WEBSITE_SETUP = 'website-setup',
 }
 
 export enum ROUTER {
@@ -72,4 +72,11 @@ export enum MESSAGE {
     SUCCESS = 'Dữ liệu đã được lưu thành công!',
     ERROR = 'Đã xảy ra lỗi trong quá trình xử lý!',
     DELETE = 'Xóa dữ liệu thành công!'
+}
+
+export enum WEBSITE_SETUP {
+    HOME_SLIDER = 'home_slider',
+    HOME_BANNER1 = 'home_banner1',
+    HOME_BANNER2 = 'home_banner2',
+    HOME_BANNER3 = 'home_banner3'
 }

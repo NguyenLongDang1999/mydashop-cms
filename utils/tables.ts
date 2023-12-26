@@ -98,16 +98,6 @@ export const brandColumns: Columns[] = [
     actions
 ]
 
-export const sliderColumns: Columns[] = [
-    {
-        key: 'name',
-        label: 'Thông tin slider',
-        class: minWithColumn(200)
-    },
-    status,
-    actions
-]
-
 export const categoryColumns: Columns[] = [
     {
         key: 'name',
