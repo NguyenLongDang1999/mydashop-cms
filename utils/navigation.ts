@@ -52,6 +52,10 @@ export default [
             {
                 title: 'Thiết lập trang chủ',
                 to: '/website-setup'
+            },
+            {
+                title: 'Thiết lập hệ thống',
+                to: '/website-setup/system'
             }
         ]
     }
