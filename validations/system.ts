@@ -12,8 +12,8 @@ export const label = {
 }
 
 export const schema = toTypedSchema(yup.object({
-    website_name: yup.string(),
-    website_motto: yup.string(),
-    website_favicon: yup.string(),
-    website_logo: yup.string()
+    website_name: yup.string().notRequired(),
+    website_motto: yup.string().notRequired(),
+    website_favicon: yup.string().notRequired(),
+    website_logo: yup.string().notRequired()
 }))
