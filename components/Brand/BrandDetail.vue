@@ -19,7 +19,7 @@ const { isPending, mutateAsync } = useBrandFormInput()
 
 const { handleSubmit, values: brand, setFieldValue } = useForm({
     validationSchema: schema,
-    initialValues: _omitBy(props.data, _isNil)
+    initialValues: props.data
 })
 
 // ** Methods

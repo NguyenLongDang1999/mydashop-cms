@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashDealsForm } from '~/types/flash-deals.type'
+import type { IDateRangePicker } from '~/types/core.type'
 
 // ** Props & Emits
 interface Props {
-    label?: string
     name: string
-    flashDeals?: IFlashDealsForm
+    label?: string
+    data?: IDateRangePicker
 }
 
 const props = defineProps<Props>()
@@ -16,8 +16,8 @@ const props = defineProps<Props>()
 const { value, errorMessage } = useField(() => props.name, undefined, {
     syncVModel: true,
     initialValue: {
-        start: props.flashDeals ? new Date(props.flashDeals.start_date) : new Date(),
-        end: props.flashDeals ? new Date(props.flashDeals.end_date) : new Date()
+        start: props.data ? new Date(props.data.start_date) : new Date(),
+        end: props.data ? new Date(props.data.end_date) : new Date()
     }
 })
 

@@ -49,6 +49,10 @@ const onSubmit = handleSubmit(async values => {
                             <FormDatePickerRange
                                 :label="label.date_range"
                                 :flash-deals="flashDeals"
+                                :data="{
+                                    start_date: flashDeals.start_date,
+                                    end_date: flashDeals.end_date
+                                }"
                                 name="date_range"
                             />
                         </div>

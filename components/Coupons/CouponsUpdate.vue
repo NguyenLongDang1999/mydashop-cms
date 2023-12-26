@@ -18,7 +18,7 @@ const { isPending, mutateAsync } = useCouponsFormInput('PATCH')
 
 const { handleSubmit, values: form } = useForm({
     validationSchema: schema,
-    initialValues: _omitBy(props.coupons, _isNil)
+    initialValues: props.coupons
 })
 
 // ** Data
@@ -108,8 +108,7 @@ const onSubmit = handleSubmit(async values => {
                     <div class="col-span-12">
                         <FormDatePickerRange
                             :label="label.date_range"
-                            :flash-deals="{
-                                ...form,
+                            :data="{
                                 start_date: coupons.discount_start_date,
                                 end_date: coupons.discount_end_date
                             }"

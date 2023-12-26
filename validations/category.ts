@@ -22,14 +22,19 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    image_uri: yup.string().notRequired(),
+    image_uri: yup
+        .string()
+        .notRequired(),
     description: yup
         .string()
-        .max(160, `${label.description} không được vượt quá 160 ký tự.`),
+        .max(160, `${label.description} không được vượt quá 160 ký tự.`)
+        .notRequired(),
     meta_title: yup
         .string()
-        .max(60, `${label.meta_title} không được vượt quá 60 ký tự.`),
+        .max(60, `${label.meta_title} không được vượt quá 60 ký tự.`)
+        .notRequired(),
     meta_description: yup
         .string()
         .max(160, `${label.meta_description} không được vượt quá 160 ký tự.`)
+        .notRequired()
 }))

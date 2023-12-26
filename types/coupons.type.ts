@@ -3,9 +3,9 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface ICouponsForm {
     code: string
-    min_buy: string
+    min_buy: number
     discount_type: number
-    discount_amount: string
+    discount_amount: number
     discount_start_date: string
     discount_end_date: string
 }

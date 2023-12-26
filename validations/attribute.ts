@@ -32,7 +32,8 @@ export const schema = toTypedSchema(yup.object({
         .default([]),
     description: yup
         .string()
-        .max(160, `${label.description} không được vượt quá 160 ký tự.`),
+        .max(160, `${label.description} không được vượt quá 160 ký tự.`)
+        .notRequired(),
     attribute_value_id: yup
         .mixed<IAttributeValues[] | string>()
         .test('attribute_value_id', `${label.attribute_value_id} không được bỏ trống.`, value => {

@@ -28,3 +28,8 @@ export interface ISearchDropdown {
 export interface IDeleteRecord {
     id: number
 }
+
+export interface IDateRangePicker {
+    start_date: string | Date
+    end_date: string | Date
+}

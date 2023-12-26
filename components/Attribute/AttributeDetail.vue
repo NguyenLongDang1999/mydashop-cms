@@ -19,7 +19,7 @@ const { isPending, mutateAsync } = useAttributeFormInput()
 
 const { handleSubmit, values: attribute, setFieldValue } = useForm({
     validationSchema: schema,
-    initialValues: _omitBy(props.data, _isNil)
+    initialValues: props.data
 })
 
 // ** Methods
