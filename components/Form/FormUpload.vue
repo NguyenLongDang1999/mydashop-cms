@@ -37,7 +37,7 @@ const isOpen = ref<boolean>(false)
                     icon="i-heroicons-photo"
                     class="w-40 h-40 group-hover:opacity-10"
                     :ui="{
-                        rounded: 'rounded-md',
+                        rounded: 'rounded-md object-cover',
                         size: {
                             '3xl': 'h-40 w-40'
                         }

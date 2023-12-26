@@ -18,7 +18,7 @@ const { isPending, mutateAsync } = useCouponsFormInput('PATCH')
 
 const { handleSubmit, values: form } = useForm({
     validationSchema: schema,
-    initialValues: props.coupons
+    initialValues: _omitBy(props.coupons, _isNil)
 })
 
 // ** Data

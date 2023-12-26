@@ -19,7 +19,7 @@ const { isPending, mutateAsync } = useCategoryFormInput()
 
 const { handleSubmit, setFieldValue } = useForm({
     validationSchema: schema,
-    initialValues: props.data
+    initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** Methods
