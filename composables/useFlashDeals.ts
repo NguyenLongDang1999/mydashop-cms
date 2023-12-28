@@ -39,6 +39,7 @@ export const useFlashDealFormInput = () => {
 
     return useQueryMutation<IFlashDealsForm>(path.value, {
         onSuccess: (data, variables) => {
+            queryClient.refetchQueries({ queryKey: ['productDataTable'] })
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
 

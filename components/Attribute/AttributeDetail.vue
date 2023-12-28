@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
+import type { IAttributeForm } from '~/types/attribute.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
@@ -26,9 +26,7 @@ const { handleSubmit, values: attribute, setFieldValue } = useForm({
 const onSubmit = handleSubmit(async values => mutateAsync({
     ...values,
     category_id: JSON.stringify(values.category_id),
-    attribute_value_id: attribute.attribute_value_id
-        ? JSON.stringify((values.attribute_value_id as IAttributeValues[]).map(_v => _v.value))
-        : undefined
+    attribute_value_id: undefined
 }))
 </script>
 
@@ -79,51 +77,14 @@ const onSubmit = handleSubmit(async values => mutateAsync({
                     />
                 </div>
 
-                <FieldArray
-                    v-slot="{ push, remove }"
-                    name="attribute_value_id"
-                >
-                    <div class="col-span-12">
-                        <UButton
-                            icon="i-heroicons-plus"
-                            size="sm"
-                            color="primary"
-                            variant="solid"
-                            label="Thêm Thuộc Tính"
-                            :trailing="false"
-                            @click="push({ value: '' })"
-                        />
-                    </div>
+                <div class="col-span-12">
+                    <UDivider />
+                </div>
 
-                    <div class="col-span-12">
-                        <div class="flex flex-col gap-4">
-                            <div
-                                v-for="(values, index) in attribute.attribute_value_id"
-                                :key="index"
-                                class="grid gap-4 grid-cols-12"
-                            >
-                                <div class="col-span-5">
-                                    <FormInput
-                                        :label="label.attribute_value_id"
-                                        :name="`attribute_value_id.${index}.value`"
-                                    />
-                                </div>
-
-                                <div class="col-span-3">
-                                    <UButton
-                                        :ui="{ rounded: 'rounded-full' }"
-                                        icon="i-heroicons-trash"
-                                        size="sm"
-                                        color="red"
-                                        variant="solid"
-                                        class="mt-6"
-                                        @click="remove(index)"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </FieldArray>
+                <AttributeValues
+                    edit-pages
+                    :attribute-values="attribute.attribute_value_id"
+                />
             </div>
 
             <template #footer>

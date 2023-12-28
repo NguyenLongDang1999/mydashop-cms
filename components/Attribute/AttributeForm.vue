@@ -95,51 +95,7 @@ const onSubmit = handleSubmit(async values => {
                         <UDivider />
                     </div>
 
-                    <FieldArray
-                        v-slot="{ push, remove }"
-                        name="attribute_value_id"
-                    >
-                        <div class="col-span-12">
-                            <UButton
-                                icon="i-heroicons-plus"
-                                size="sm"
-                                color="primary"
-                                variant="solid"
-                                label="Thêm Thuộc Tính"
-                                :trailing="false"
-                                @click="push({ value: '' })"
-                            />
-                        </div>
-
-                        <div class="col-span-12">
-                            <div class="flex flex-col gap-4">
-                                <div
-                                    v-for="(values, index) in attribute.attribute_value_id"
-                                    :key="index"
-                                    class="grid gap-4 grid-cols-12"
-                                >
-                                    <div class="col-span-5">
-                                        <FormInput
-                                            :label="label.attribute_value_id"
-                                            :name="`attribute_value_id.${index}.value`"
-                                        />
-                                    </div>
-
-                                    <div class="col-span-3">
-                                        <UButton
-                                            :ui="{ rounded: 'rounded-full' }"
-                                            icon="i-heroicons-trash"
-                                            size="sm"
-                                            color="red"
-                                            variant="solid"
-                                            class="mt-6"
-                                            @click="remove(index)"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </FieldArray>
+                    <AttributeValues :attribute-values="(attribute.attribute_value_id as IAttributeValues[])" />
                 </div>
 
                 <template #footer>

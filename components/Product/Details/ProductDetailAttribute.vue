@@ -29,7 +29,7 @@ const { handleSubmit, values: product, setFieldValue } = useForm({
 })
 
 // ** SetData
-watchEffect(() => {
+onMounted(() => {
     category_id.value = props.data.category_id as number
 
     const attributes: IAttributeValuesList[] = product.attributes as IAttributeValuesList[]
