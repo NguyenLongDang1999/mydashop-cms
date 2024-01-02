@@ -5,30 +5,30 @@ import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 
 const label = {
-    home_categories: 'Danh mục trang chủ'
+    top_brands: 'Top thương hiệu'
 }
 
 const schema = toTypedSchema(yup.object({
-    home_categories: yup.array().notRequired()
+    top_brands: yup.array().notRequired()
 }))
 
 // ** useHooks
-const categoryList = useCategoryDataList()
-const { data } = await useWebsiteSetupDetail(WEBSITE_SETUP.HOME_CATEGORIES)
+const brandList = useBrandDataList()
+const { data } = await useWebsiteSetupDetail(WEBSITE_SETUP.TOP_BRANDS)
 const { isPending, mutateAsync } = useWebsiteSetupFormInput()
 
 const { handleSubmit, values: system } = useForm({
     validationSchema: schema,
     initialValues: {
-        home_categories: typeof data.value.value === 'string' ? JSON.parse(data.value.value) : []
+        top_brands: typeof data.value.value === 'string' ? JSON.parse(data.value.value) : []
     }
 })
 
 // ** Methods
 const onSubmit = handleSubmit(values => mutateAsync({
     id: data.value.id,
-    slug: WEBSITE_SETUP.HOME_CATEGORIES,
-    value: JSON.stringify(values.home_categories)
+    slug: WEBSITE_SETUP.TOP_BRANDS,
+    value: JSON.stringify(values.top_brands)
 }))
 </script>
 
@@ -49,10 +49,10 @@ const onSubmit = handleSubmit(values => mutateAsync({
             <div class="grid gap-4 grid-cols-12 h-80">
                 <div class="col-span-12">
                     <FormSelect
-                        :model-value="system.home_categories"
-                        :label="label.home_categories"
-                        :options="categoryList"
-                        name="home_categories"
+                        :model-value="system.top_brands"
+                        :label="label.top_brands"
+                        :options="brandList"
+                        name="top_brands"
                         multiple
                     />
                 </div>

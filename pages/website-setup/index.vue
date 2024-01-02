@@ -19,6 +19,9 @@ const items: TabItem[] = [{
 }, {
     label: 'Danh mục trang chủ',
     slot: 'home_categories'
+}, {
+    label: 'Top thương hiệu',
+    slot: 'top_brands'
 }]
 
 // ** useHooks
@@ -76,6 +79,10 @@ const onChange = (index: number) => navigateTo({
 
                     <template #home_categories>
                         <WebsiteSetupHomeCategories />
+                    </template>
+
+                    <template #top_brands>
+                        <WebsiteSetupTopBrands />
                     </template>
                 </UTabs>
             </UCard>

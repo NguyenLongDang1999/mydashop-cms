@@ -78,4 +78,5 @@ export enum WEBSITE_SETUP {
     HOME_BANNER3 = 'home_banner3',
     WEBSITE_COLOUR = 'website_colour',
     HOME_CATEGORIES = 'home_categories',
+    TOP_BRANDS = 'top_brands',
 }
