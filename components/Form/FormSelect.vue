@@ -10,6 +10,7 @@ interface Props {
     multiple?: boolean
     options: IOptions[]
     modelValue?: string | number | string[] | (number | undefined)[]
+    colour?: boolean
 }
 
 const props = defineProps<Props>()
@@ -24,7 +25,7 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 
 // ** Computed
 const error = computed(() => errorMessage.value)
-const dataList = computed(() => props.options.filter(_p => Array.isArray(value.value) && (value.value as number[])?.includes(_p.id)))
+const dataList = computed(() => props.options.filter(_p => Array.isArray(value.value) && (value.value as number[])?.includes(_p.id as number)))
 </script>
 
 <template>
@@ -45,13 +46,37 @@ const dataList = computed(() => props.options.filter(_p => Array.isArray(value.v
             v-bind="$attrs"
         >
             <template #label>
-                <span v-if="!Array.isArray(value)">
-                    {{ valueTransform(options, Number(value))?.name || 'Vui Lòng Chọn' }}
+                <span
+                    v-if="!Array.isArray(value)"
+                    class="flex gap-1"
+                >
+                    <span
+                        v-if="colour"
+                        class="flex items-center -space-x-1"
+                    >
+                        <span
+                            class="flex-shrink-0 w-2 h-2 mt-px rounded-full"
+                            :class="`bg-${valueTransform(options, value)?.id}-500`"
+                        />
+                    </span>
+
+                    <span>{{ valueTransform(options, value)?.name || 'Vui Lòng Chọn' }}</span>
                 </span>
 
                 <span v-else>
                     {{ dataList.map(_v => _v.name).join(', ') || 'Vui Lòng Chọn' }}
                 </span>
+            </template>
+
+            <template
+                v-if="colour"
+                #option="{ option }"
+            >
+                <span
+                    class="flex-shrink-0 w-2 h-2 mt-px rounded-full"
+                    :class="`bg-${option.id}-500`"
+                />
+                <span class="truncate">{{ option.name }}</span>
             </template>
         </USelectMenu>
     </UFormGroup>

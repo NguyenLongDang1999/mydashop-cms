@@ -80,5 +80,6 @@ export enum WEBSITE_SETUP {
     HOME_SLIDER = 'home_slider',
     HOME_BANNER1 = 'home_banner1',
     HOME_BANNER2 = 'home_banner2',
-    HOME_BANNER3 = 'home_banner3'
+    HOME_BANNER3 = 'home_banner3',
+    WEBSITE_COLOUR = 'website_colour'
 }

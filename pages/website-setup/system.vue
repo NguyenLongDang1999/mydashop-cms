@@ -14,7 +14,7 @@ const valueData = computed(() => data.value.reduce((acc, item) => {
     return acc
 }, {} as Record<string, string>))
 
-const { handleSubmit } = useForm({
+const { handleSubmit, values: asd } = useForm({
     validationSchema: schema,
     initialValues: valueData.value
 })
@@ -72,6 +72,15 @@ const onSubmit = handleSubmit(values => mutateAsync({ bulkData: JSON.stringify(v
                                     <FormInput
                                         :label="label.website_motto"
                                         name="website_motto"
+                                    />
+                                </div>
+
+                                <div class="col-span-12">
+                                    <FormSelect
+                                        :label="label.website_colour"
+                                        :options="optionColourWebsite"
+                                        name="website_colour"
+                                        colour
                                     />
                                 </div>
 

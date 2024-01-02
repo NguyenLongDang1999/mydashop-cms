@@ -8,7 +8,7 @@ export interface IAggregations {
 }
 
 export interface IOptions {
-    id: number
+    id: number | string
     name: string
     color?: string
 }

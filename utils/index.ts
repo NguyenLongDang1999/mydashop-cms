@@ -2,7 +2,7 @@
 import type { IOptions } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
 
-export const valueTransform = (dataList: IOptions[], value: number) => dataList.find(val => val.id === value)
+export const valueTransform = (dataList: IOptions[], value: number | string) => dataList.find(val => val.id === value)
 
 export const formatDateTime = (date: string) => useDateFormat(date, FORMAT.DATE_TIME).value
 
