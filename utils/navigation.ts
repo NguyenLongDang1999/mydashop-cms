@@ -56,6 +56,10 @@ export default [
             {
                 title: 'Thiết lập hệ thống',
                 to: '/website-setup/system'
+            },
+            {
+                title: 'Pages',
+                to: '/website-setup/pages'
             }
         ]
     }

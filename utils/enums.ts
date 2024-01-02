@@ -47,6 +47,7 @@ export enum ROUTE {
     FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',
     WEBSITE_SETUP = 'website-setup',
+    PAGES = 'pages',
 }
 
 export enum ROUTER {
@@ -58,6 +59,7 @@ export enum ROUTER {
     PRODUCT = '/product',
     COUPONS = '/coupons',
     FLASH_DEALS = '/flash-deals',
+    WEBSITE_SETUP = '/website-setup',
 }
 
 export enum IMAGE {

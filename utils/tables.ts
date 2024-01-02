@@ -177,3 +177,18 @@ export const fileColumns: Columns[] = [
     },
     actions
 ]
+
+export const pagesColumns: Columns[] = [
+    {
+        key: 'name',
+        label: 'Tiêu đề',
+        class: minWithColumn(250)
+    },
+    {
+        key: 'slug',
+        label: 'Đường dẫn URL',
+        class: minWithColumn(250)
+    },
+    status,
+    actions
+]
