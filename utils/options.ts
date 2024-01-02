@@ -20,17 +20,6 @@ export const optionPopular = [
     }
 ]
 
-export const optionShowProduct = [
-    {
-        id: SHOW_PRODUCT.SHOW,
-        name: 'Hiển thị'
-    },
-    {
-        id: SHOW_PRODUCT.NOT_SHOW,
-        name: 'Không hiển thị'
-    }
-]
-
 export const optionTypeDiscount = [
     {
         id: SPECIAL_PRICE.PRICE,

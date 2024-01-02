@@ -26,7 +26,6 @@ useHead({
 
 <template>
     <NuxtLayout>
-        <NuxtLoadingIndicator />
         <NuxtPage />
     </NuxtLayout>
 

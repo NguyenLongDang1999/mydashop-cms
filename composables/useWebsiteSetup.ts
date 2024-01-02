@@ -39,9 +39,11 @@ export const useWebsiteSetupFormInput = () => {
 
     return useQueryMutation<IWebsiteSetupForm>(path.value, {
         onSuccess: (data, variables) => {
-            const appConfig = useAppConfig()
+            if (variables.bulkData) {
+                const appConfig = useAppConfig()
 
-            appConfig.ui.primary = JSON.parse(variables.bulkData).website_colour
+                appConfig.ui.primary = JSON.parse(variables.bulkData).website_colour
+            }
 
             queryClient.invalidateQueries({ queryKey: [path.value + 'DataListSystem'] })
             queryClient.invalidateQueries({ queryKey: [path.value + '-detail'] })

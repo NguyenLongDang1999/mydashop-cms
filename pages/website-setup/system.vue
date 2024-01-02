@@ -14,7 +14,7 @@ const valueData = computed(() => data.value.reduce((acc, item) => {
     return acc
 }, {} as Record<string, string>))
 
-const { handleSubmit, values: asd } = useForm({
+const { handleSubmit } = useForm({
     validationSchema: schema,
     initialValues: valueData.value
 })

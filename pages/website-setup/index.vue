@@ -16,6 +16,9 @@ const items: TabItem[] = [{
 }, {
     label: 'Banner Level 3',
     slot: 'home-banner-level-3'
+}, {
+    label: 'Danh mục trang chủ',
+    slot: 'home_categories'
 }]
 
 // ** useHooks
@@ -50,7 +53,7 @@ const onChange = (index: number) => navigateTo({
 
                 <UTabs
                     :items="items"
-                    :ui="{ wrapper: 'flex gap-4', list: { width: 'w-48' } }"
+                    :ui="{ wrapper: 'flex items-start gap-4 space-y-0', list: { width: 'w-48', tab: { base: 'justify-start' } } }"
                     :default-index="defaultIndex === -1 ? 0 : defaultIndex"
                     orientation="vertical"
                     @change="onChange"
@@ -69,6 +72,10 @@ const onChange = (index: number) => navigateTo({
 
                     <template #home-banner-level-3>
                         <WebsiteSetupBanner3 />
+                    </template>
+
+                    <template #home_categories>
+                        <WebsiteSetupHomeCategories />
                     </template>
                 </UTabs>
             </UCard>

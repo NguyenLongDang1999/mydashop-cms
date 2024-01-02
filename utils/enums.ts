@@ -8,11 +8,6 @@ export enum POPULAR {
     INACTIVE = 20
 }
 
-export enum SHOW_PRODUCT {
-    SHOW = 10,
-    NOT_SHOW = 20,
-}
-
 export enum PAGE {
     CURRENT = 1,
     SIZE = 10
@@ -81,5 +76,6 @@ export enum WEBSITE_SETUP {
     HOME_BANNER1 = 'home_banner1',
     HOME_BANNER2 = 'home_banner2',
     HOME_BANNER3 = 'home_banner3',
-    WEBSITE_COLOUR = 'website_colour'
+    WEBSITE_COLOUR = 'website_colour',
+    HOME_CATEGORIES = 'home_categories',
 }
