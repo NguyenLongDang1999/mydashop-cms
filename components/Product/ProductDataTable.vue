@@ -76,12 +76,18 @@ provide('search', search)
                             </template>
                         </li>
 
-                        <li v-if="row.discount_start_date">
+                        <li
+                            v-if="row.discount_start_date"
+                            :class="compareDateTime(row) ? '' : 'line-through'"
+                        >
                             <span class="font-semibold capitalize">Ngày bắt đầu Sale:</span>
                             {{ formatDateTime(row.discount_start_date) }}
                         </li>
 
-                        <li v-if="row.discount_end_date">
+                        <li
+                            v-if="row.discount_end_date"
+                            :class="compareDateTime(row) ? '' : 'line-through'"
+                        >
                             <span class="font-semibold capitalize">Ngày kết thúc Sale:</span>
                             {{ formatDateTime(row.discount_end_date) }}
                         </li>
