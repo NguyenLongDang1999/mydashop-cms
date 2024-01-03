@@ -4,11 +4,6 @@
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 
 // ** useHooks
-const appConfig = useAppConfig()
-const { data } = await useWebsiteSetupDetail(WEBSITE_SETUP.WEBSITE_COLOUR)
-
-appConfig.ui.primary = data.value.value
-
 useHead({
     htmlAttrs: {
         lang: 'vi',

@@ -1,3 +1,12 @@
+<script setup lang="ts">
+
+// ** useHooks
+const appConfig = useAppConfig()
+const { data } = await useWebsiteSetupDetail(WEBSITE_SETUP.WEBSITE_COLOUR)
+
+appConfig.ui.primary = data.value.value
+</script>
+
 <template>
     <div>
         <TheHeader />
