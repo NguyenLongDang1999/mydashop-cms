@@ -46,7 +46,7 @@ export const useCouponsDetail = async () => {
     }
 }
 
-export const useCouponsFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
+export const useCouponsFormInput = () => {
     const queryClient = useQueryClient()
 
     return useQueryMutation<ICouponsForm>(path.value, {
@@ -54,14 +54,14 @@ export const useCouponsFormInput = (methods: 'POST' | 'PATCH' = 'POST') => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
 
-            if (methods === 'PATCH') {
+            if (variables.id) {
                 queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
             }
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, methods)
+    })
 }
 
 export const useCouponsFormDelete = () => {
