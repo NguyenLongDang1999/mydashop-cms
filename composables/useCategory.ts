@@ -1,5 +1,5 @@
 // ** Third Party Imports
-import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { ICategoryForm, ICategoryList, ICategorySearch, ICategoryTable } from '~/types/category.type'
@@ -22,9 +22,13 @@ export const useCategoryDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<ICategoryTable>(path.value, '', 'DataTable', search, {
+    const { data, isFetching } = useQuery<ICategoryTable>({
+        queryKey: [path.value + 'DataTable', search],
+        queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
     })
+
+    provide('search', search)
 
     return {
         search,
@@ -36,7 +40,10 @@ export const useCategoryDataTable = () => {
 
 export const useCategoryDataList = () => {
     // ** useHooks
-    const { data } = useQueryFetch<ICategoryList[]>(path.value)
+    const { data } = useQuery<ICategoryList[]>({
+        queryKey: [path.value + 'DataList'],
+        queryFn: () => useFetcher(path.value + '/data-list')
+    })
 
     return computed(() => data.value || [])
 }
@@ -44,7 +51,11 @@ export const useCategoryDataList = () => {
 export const useCategoryDetail = async () => {
     // ** useHooks
     const id = Number(useRoute().params.id)
-    const { data, suspense } = useQueryFetch<ICategoryForm>(path.value, `/${id}`, 'Detail', { id })
+
+    const { data, suspense } = useQuery<ICategoryForm>({
+        queryKey: [path.value + 'Detail', id],
+        queryFn: () => useFetcher(path.value + '/' + id)
+    })
 
     await suspense()
 
@@ -56,14 +67,12 @@ export const useCategoryDetail = async () => {
 export const useCategoryFormInput = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<ICategoryForm>(path.value, {
+    return useMutation<ICategoryForm, Error, ICategoryForm>({
+        mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
-
-            if (variables.id) {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-            }
+            if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
             useNotification(MESSAGE.SUCCESS)
         },
@@ -74,10 +83,12 @@ export const useCategoryFormInput = () => {
 export const useCategoryFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
+    return useMutation<IDeleteRecord, Error, IDeleteRecord>({
+        mutationFn: body => useFetcher(`${path.value}/remove/${body.id}`, { method: 'PATCH' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
+
             useNotification(MESSAGE.DELETE)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)

@@ -5,10 +5,8 @@ import type { IRow } from '~/types/core.type'
 import type { IPages } from '~/types/pages.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = usePagesDataTable()
+const { isFetching, dataTable, dataAggregations } = usePagesDataTable()
 const { isPending, mutateAsync } = usePagesFormDelete()
-
-provide('search', search)
 </script>
 
 <template>
@@ -71,7 +69,7 @@ provide('search', search)
                                     :to="goToPage(row.id)"
                                 />
 
-                                <Confirm :remove="() => mutateAsync(row.id)" />
+                                <Confirm :remove="() => mutateAsync({ id: row.id })" />
                             </div>
                         </template>
                     </UTable>

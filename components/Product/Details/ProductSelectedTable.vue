@@ -27,14 +27,12 @@ provide('search', search)
 watchEffect(() => selected.value = dataTable.value.filter((_d: IProduct) => (props.modelValue as number[])?.includes(_d.id)))
 
 // ** Methods
-const onSubmit = handleSubmit(() => {
-    mutateAsync({
-        ...props.data,
-        attributes: undefined,
-        technical_specifications: undefined,
-        [props.name]: selected.value.length ? JSON.stringify(selected.value.map(_s => _s.id)) : undefined
-    })
-})
+const onSubmit = handleSubmit(() => mutateAsync({
+    ...props.data,
+    attributes: undefined,
+    technical_specifications: undefined,
+    [props.name]: selected.value.length ? JSON.stringify(selected.value.map(_s => _s.id)) : undefined
+}))
 </script>
 
 <template>

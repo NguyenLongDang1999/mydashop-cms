@@ -30,7 +30,14 @@ export interface IProductForm {
     related_products?: string | number[]
     upsell_products?: string | number[]
     cross_sell_products?: string | number[]
-    productImage: IProductUpload[]
+    productImage: IProductUpload[] | string
+
+    product_type?: number
+    special_price_type?: number
+    quantity?: number
+    in_stock?: number
+    attribute_id?: number[]
+    FlashDealsProduct: string[]
 }
 
 export interface IProductSpecification {

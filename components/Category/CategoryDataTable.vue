@@ -5,10 +5,8 @@ import type { ICategory } from '~/types/category.type'
 import type { IRow } from '~/types/core.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useCategoryDataTable()
+const { isFetching, dataTable, dataAggregations } = useCategoryDataTable()
 const { isPending, mutateAsync } = useCategoryFormDelete()
-
-provide('search', search)
 </script>
 
 <template>

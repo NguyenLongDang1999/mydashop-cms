@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IPagesForm } from '~/types/pages.type'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/pages'
 
@@ -7,7 +10,7 @@ import { label, schema } from '~/validations/pages'
 const { data } = await usePagesDetail()
 const { isPending, mutateAsync } = usePagesFormInput()
 
-const { handleSubmit, setFieldValue } = useForm({
+const { handleSubmit, setFieldValue } = useForm<IPagesForm>({
     validationSchema: schema,
     initialValues: _omitBy(data.value, _isNil)
 })
@@ -35,7 +38,7 @@ const onSubmit = handleSubmit(async values => {
                     <template #header>
                         <div class="flex justify-between items-center">
                             <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                                Thêm mới Pages
+                                Cập nhật Pages
                             </h2>
                         </div>
                     </template>
@@ -92,7 +95,7 @@ const onSubmit = handleSubmit(async values => {
                                 type="submit"
                                 size="sm"
                                 variant="solid"
-                                label="Thêm Mới"
+                                label="Cập Nhật"
                                 :loading="Boolean(isPending)"
                                 :trailing="false"
                             />

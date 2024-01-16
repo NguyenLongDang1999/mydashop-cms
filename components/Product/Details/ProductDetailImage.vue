@@ -16,7 +16,7 @@ const props = defineProps<Props>()
 // ** useHooks
 const { isPending, mutateAsync } = useProductFormInput()
 
-const { handleSubmit } = useForm({
+const { handleSubmit } = useForm<IProductForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })

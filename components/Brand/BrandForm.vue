@@ -1,12 +1,15 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IBrandForm } from '~/types/brand.type'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/brand'
 
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useBrandFormInput()
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, setFieldValue } = useForm<IBrandForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)

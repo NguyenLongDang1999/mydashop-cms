@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductForm } from '~/types/product.type'
+import type { IProductForm, IProductSpecification } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
@@ -16,7 +16,7 @@ const props = defineProps<Props>()
 // ** useHooks
 const { isPending, mutateAsync } = useProductFormInput()
 
-const { handleSubmit, values: product, setFieldValue } = useForm({
+const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -198,7 +198,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
 
                         <div
                             class="flex flex-col gap-4"
-                            :class="product.technical_specifications.length ? 'mt-4' : ''"
+                            :class="(product.technical_specifications as IProductSpecification[]).length ? 'mt-4' : ''"
                         >
                             <div
                                 v-for="(value, index) in product.technical_specifications"

@@ -1,7 +1,8 @@
 // ** Third Party Imports
-import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
+import type { IDeleteRecord } from '~/types/core.type'
 import type { IPagesForm, IPagesSearch, IPagesTable } from '~/types/pages.type'
 
 // ** State
@@ -15,9 +16,13 @@ export const usePagesDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<IPagesTable>(path.value, '', 'DataTable', search, {
+    const { data, isFetching } = useQuery<IPagesTable>({
+        queryKey: [path.value + 'DataTable', search],
+        queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
     })
+
+    provide('search', search)
 
     return {
         search,
@@ -30,7 +35,11 @@ export const usePagesDataTable = () => {
 export const usePagesDetail = async () => {
     // ** useHooks
     const id = Number(useRoute().params.id)
-    const { data, suspense } = useQueryFetch<IPagesForm>(path.value, `/${id}`, 'Detail', { id })
+
+    const { data, suspense } = useQuery<IPagesForm>({
+        queryKey: [path.value + 'Detail', id],
+        queryFn: () => useFetcher(path.value + '/' + id)
+    })
 
     await suspense()
 
@@ -42,14 +51,12 @@ export const usePagesDetail = async () => {
 export const usePagesFormInput = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<IPagesForm>(path.value, {
+    return useMutation<IPagesForm, Error, IPagesForm>({
+        mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
-
-            if (variables.id) {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-            }
+            if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
             useNotification(MESSAGE.SUCCESS)
         },
@@ -60,12 +67,14 @@ export const usePagesFormInput = () => {
 export const usePagesFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value, {
+    return useMutation<IDeleteRecord, Error, IDeleteRecord>({
+        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
+
             useNotification(MESSAGE.DELETE)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, 'DELETE')
+    })
 }

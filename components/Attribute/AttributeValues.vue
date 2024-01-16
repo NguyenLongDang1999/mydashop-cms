@@ -9,6 +9,7 @@ import { label } from '~/validations/attribute'
 // ** Props & Emits
 interface Props {
     editPages?: boolean
+    attributeId?: number
     attributeValues: IAttributeValues[]
 }
 
@@ -62,7 +63,8 @@ const { isPending, mutateAsync } = useAttributeValuesFormInput()
                                 :loading="Boolean(isPending)"
                                 @click="mutateAsync({
                                     id: values.id,
-                                    value: values.value
+                                    value: values.value,
+                                    attribute_id: attributeId,
                                 })"
                             />
 
@@ -73,7 +75,7 @@ const { isPending, mutateAsync } = useAttributeValuesFormInput()
                                 color="red"
                                 variant="solid"
                                 :loading="Boolean(isPending)"
-                                @click="remove(index)"
+                                @click="values.id ? mutateAsync({ id: values.id, value: '' }) : remove(index)"
                             />
                         </div>
                     </div>

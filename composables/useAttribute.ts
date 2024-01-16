@@ -1,5 +1,5 @@
 // ** Third Party Imports
-import { keepPreviousData, useQueries, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { IAttributeForm, IAttributeList, IAttributeSearch, IAttributeTable, IAttributeValues } from '~/types/attribute.type'
@@ -44,9 +44,13 @@ export const useAttributeDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<IAttributeTable>(path.value, '', 'DataTable', search, {
+    const { data, isFetching } = useQuery<IAttributeTable>({
+        queryKey: [path.value + 'DataTable', search],
+        queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
     })
+
+    provide('search', search)
 
     return {
         search,
@@ -58,7 +62,10 @@ export const useAttributeDataTable = () => {
 
 export const useAttributeDataList = () => {
     // ** useHooks
-    const { data } = useQueryFetch<IAttributeList[]>(path.value)
+    const { data } = useQuery<IAttributeList[]>({
+        queryKey: [path.value + 'DataList'],
+        queryFn: () => useFetcher(path.value + '/data-list')
+    })
 
     return computed(() => data.value || [])
 }
@@ -66,7 +73,11 @@ export const useAttributeDataList = () => {
 export const useAttributeDetail = async () => {
     // ** useHooks
     const id = Number(useRoute().params.id)
-    const { data, suspense } = useQueryFetch<IAttributeForm>(path.value, `/${id}`, 'Detail', { id })
+
+    const { data, suspense } = useQuery<IAttributeForm>({
+        queryKey: [path.value + 'Detail', id],
+        queryFn: () => useFetcher(path.value + '/' + id)
+    })
 
     await suspense()
 
@@ -78,14 +89,12 @@ export const useAttributeDetail = async () => {
 export const useAttributeFormInput = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<IAttributeForm>(path.value, {
+    return useMutation<IAttributeForm, Error, IAttributeForm>({
+        mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
-
-            if (variables.id) {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-            }
+            if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
             useNotification(MESSAGE.SUCCESS)
         },
@@ -96,13 +105,12 @@ export const useAttributeFormInput = () => {
 export const useAttributeValuesFormInput = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<IAttributeValues>(path.value + '/attribute-values', {
+    return useMutation<IAttributeValues, Error, IAttributeValues>({
+        mutationFn: body => useFetcher(`${path.value}/attribute-values`, { method: 'POST', body }),
         onSuccess: (data, variables) => {
-            if (variables.id) {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: data.attribute_id }] })
-            }
+            queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
-            useNotification(MESSAGE.SUCCESS)
+            useNotification(MESSAGE.DELETE)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
     })
@@ -111,10 +119,12 @@ export const useAttributeValuesFormInput = () => {
 export const useAttributeFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<IDeleteRecord>(path.value + '/remove', {
+    return useMutation<IDeleteRecord, Error, IDeleteRecord>({
+        mutationFn: body => useFetcher(`${path.value}/remove/${body.id}`, { method: 'PATCH' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
+
             useNotification(MESSAGE.DELETE)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)

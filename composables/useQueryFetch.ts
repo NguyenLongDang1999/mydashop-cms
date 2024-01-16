@@ -5,6 +5,7 @@ import { useMutation, useQuery, type MutationObserverOptions, type UseQueryOptio
 import type { MaybeRefDeep } from '@tanstack/vue-query/build/legacy/types'
 import type { UseFetchOptions } from 'nuxt/dist/app/composables'
 import type { KeysOf } from 'nuxt/dist/app/composables/asyncData'
+import type { FetchContext, FetchResponse } from 'ofetch'
 import type { IAuthProfile } from '~/types/auth.type'
 
 export default function <T>(
@@ -56,11 +57,18 @@ export const useQueryMutationDelete = <T>(
     })
 }
 
+let refreshTokenPromise: Promise<void> | null = null
+const refreshTokenLock = ref<boolean>(false)
+
 export const useFetcher = async <T>(
     path: string,
     opts?: UseFetchOptions<unknown, unknown, KeysOf<unknown>, null, string, 'get' | 'GET' | 'POST' | 'DELETE' | 'PATCH'> | undefined
 ): Promise<T> => {
     const config = useRuntimeConfig()
+
+    if (refreshTokenLock.value) {
+        await refreshTokenPromise
+    }
 
     try {
         const { data, error } = await useFetch(path, {
@@ -68,35 +76,8 @@ export const useFetcher = async <T>(
             credentials: 'include',
             headers: useRequestHeaders(),
             keepalive: true,
-            onRequest: ({ options, request }) => {
-                if (request !== 'auth/sign-in') {
-                    const access_token = JSON.parse(getToken() || 'null')
-
-                    if (access_token) {
-                        options.headers = {
-                            ...options.headers,
-                            Authorization: `Bearer ${access_token}`
-                        }
-                    }
-                }
-            },
-            onResponseError: async ({ response }) => {
-                if (
-                    response.status === 401 &&
-                    !response.ok
-                ) {
-                    try {
-                        const res = await useFetcher<IAuthProfile>('/auth/refresh')
-
-                        setToken(res.accessToken)
-                    } catch {
-                        removeToken()
-                        removeUserData()
-
-                        navigateTo(ROUTER.LOGIN)
-                    }
-                }
-            },
+            onRequest,
+            onResponseError,
             ...opts
         })
 
@@ -111,5 +92,48 @@ export const useFetcher = async <T>(
         return data.value as T
     } catch (err: unknown) {
         throw new Error(err instanceof Error ? err.message : 'An error occurred during data fetching.')
+    }
+}
+
+const onRequest = ({ options, request }: FetchContext) => {
+    if (request !== 'auth/sign-in') {
+        const access_token = JSON.parse(getToken() || 'null')
+
+        if (access_token) {
+            options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+    }
+}
+
+const onResponseError = async ({ response }: FetchContext & { response: FetchResponse<ResponseType> }) => {
+    if (
+        response.status === 401 &&
+        !response.ok
+    ) {
+        if (!refreshTokenLock.value) {
+            refreshTokenLock.value = true
+
+            refreshTokenPromise = new Promise<void>(async (resolve, reject) => {
+                try {
+                    const res = await useFetcher<IAuthProfile>('/auth/refresh')
+
+                    setToken(res.accessToken)
+                    resolve()
+                } catch {
+                    removeToken()
+                    removeUserData()
+                    navigateTo(ROUTER.LOGIN)
+                    reject()
+                } finally {
+                    refreshTokenLock.value = false
+                }
+            })
+
+        }
+
+        await refreshTokenPromise
     }
 }

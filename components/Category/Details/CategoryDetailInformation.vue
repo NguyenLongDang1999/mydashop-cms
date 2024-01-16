@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useCategoryFormInput()
 
-const { handleSubmit, setFieldValue } = useForm({
+const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })

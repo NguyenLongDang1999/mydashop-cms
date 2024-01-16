@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm } from '~/types/attribute.type'
+import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useAttributeFormInput()
 
-const { handleSubmit, values: attribute, setFieldValue } = useForm({
+const { handleSubmit, values: attribute, setFieldValue } = useForm<IAttributeForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -83,7 +83,8 @@ const onSubmit = handleSubmit(async values => mutateAsync({
 
                 <AttributeValues
                     edit-pages
-                    :attribute-values="attribute.attribute_value_id"
+                    :attribute-id="attribute.id"
+                    :attribute-values="(attribute.attribute_value_id as IAttributeValues[])"
                 />
             </div>
 

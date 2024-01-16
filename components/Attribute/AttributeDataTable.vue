@@ -5,10 +5,8 @@ import type { IAttribute } from '~/types/attribute.type'
 import type { IRow } from '~/types/core.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useAttributeDataTable()
+const { isFetching, dataTable, dataAggregations } = useAttributeDataTable()
 const { isPending, mutateAsync } = useAttributeFormDelete()
-
-provide('search', search)
 </script>
 
 <template>

@@ -5,10 +5,8 @@ import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { isFetching, dataTable, dataAggregations } = useProductDataTable()
 const { isPending, mutateAsync } = useProductFormDelete()
-
-provide('search', search)
 </script>
 
 <template>

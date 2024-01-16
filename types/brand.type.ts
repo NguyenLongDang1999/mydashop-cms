@@ -4,6 +4,7 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export type IBrandList = ICategoryList
 export interface IBrandForm {
+    id?: number
     name: string
     slug: string
     category_id: number[] | string

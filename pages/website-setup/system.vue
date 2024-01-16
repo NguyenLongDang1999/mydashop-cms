@@ -1,26 +1,26 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IWebsiteSetupForm } from '~/types/website-setup'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/system'
 
 // ** useHooks
 const { isPending, mutateAsync } = useWebsiteSetupFormInput()
-const { data } = await useWebsiteSetupSystem()
+const { valueData } = await useWebsiteSetupSystem()
 
-// ** Data
-const valueData = computed(() => data.value.reduce((acc, item) => {
-    acc[item.slug] = item.value
-
-    return acc
-}, {} as Record<string, string>))
-
-const { handleSubmit } = useForm({
+const { handleSubmit } = useForm<IWebsiteSetupForm>({
     validationSchema: schema,
     initialValues: valueData.value
 })
 
 // ** Methods
-const onSubmit = handleSubmit(values => mutateAsync({ bulkData: JSON.stringify(values) }))
+const onSubmit = handleSubmit(values => mutateAsync({
+    slug: '',
+    value: '',
+    bulkData: JSON.stringify(values)
+}))
 </script>
 
 <template>

@@ -1,17 +1,12 @@
 // ** Third Party Imports
-import { keepPreviousData, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
+import type { IDeleteRecord } from '~/types/core.type'
 import type { ICouponsForm, ICouponsSearch, ICouponsTable } from '~/types/coupons.type'
 
 // ** State
 const path = ref<string>(ROUTE.COUPONS)
-
-export default function () {
-    return {
-        path
-    }
-}
 
 export const useCouponsDataTable = () => {
     // ** Data
@@ -21,9 +16,13 @@ export const useCouponsDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQueryFetch<ICouponsTable>(path.value, '', 'DataTable', search, {
+    const { data, isFetching } = useQuery<ICouponsTable>({
+        queryKey: [path.value + 'DataTable', search],
+        queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
     })
+
+    provide('search', search)
 
     return {
         search,
@@ -36,7 +35,11 @@ export const useCouponsDataTable = () => {
 export const useCouponsDetail = async () => {
     // ** useHooks
     const id = Number(useRoute().params.id)
-    const { data, suspense } = useQueryFetch<ICouponsForm>(path.value, `/${id}`, 'Detail', { id })
+
+    const { data, suspense } = useQuery<ICouponsForm>({
+        queryKey: [path.value + 'Detail', id],
+        queryFn: () => useFetcher(path.value + '/' + id)
+    })
 
     await suspense()
 
@@ -49,14 +52,12 @@ export const useCouponsDetail = async () => {
 export const useCouponsFormInput = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutation<ICouponsForm>(path.value, {
+    return useMutation<ICouponsForm, Error, ICouponsForm>({
+        mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
-
-            if (variables.id) {
-                queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-            }
+            if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
             useNotification(MESSAGE.SUCCESS)
         },
@@ -67,12 +68,14 @@ export const useCouponsFormInput = () => {
 export const useCouponsFormDelete = () => {
     const queryClient = useQueryClient()
 
-    return useQueryMutationDelete<number>(path.value, {
+    return useMutation<IDeleteRecord, Error, IDeleteRecord>({
+        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
+
             useNotification(MESSAGE.DELETE)
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
-    }, 'DELETE')
+    })
 }

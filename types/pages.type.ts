@@ -2,6 +2,7 @@
 import type { IAggregations, IPagination } from '~/types/core.type'
 
 export interface IPagesForm {
+    id?: number
     name: string
     slug: string
     status?: number

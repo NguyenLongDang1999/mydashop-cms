@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
-import type { IProductVariant } from '~/types/product.type'
+import type { IProductForm, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
@@ -13,7 +13,7 @@ const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
-const { handleSubmit, values: product, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({ validationSchema: schema })
 const { isPending, mutateAsync } = useProductFormInput()
 const { attribute_id, attributeValueList } = useAttributeValueList()
 
@@ -103,7 +103,7 @@ const generateProductVariants = () => {
 
 const handleIsDefault = (index: number) => {
     if (product.variants?.length) {
-        product.variants.forEach((_item, _index: number) => {
+        (product.variants as IProductVariant[]).forEach((_item, _index: number) => {
             return setFieldValue(`variants.${_index}.is_default`, index === _index)
         })
     }
@@ -418,7 +418,7 @@ const handleIsDefault = (index: number) => {
                                 class="col-span-12 flex flex-col gap-4"
                             >
                                 <div
-                                    v-for="(variant, index) in product.variants"
+                                    v-for="(variant, index) in (product.variants as IProductVariant[])"
                                     :key="variant.label"
                                     class="grid grid-cols-12 gap-4"
                                 >

@@ -4,10 +4,11 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export type IAttributeList = ICategoryList
 export interface IAttributeForm {
+    id?: number
     name: string
     slug: string
     category_id: string | number[]
-    attribute_value_id: string | IAttributeValues[]
+    attribute_value_id?: string | IAttributeValues[]
     status?: number
     description?: string
 }

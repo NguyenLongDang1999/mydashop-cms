@@ -3,10 +3,13 @@
 // ** Validations Imports
 import { label, schema } from '~/validations/category'
 
+// ** Types Imports
+import type { ICategoryForm } from '~/types/category.type'
+
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useCategoryFormInput()
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, setFieldValue } = useForm<ICategoryForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
@@ -39,9 +42,19 @@ const onSubmit = handleSubmit(async values => {
         >
             <UCard>
                 <template #header>
-                    <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                        Thêm mới danh mục
-                    </h2>
+                    <div class="flex items-center justify-between">
+                        <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
+                            Thêm mới danh mục
+                        </h2>
+
+                        <UButton
+                            color="gray"
+                            variant="ghost"
+                            icon="i-heroicons-x-mark-20-solid"
+                            class="-my-1"
+                            @click="isOpen = false"
+                        />
+                    </div>
                 </template>
 
                 <div class="grid gap-4 grid-cols-12">

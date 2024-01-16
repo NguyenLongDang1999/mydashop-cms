@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useBrandFormInput()
 
-const { handleSubmit, values: brand, setFieldValue } = useForm({
+const { handleSubmit, values: brand, setFieldValue } = useForm<IBrandForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })

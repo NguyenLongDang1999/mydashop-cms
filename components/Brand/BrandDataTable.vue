@@ -5,10 +5,8 @@ import type { IBrand } from '~/types/brand.type'
 import type { IRow } from '~/types/core.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useBrandDataTable()
+const { isFetching, dataTable, dataAggregations } = useBrandDataTable()
 const { isPending, mutateAsync } = useBrandFormDelete()
-
-provide('search', search)
 </script>
 
 <template>

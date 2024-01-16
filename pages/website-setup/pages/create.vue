@@ -1,11 +1,14 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IPagesForm } from '~/types/pages.type'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/pages'
 
 // ** useHooks
 const { isPending, mutateAsync } = usePagesFormInput()
-const { handleSubmit, setFieldValue } = useForm({ validationSchema: schema })
+const { handleSubmit, setFieldValue } = useForm<IPagesForm>({ validationSchema: schema })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {

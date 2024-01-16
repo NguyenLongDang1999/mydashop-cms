@@ -1,22 +1,22 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICoupons } from '~/types/coupons.type'
+import type { ICouponsForm } from '~/types/coupons.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/coupons'
 
 // ** Props & Emits
 interface Props {
-    coupons: ICoupons
+    coupons: ICouponsForm
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isPending, mutateAsync } = useCouponsFormInput('PATCH')
+const { isPending, mutateAsync } = useCouponsFormInput()
 
-const { handleSubmit, values: form } = useForm({
+const { handleSubmit, values: form } = useForm<ICouponsForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.coupons, _isNil)
 })
@@ -28,8 +28,8 @@ const isOpen = ref<boolean>(false)
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
-        discount_start_date: form.date_range?.start,
-        discount_end_date: form.date_range?.end
+        discount_start_date: form.date_range?.start as string,
+        discount_end_date: form.date_range?.end as string
     })
 
     isOpen.value = false

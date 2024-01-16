@@ -20,33 +20,35 @@ export const compareDateTime = (row: IProduct) => {
     return today >= startDate && today <= endDate
 }
 
-export const formatSellingPrice = (row: IProduct) => {
+export const formatSellingPrice = (row: IProduct | unknown) => {
     let discount = 0
     let sellingPrice = 0
 
-    const formatPrice = Number(row.price)
-    const formatSpecialPrice = Number(row.special_price)
+    const productRow = row as IProduct
 
-    if (row.special_price_type === SPECIAL_PRICE.PERCENT) {
+    const formatPrice = Number(productRow.price)
+    const formatSpecialPrice = Number(productRow.special_price)
+
+    if (productRow.special_price_type === SPECIAL_PRICE.PERCENT) {
         discount = (formatPrice / 100) * formatSpecialPrice
         sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
     }
 
-    if (row.special_price_type === SPECIAL_PRICE.PRICE) {
+    if (productRow.special_price_type === SPECIAL_PRICE.PRICE) {
         discount = formatSpecialPrice
         sellingPrice = formatPrice - discount
     }
 
     // ** Sale Price
-    if (compareDateTime(row)) {
-        const formatDiscountAmount = Number(row.discount_amount)
+    if (compareDateTime(productRow)) {
+        const formatDiscountAmount = Number(productRow.discount_amount)
 
-        if (row.discount_type === SPECIAL_PRICE.PERCENT) {
+        if (productRow.discount_type === SPECIAL_PRICE.PERCENT) {
             discount = (formatPrice / 100) * formatDiscountAmount
             sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
         }
 
-        if (row.discount_type === SPECIAL_PRICE.PRICE) {
+        if (productRow.discount_type === SPECIAL_PRICE.PRICE) {
             discount = formatDiscountAmount
             sellingPrice = formatPrice - discount
         }

@@ -23,7 +23,7 @@ const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttrib
 const { isPending, mutateAsync } = useProductFormInput()
 const { attribute_id, attributeValueList } = useAttributeValueList()
 
-const { handleSubmit, values: product, setFieldValue } = useForm({
+const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -57,8 +57,8 @@ const handleChangeAttribute = () => {
 
     if (product.attribute_id) {
         attributeData.sort((a, b) => {
-            const indexA = product.attribute_id.indexOf(a.id)
-            const indexB = product.attribute_id.indexOf(b.id)
+            const indexA = product.attribute_id!.indexOf(a.id)
+            const indexB = product.attribute_id!.indexOf(b.id)
 
             return indexA - indexB
         })
@@ -119,7 +119,7 @@ const generateProductVariants = () => {
 
 const handleIsDefault = (index: number) => {
     if (product.variants?.length) {
-        product.variants.forEach((_item: IProductVariant, _index: number) => {
+        (product.variants as IProductVariant[]).forEach((_item: IProductVariant, _index: number) => {
             return setFieldValue(`variants.${_index}.is_default`, index === _index)
         })
     }
@@ -196,7 +196,7 @@ const handleIsDefault = (index: number) => {
                                     :name="`attributes.${index}.values`"
                                     :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
                                     multiple
-                                    @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => product.attributes[index].values?.includes(_v.id))"
+                                    @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => ((product.attributes as IAttributeValuesList[])[index].values as number[])?.includes(_v.id))"
                                 />
                             </div>
 
@@ -228,7 +228,7 @@ const handleIsDefault = (index: number) => {
                         class="col-span-12 flex flex-col gap-4"
                     >
                         <div
-                            v-for="(variant, index) in product.variants"
+                            v-for="(variant, index) in (product.variants as IProductVariant[])"
                             :key="variant.label"
                             class="grid grid-cols-12 gap-4"
                         >

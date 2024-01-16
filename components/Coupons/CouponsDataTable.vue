@@ -5,10 +5,8 @@ import type { IRow } from '~/types/core.type'
 import type { ICoupons } from '~/types/coupons.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useCouponsDataTable()
+const { isFetching, dataTable, dataAggregations } = useCouponsDataTable()
 const { isPending, mutateAsync } = useCouponsFormDelete()
-
-provide('search', search)
 </script>
 
 <template>
@@ -61,7 +59,7 @@ provide('search', search)
                     <div class="flex gap-2">
                         <CouponsUpdate :coupons="row" />
 
-                        <Confirm :remove="() => mutateAsync(row.id as number)" />
+                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
             </UTable>
