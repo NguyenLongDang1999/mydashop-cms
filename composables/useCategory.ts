@@ -69,7 +69,7 @@ export const useCategoryFormInput = () => {
 
     return useMutation<ICategoryForm, Error, ICategoryForm>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
-        onSuccess: (data, variables) => {
+        onSuccess: (_data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })

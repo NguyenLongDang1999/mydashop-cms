@@ -5,10 +5,8 @@ import type { IRow } from '~/types/core.type'
 import type { IFlashDeals } from '~/types/flash-deals.type'
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useFlashDealDataTable()
+const { isFetching, dataTable, dataAggregations } = useFlashDealDataTable()
 const { isPending, mutateAsync } = useFlashDealFormDelete()
-
-provide('search', search)
 </script>
 
 <template>

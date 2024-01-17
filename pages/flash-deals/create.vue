@@ -1,18 +1,22 @@
 <script setup lang="ts">
 
+// ** Types Imports
+import type { IFlashDealsForm } from '~/types/flash-deals.type'
+import type { IProduct } from '~/types/product.type'
+
 // ** Validations Imports
 import { label, schema } from '~/validations/flash-deals'
 
 // ** useHooks
 const { isPending, mutateAsync } = useFlashDealFormInput()
-const { handleSubmit, values: flashDeals } = useForm({ validationSchema: schema })
+const { handleSubmit, values: flashDeals } = useForm<IFlashDealsForm>({ validationSchema: schema })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
-        start_date: flashDeals.date_range?.start,
-        end_date: flashDeals.date_range?.end
+        start_date: flashDeals.date_range?.start as string,
+        end_date: flashDeals.date_range?.end as string
     })
 
     navigateTo(ROUTER.FLASH_DEALS)
@@ -87,7 +91,7 @@ const onSubmit = handleSubmit(async values => {
 
                         <div class="col-span-12 flex flex-col gap-4">
                             <div
-                                v-for="(productItem, index) in flashDeals.product_id"
+                                v-for="(productItem, index) in (flashDeals.product_id as IProduct[])"
                                 :key="productItem.id"
                                 class="grid grid-cols-12 items-center gap-4"
                             >

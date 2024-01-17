@@ -91,7 +91,7 @@ export const useAttributeFormInput = () => {
 
     return useMutation<IAttributeForm, Error, IAttributeForm>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
-        onSuccess: (data, variables) => {
+        onSuccess: (_data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
@@ -107,7 +107,7 @@ export const useAttributeValuesFormInput = () => {
 
     return useMutation<IAttributeValues, Error, IAttributeValues>({
         mutationFn: body => useFetcher(`${path.value}/attribute-values`, { method: 'POST', body }),
-        onSuccess: (data, variables) => {
+        onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
             useNotification(MESSAGE.DELETE)

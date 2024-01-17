@@ -50,7 +50,7 @@ export const useWebsiteSetupFormInput = () => {
 
     return useMutation<IWebsiteSetupForm, Error, IWebsiteSetupForm>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
-        onSuccess: (data, variables) => {
+        onSuccess: (_data, variables) => {
             if (variables.bulkData) {
                 const appConfig = useAppConfig()
 

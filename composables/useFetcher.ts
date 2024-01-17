@@ -1,69 +1,16 @@
-// ** Third Party Imports
-import { useMutation, useQuery, type MutationObserverOptions, type UseQueryOptions } from '@tanstack/vue-query'
-
 // ** Types Imports
-import type { MaybeRefDeep } from '@tanstack/vue-query/build/legacy/types'
 import type { UseFetchOptions } from 'nuxt/dist/app/composables'
 import type { KeysOf } from 'nuxt/dist/app/composables/asyncData'
 import type { FetchContext, FetchResponse } from 'ofetch'
 import type { IAuthProfile } from '~/types/auth.type'
 
-export default function <T>(
-    path: string,
-    endpoint = '/data-list',
-    queryKey = 'DataList',
-    params = {},
-    options?: UseQueryOptions<T, Error, T>
-) {
-    return useQuery<T>({
-        queryKey: [path + queryKey, params],
-        queryFn: () => useFetcher(path + endpoint, { params }),
-        ...options
-    })
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useQueryMutation = <T, U extends Record<string, any> = Record<string, any>>(
-    path: string,
-    options?: MaybeRefDeep<MutationObserverOptions<T, Error, U, unknown>>,
-    purgeDelete = false
-) => {
-    return useMutation<T, Error, U, unknown>({
-        mutationFn: body => {
-            const opts = {
-                newPath: path,
-                method: 'POST'
-            }
-
-            if (body.id) {
-                opts.method = purgeDelete ? 'DELETE' : 'PATCH'
-                opts.newPath = `${path}/${body.id}`
-            }
-
-            return useFetcher<T>(opts.newPath, { method: opts.method, body })
-        },
-        ...options
-    })
-}
-
-export const useQueryMutationDelete = <T>(
-    path: string,
-    options?: MaybeRefDeep<MutationObserverOptions<unknown, Error, T, unknown>>,
-    method: 'DELETE' | 'PATCH' = 'PATCH'
-) => {
-    return useMutation<unknown, Error, T, unknown>({
-        mutationFn: body => useFetcher<T>(`${path}/${body}`, { method }),
-        ...options
-    })
-}
-
 let refreshTokenPromise: Promise<void> | null = null
 const refreshTokenLock = ref<boolean>(false)
 
-export const useFetcher = async <T>(
+export default async function <T>(
     path: string,
     opts?: UseFetchOptions<unknown, unknown, KeysOf<unknown>, null, string, 'get' | 'GET' | 'POST' | 'DELETE' | 'PATCH'> | undefined
-): Promise<T> => {
+): Promise<T> {
     const config = useRuntimeConfig()
 
     if (refreshTokenLock.value) {
