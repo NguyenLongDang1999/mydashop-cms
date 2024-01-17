@@ -7,10 +7,10 @@ import type { IAuthProfile } from '~/types/auth.type'
 let refreshTokenPromise: Promise<void> | null = null
 const refreshTokenLock = ref<boolean>(false)
 
-export default async function <T>(
+export const useFetcher = async <T>(
     path: string,
     opts?: UseFetchOptions<unknown, unknown, KeysOf<unknown>, null, string, 'get' | 'GET' | 'POST' | 'DELETE' | 'PATCH'> | undefined
-): Promise<T> {
+): Promise<T> => {
     const config = useRuntimeConfig()
 
     if (refreshTokenLock.value) {
@@ -78,7 +78,6 @@ const onResponseError = async ({ response }: FetchContext & { response: FetchRes
                     refreshTokenLock.value = false
                 }
             })
-
         }
 
         await refreshTokenPromise

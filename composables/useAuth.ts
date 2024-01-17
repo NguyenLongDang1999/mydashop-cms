@@ -25,5 +25,6 @@ export const useAuthLogin = () => {
 
 export const useAuthLogout = () => useQuery({
     queryKey: [path.value + 'Logout'],
-    queryFn: () => useFetcher(path.value + '/sign-out')
+    queryFn: () => useFetcher(path.value + '/sign-out'),
+    enabled: false
 })
