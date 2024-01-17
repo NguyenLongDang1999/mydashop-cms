@@ -20,3 +20,13 @@ export const useNotificationError = (description = 'Có lỗi xảy ra. Vui lòn
         color: 'red'
     })
 }
+
+export const useNotificationMessage = (message: string) => {
+    switch (message) {
+        case MESSAGE_ERROR.CONFLICT:
+            return useNotificationError('Dữ liệu này đã tồn tại trong hệ thống!')
+
+        default:
+            return useNotificationError()
+    }
+}

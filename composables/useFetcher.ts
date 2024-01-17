@@ -1,6 +1,5 @@
 // ** Types Imports
 import type { UseFetchOptions } from 'nuxt/dist/app/composables'
-import type { KeysOf } from 'nuxt/dist/app/composables/asyncData'
 import type { FetchContext, FetchResponse } from 'ofetch'
 import type { IAuthProfile } from '~/types/auth.type'
 
@@ -9,7 +8,7 @@ const refreshTokenLock = ref<boolean>(false)
 
 export const useFetcher = async <T>(
     path: string,
-    opts?: UseFetchOptions<unknown, unknown, KeysOf<unknown>, null, string, 'get' | 'GET' | 'POST' | 'DELETE' | 'PATCH'> | undefined
+    opts?: UseFetchOptions<unknown> | undefined
 ): Promise<T> => {
     const config = useRuntimeConfig()
 
@@ -29,6 +28,10 @@ export const useFetcher = async <T>(
         })
 
         if (error.value) {
+            if (error.value?.data?.message) {
+                throw new Error(error.value?.data?.message || 'An unknown error occurred during data fetching.')
+            }
+
             throw new Error(error.value?.data?.error || 'An unknown error occurred during data fetching.')
         }
 

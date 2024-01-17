@@ -80,3 +80,7 @@ export enum WEBSITE_SETUP {
     HOME_CATEGORIES = 'home_categories',
     TOP_BRANDS = 'top_brands',
 }
+
+export enum MESSAGE_ERROR {
+    CONFLICT = 'conflict'
+}

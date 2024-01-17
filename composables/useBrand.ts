@@ -76,7 +76,7 @@ export const useBrandFormInput = () => {
 
             useNotification(MESSAGE.SUCCESS)
         },
-        onError: () => useNotificationError(MESSAGE.ERROR)
+        onError: error => useNotificationMessage(error.message)
     })
 }
 

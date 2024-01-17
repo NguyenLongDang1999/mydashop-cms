@@ -76,7 +76,7 @@ export const useCategoryFormInput = () => {
 
             useNotification(MESSAGE.SUCCESS)
         },
-        onError: () => useNotificationError(MESSAGE.ERROR)
+        onError: error => useNotificationMessage(error.message)
     })
 }
 
