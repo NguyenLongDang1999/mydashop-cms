@@ -101,6 +101,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
 
                     <div class="col-span-12">
                         <UButton
+                            v-if="fields.length < 3"
                             icon="i-heroicons-plus"
                             size="sm"
                             color="primary"
