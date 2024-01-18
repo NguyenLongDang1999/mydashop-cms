@@ -43,3 +43,32 @@ export interface IAttributeSearch extends IPagination {
 export interface IAttributeTable extends IAggregations {
     data: IAttribute[]
 }
+
+export interface IAttributeValue {
+    id: number
+    value: string
+    attribute: {
+        id: number
+        name: string
+    }
+}
+
+export interface IAttributeValuesSearch extends IPagination {
+    value?: string
+    attribute_id?: number
+}
+
+export interface IAttributeValuesTable extends IAggregations {
+    data: IAttributeValue[]
+}
+
+export interface IAttributeValuesDataList {
+    id: number
+    name: string
+}
+
+export interface IAttributeValuesForm {
+    id?: number
+    value: string
+    attribute_id: number
+}

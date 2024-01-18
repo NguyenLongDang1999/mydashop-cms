@@ -82,6 +82,20 @@ export const attributeColumns: Columns[] = [
     actions
 ]
 
+export const attributeValuesColumns: Columns[] = [
+    {
+        key: 'name',
+        label: 'Thuộc tính',
+        class: minWithColumn(250)
+    },
+    {
+        key: 'values',
+        label: 'Giá trị',
+        class: minWithColumn(250)
+    },
+    actions
+]
+
 export const brandColumns: Columns[] = [
     {
         key: 'name',

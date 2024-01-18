@@ -38,6 +38,7 @@ export enum ROUTE {
     CATEGORY = 'category',
     BRAND = 'brand',
     ATTRIBUTE = 'attribute',
+    ATTRIBUTE_VALUES = 'attribute-values',
     PRODUCT = 'product',
     FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',

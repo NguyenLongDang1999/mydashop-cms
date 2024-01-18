@@ -2,7 +2,7 @@
 import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeList, IAttributeSearch, IAttributeTable, IAttributeValues } from '~/types/attribute.type'
+import type { IAttributeForm, IAttributeList, IAttributeSearch, IAttributeTable } from '~/types/attribute.type'
 import type { IDeleteRecord } from '~/types/core.type'
 
 // ** State
@@ -99,20 +99,6 @@ export const useAttributeFormInput = () => {
             useNotification(MESSAGE.SUCCESS)
         },
         onError: error => useNotificationMessage(error.message)
-    })
-}
-
-export const useAttributeValuesFormInput = () => {
-    const queryClient = useQueryClient()
-
-    return useMutation<IAttributeValues, Error, IAttributeValues>({
-        mutationFn: body => useFetcher(`${path.value}/attribute-values`, { method: 'POST', body }),
-        onSuccess: (_data, variables) => {
-            queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
-
-            useNotification(MESSAGE.DELETE)
-        },
-        onError: () => useNotificationError(MESSAGE.ERROR)
     })
 }
 

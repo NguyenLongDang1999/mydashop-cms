@@ -24,6 +24,10 @@ export default [
                 to: '/attribute'
             },
             {
+                title: 'Thuộc tính (Giá trị)',
+                to: '/attribute-values'
+            },
+            {
                 title: 'Chiến dịch',
                 to: '/flash-deals'
             },
