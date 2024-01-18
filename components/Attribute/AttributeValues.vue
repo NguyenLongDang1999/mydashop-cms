@@ -21,7 +21,7 @@ const { isPending, mutateAsync } = useAttributeValuesFormInput()
 
 <template>
     <FieldArray
-        v-slot="{ push, remove }"
+        v-slot="{ fields, push, remove }"
         name="attribute_value_id"
     >
         <div class="col-span-12">
@@ -36,7 +36,10 @@ const { isPending, mutateAsync } = useAttributeValuesFormInput()
             />
         </div>
 
-        <div class="col-span-12">
+        <div
+            v-if="fields.length"
+            class="col-span-12"
+        >
             <div class="flex flex-col gap-4">
                 <div
                     v-for="(values, index) in attributeValues"

@@ -61,7 +61,11 @@ const items: DropdownItem[][] = [
                     <Logo />
                 </div>
 
-                <div class="flex items-center justify-end lg:flex-1 gap-1.5">
+                <div class="flex items-center justify-end lg:flex-1 gap-3">
+                    <div class="lg:hidden block">
+                        <TheMobileNav />
+                    </div>
+
                     <UDropdown
                         :items="items"
                         :ui="{ item: { disabled: 'cursor-text select-text' } }"
