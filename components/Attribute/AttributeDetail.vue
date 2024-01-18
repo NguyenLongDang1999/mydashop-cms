@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
+import type { IAttributeForm } from '~/types/attribute.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/attribute'
@@ -76,16 +76,6 @@ const onSubmit = handleSubmit(async values => mutateAsync({
                         name="description"
                     />
                 </div>
-
-                <div class="col-span-12">
-                    <UDivider />
-                </div>
-
-                <AttributeValues
-                    edit-pages
-                    :attribute-id="attribute.id"
-                    :attribute-values="(attribute.attribute_value_id as IAttributeValues[])"
-                />
             </div>
 
             <template #footer>
