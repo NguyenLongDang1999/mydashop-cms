@@ -192,3 +192,23 @@ export const pagesColumns: Columns[] = [
     status,
     actions
 ]
+
+export const ordersColumns: Columns[] = [
+    {
+        key: 'name',
+        label: 'Mã đơn hàng',
+        class: minWithColumn(250)
+    },
+    {
+        key: 'users',
+        label: 'Thông tin khách hàng',
+        class: minWithColumn(250)
+    },
+    {
+        key: 'grand_total',
+        label: 'Thông tin giá cả',
+        class: minWithColumn(250)
+    },
+    status,
+    actions
+]

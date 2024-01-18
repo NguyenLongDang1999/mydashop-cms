@@ -43,6 +43,7 @@ export enum ROUTE {
     COUPONS = 'coupons',
     WEBSITE_SETUP = 'website-setup',
     PAGES = 'pages',
+    ORDERS = 'orders',
 }
 
 export enum ROUTER {

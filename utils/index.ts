@@ -80,3 +80,15 @@ export const goToPage = (pageName?: number | string, path?: string) => {
 
     return `${path || route.path}`
 }
+
+export const calculateCartDiscount = (cartTotal: number, amount: number, isFormat = true) => {
+    let discount = amount
+    let sellingPrice = cartTotal - discount
+
+    if (amount > 0 && amount <= 100) {
+        discount = ((cartTotal / 100) * amount)
+        sellingPrice = Math.round((cartTotal - discount) / 1000) * 1000
+    }
+
+    return isFormat ? formatCurrency(sellingPrice) : sellingPrice
+}

@@ -38,6 +38,15 @@ export default [
         ]
     },
     {
+        label: 'Quản lý bán hàng',
+        children: [
+            {
+                title: 'Đơn hàng',
+                to: '/orders'
+            }
+        ]
+    },
+    {
         label: 'Quản lý Files',
         children: [
             {
