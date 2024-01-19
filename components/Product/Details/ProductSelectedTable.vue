@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductForm } from '~/types/product.type'
+import type { IProduct, IProductForm, IProductFormSales } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
@@ -17,21 +17,21 @@ const props = defineProps<Props>()
 const selected = ref<IProduct[]>([])
 
 // ** useHooks
-const { search, isFetching, dataTable, dataAggregations } = useProductDataTable()
-const { isPending, mutateAsync } = useProductFormInput()
+const { isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { isPending, mutateAsync } = useProductFormInput<IProductFormSales>()
 const { handleSubmit } = useForm()
-
-provide('search', search)
 
 // ** Watch
 watchEffect(() => selected.value = dataTable.value.filter((_d: IProduct) => (props.modelValue as number[])?.includes(_d.id)))
 
 // ** Methods
 const onSubmit = handleSubmit(() => mutateAsync({
-    ...props.data,
-    attributes: undefined,
-    technical_specifications: undefined,
-    [props.name]: selected.value.length ? JSON.stringify(selected.value.map(_s => _s.id)) : undefined
+    id: props.data.id,
+    sku: props.data.sku,
+    name: props.data.name,
+    slug: props.data.slug,
+    product_type: props.data.product_type,
+    [props.name]: JSON.stringify(selected.value.length ? selected.value.map(_s => _s.id) : [])
 }))
 </script>
 

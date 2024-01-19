@@ -2,7 +2,7 @@
 
 // ** Types Imports
 import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
-import type { IProductForm, IProductVariant } from '~/types/product.type'
+import type { IProductForm, IProductFormAttributes, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
@@ -20,10 +20,10 @@ const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
-const { isPending, mutateAsync } = useProductFormInput()
+const { isPending, mutateAsync } = useProductFormInput<IProductFormAttributes>()
 const { attribute_id, attributeValueList } = useAttributeValueList()
 
-const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({
+const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormAttributes>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -44,7 +44,13 @@ onMounted(() => {
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     mutateAsync({
-        ...values,
+        id: values.id,
+        sku: props.data.sku,
+        name: props.data.name,
+        slug: props.data.slug,
+        product_type: props.data.product_type,
+        category_id: values.category_id,
+        brand_id: values.brand_id,
         attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined
     })
@@ -71,6 +77,11 @@ const handleChangeAttribute = () => {
     })))
 
     setFieldValue('variants', [])
+}
+
+const handleChangeAttributeValues = (index: number) => {
+    attributeValueName.value[index] = (attributeValueList.value[index].data as IAttributeValuesList[])?.filter(_v => ((product.attributes as IAttributeValuesList[])[index].values as number[])?.includes(_v.id))
+    generateProductVariants()
 }
 
 const generateProductVariants = () => {
@@ -158,7 +169,7 @@ const handleIsDefault = (index: number) => {
                     />
                 </div>
 
-                <template v-if="product.product_type !== PRODUCT_TYPE.SINGLE">
+                <template v-if="data.product_type !== PRODUCT_TYPE.SINGLE">
                     <div class="sm:col-span-4 col-span-12">
                         <FormSelect
                             v-model="attribute_id"
@@ -196,7 +207,7 @@ const handleIsDefault = (index: number) => {
                                     :name="`attributes.${index}.values`"
                                     :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
                                     multiple
-                                    @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => ((product.attributes as IAttributeValuesList[])[index].values as number[])?.includes(_v.id))"
+                                    @update:model-value="handleChangeAttributeValues(index)"
                                 />
                             </div>
 
@@ -208,19 +219,6 @@ const handleIsDefault = (index: number) => {
                                 />
                             </div>
                         </div>
-                    </div>
-
-                    <div
-                        v-if="attribute_id.length"
-                        class="col-span-12"
-                    >
-                        <UButton
-                            size="sm"
-                            variant="solid"
-                            label="Tạo Biến Thể"
-                            :trailing="false"
-                            @click="generateProductVariants"
-                        />
                     </div>
 
                     <div

@@ -39,12 +39,15 @@ const onSubmit = handleSubmit(async values => {
         @click="isOpen = true"
     />
 
-    <UModal v-model="isOpen">
+    <UModal
+        v-model="isOpen"
+        :ui="{ base: 'overflow-visible' }"
+    >
         <UForm
             :state="{}"
             @submit="onSubmit"
         >
-            <UCard>
+            <UCard :ui="{ base: 'overflow-visible' }">
                 <template #header>
                     <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
                         Thêm mới thuộc tính

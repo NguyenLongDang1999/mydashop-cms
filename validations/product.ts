@@ -54,9 +54,7 @@ export const schema = toTypedSchema(yup.object({
     category_id: yup
         .number()
         .required(`${label.category_id} không được bỏ trống.`),
-    short_description: yup
-        .string()
-        .max(160, `${label.short_description} không được vượt quá 160 ký tự.`),
+    short_description: yup.string().notRequired(),
     description: yup
         .string()
         .required(`${label.description} không được bỏ trống.`),

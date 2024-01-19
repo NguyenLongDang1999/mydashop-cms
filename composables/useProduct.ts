@@ -67,10 +67,10 @@ export const useProductDetail = async () => {
     }
 }
 
-export const useProductFormInput = () => {
+export const useProductFormInput = <T extends { id?: number } = IProductForm>() => {
     const queryClient = useQueryClient()
 
-    return useMutation<IProductForm, Error, IProductForm>({
+    return useMutation<T, Error, T>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (_data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
@@ -111,13 +111,13 @@ export const useProductSelectedWithCategory = () => {
     const { isFetching: isFetchingBrand, data: dataBrand } = useQuery<IBrandList[]>({
         queryKey: [pathBrand.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathBrand.value + endPoint}/${category_id.value}`),
-        enabled: computed(() => !!category_id.value)
+        enabled: () => !!category_id.value
     })
 
     const { isFetching: isFetchingAttribute, data: dataAttribute } = useQuery<IAttributeList[]>({
         queryKey: [pathAttribute.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathAttribute.value + endPoint}/${category_id.value}`),
-        enabled: computed(() => !!category_id.value)
+        enabled: () => !!category_id.value
     })
 
     const brandList = computed(() => dataBrand.value || [])

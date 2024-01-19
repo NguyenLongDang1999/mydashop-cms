@@ -10,11 +10,15 @@ export interface IProductList {
     image_uri: string
 }
 
-export interface IProductForm {
+export interface IProductFormInit {
     id?: number
     sku: string
     name: string
     slug: string
+    product_type: number
+}
+
+export interface IProductForm extends IProductFormInit {
     image_uri?: string
     category_id?: number
     attributes?: string | IAttributeValuesList[]
@@ -32,12 +36,45 @@ export interface IProductForm {
     cross_sell_products?: string | number[]
     productImage: IProductUpload[] | string
 
-    product_type?: number
     special_price_type?: number
     quantity?: number
     in_stock?: number
     attribute_id?: number[]
     FlashDealsProduct: string[]
+}
+
+export interface IProductFormInformations extends IProductFormInit {
+    status?: number
+    popular?: number
+    technical_specifications?: string | IProductSpecification[]
+    short_description?: string
+    description?: string
+    quantity?: number
+    in_stock?: number
+    special_price_type?: number
+    price?: number
+    special_price?: number
+    selling_price?: number
+    meta_title?: string
+    meta_description?: string
+}
+
+export interface IProductFormAttributes extends IProductFormInit {
+    category_id: number
+    brand_id?: string
+    attribute_id?: number[]
+    attributes?: string | IAttributeValuesList[]
+    variants?: string | IProductVariant[]
+}
+
+export interface IProductFormSales extends IProductFormInit {
+    related_products?: string | number[]
+    upsell_products?: string | number[]
+    cross_sell_products?: string | number[]
+}
+
+export interface IProductFormImages extends IProductFormInit {
+    productImage: IProductUpload[] | string
 }
 
 export interface IProductSpecification {

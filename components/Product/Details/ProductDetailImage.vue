@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductForm } from '~/types/product.type'
+import type { IProductForm, IProductFormImages } from '~/types/product.type'
 
 // ** Validations Imports
 import { schema } from '~/validations/product'
@@ -14,7 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isPending, mutateAsync } = useProductFormInput()
+const { isPending, mutateAsync } = useProductFormInput<IProductFormImages>()
 
 const { handleSubmit } = useForm<IProductForm>({
     validationSchema: schema,
@@ -22,9 +22,11 @@ const { handleSubmit } = useForm<IProductForm>({
 })
 
 const onSubmit = handleSubmit(values => mutateAsync({
-    ...values,
-    attributes: undefined,
-    variants: undefined,
+    id: values.id,
+    sku: values.sku,
+    name: values.name,
+    slug: values.slug,
+    product_type: values.product_type,
     productImage: JSON.stringify(values.productImage)
 }))
 </script>
@@ -43,7 +45,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                 <div class="col-span-12">
                     <div class="grid gap-4 grid-cols-12">
                         <div
-                            v-for="(value, index) in data.productImage"
+                            v-for="(_value, index) in data.productImage"
                             :key="index"
                             class="col-span-12"
                         >
@@ -54,7 +56,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         </div>
 
                         <div
-                            v-for="(value, index) in (6 - data.productImage.length)"
+                            v-for="(_value, index) in (6 - data.productImage.length)"
                             :key="index"
                             class="col-span-12"
                         >

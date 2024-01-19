@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductForm, IProductSpecification } from '~/types/product.type'
+import type { IProductForm, IProductFormInformations, IProductSpecification } from '~/types/product.type'
 
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
@@ -14,19 +14,33 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isPending, mutateAsync } = useProductFormInput()
+const { isPending, mutateAsync } = useProductFormInput<IProductFormInformations>()
 
-const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({
+const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormInformations>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** Methods
 const onSubmit = handleSubmit(values => mutateAsync({
-    ...values,
-    attributes: undefined,
-    variants: undefined,
-    technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
+    id: values.id,
+    sku: values.sku,
+    name: values.name,
+    slug: values.slug,
+    product_type: values.product_type,
+    status: values.status,
+    popular: values.popular,
+    short_description: values.short_description,
+    description: values.description,
+    technical_specifications: values.technical_specifications ? JSON.stringify(values.technical_specifications) : undefined,
+    price: values.price,
+    quantity: values.quantity,
+    in_stock: values.in_stock,
+    selling_price: values.selling_price,
+    special_price: values.special_price,
+    special_price_type: values.special_price_type,
+    meta_title: values.meta_title,
+    meta_description: values.meta_description
 }))
 </script>
 
@@ -38,7 +52,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
         <UCard>
             <div class="grid gap-4 grid-cols-12">
                 <div
-                    v-if="product.FlashDealsProduct.length"
+                    v-if="data.FlashDealsProduct.length"
                     class="col-span-12"
                 >
                     <UAlert
@@ -51,7 +65,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                 </div>
 
                 <div
-                    v-if="product.FlashDealsProduct.length"
+                    v-if="data.FlashDealsProduct.length"
                     class="col-span-12"
                 >
                     <UAlert
@@ -122,7 +136,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     />
                 </div>
 
-                <template v-if="product.product_type === PRODUCT_TYPE.SINGLE">
+                <template v-if="data.product_type === PRODUCT_TYPE.SINGLE">
                     <div class="md:col-span-4 sm:col-span-6 col-span-12">
                         <FormMoney
                             :label="label.quantity"
@@ -160,7 +174,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         <FormMoney
                             :label="label.special_price"
                             name="special_price"
-                            :text-trailing="product.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                            :text-trailing="data.special_price_type === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
                         />
                     </div>
 
@@ -169,7 +183,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                             :value="formatSellingPrice(product)"
                             :label="label.selling_price"
                             name="selling_price"
-                            :help="`${product.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                            :help="`${data.special_price_type === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
                             text-trailing="VNĐ"
                         />
                     </div>

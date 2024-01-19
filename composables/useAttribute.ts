@@ -93,6 +93,7 @@ export const useAttributeFormInput = () => {
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (_data, variables) => {
             queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
+            queryClient.refetchQueries({ queryKey: [`${ROUTE.ATTRIBUTE_VALUES}DataTable`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
 
