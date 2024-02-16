@@ -26,7 +26,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-sonarjs": "^0.21.0",
     "eslint-plugin-vue": "^9.17.0",
-    "nuxt": "^3.9.3",
+    "nuxt": "^3.10.2",
     "nuxt-lodash": "^2.5.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"

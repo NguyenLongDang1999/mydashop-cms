@@ -1,5 +1,5 @@
 // ** Types Imports
-import type { UseFetchOptions } from 'nuxt/dist/app/composables'
+import type { UseFetchOptions } from '#app'
 import type { FetchContext, FetchResponse } from 'ofetch'
 import type { IAuthProfile } from '~/types/auth.type'
 
