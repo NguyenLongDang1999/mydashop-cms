@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAuthForm } from '~/types/auth.type'
+import type { IAuthForm } from '~/types/auth.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/auth'
+import { label, schema } from '~/validations/auth';
 
 // ** Layout
 definePageMeta({ layout: 'auth' })
@@ -14,7 +14,12 @@ const { handleSubmit } = useForm<IAuthForm>({ validationSchema: schema })
 const { isPending, mutateAsync } = useAuthLogin()
 
 // ** Methods
-const onSubmit = handleSubmit(values => mutateAsync(values))
+const onSubmit = handleSubmit(async values => {
+    const config = useRuntimeConfig()
+
+    await $fetch(config.public.apiBaseCsrfToken, { credentials: 'include' })
+    mutateAsync(values)
+})
 </script>
 
 <template>

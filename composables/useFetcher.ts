@@ -20,7 +20,11 @@ export const useFetcher = async <T>(
         const { data, error } = await useFetch(path, {
             baseURL: config.public.apiBase,
             credentials: 'include',
-            headers: useRequestHeaders(),
+            headers: {
+                'Accept': 'application/json',
+                'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value as string,
+                ...useRequestHeaders()
+            },
             keepalive: true,
             onRequest,
             onResponseError,

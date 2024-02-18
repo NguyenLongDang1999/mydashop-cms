@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategory } from '~/types/category.type'
-import type { IRow } from '~/types/core.type'
+import type { ICategory } from '~/types/category.type';
+import type { IRow } from '~/types/core.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useCategoryDataTable()
@@ -41,7 +41,7 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
 
                             <div class="flex flex-col flex-1 truncate">
                                 <span class="capitalize text-primary truncate">{{ row.name }}</span>
-                                <span>{{ row.Product.length }} Sản Phẩm</span>
+                                <!-- <span>{{ row.Product.length }} Sản Phẩm</span> -->
                             </div>
                         </div>
                     </ULink>
@@ -60,7 +60,7 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
 
                             <div class="flex flex-col flex-1 truncate">
                                 <span class="capitalize text-primary truncate">{{ row.parent.name }}</span>
-                                <span>{{ row.parent.Product?.length }} Sản Phẩm</span>
+                                <!-- <span>{{ row.parent.Product?.length }} Sản Phẩm</span> -->
                             </div>
                         </div>
                     </ULink>
