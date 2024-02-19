@@ -14,12 +14,7 @@ const { handleSubmit } = useForm<IAuthForm>({ validationSchema: schema })
 const { isPending, mutateAsync } = useAuthLogin()
 
 // ** Methods
-const onSubmit = handleSubmit(async values => {
-    const config = useRuntimeConfig()
-
-    await $fetch(config.public.apiBaseCsrfToken, { credentials: 'include' })
-    mutateAsync(values)
-})
+const onSubmit = handleSubmit(values => mutateAsync(values))
 </script>
 
 <template>

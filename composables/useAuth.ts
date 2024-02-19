@@ -13,7 +13,7 @@ export const useAuthLogin = () => {
     return useMutation<IAuthProfile, Error, IAuthForm>({
         mutationFn: body => useFetcher(`${path.value}/sign-in`, { method: 'POST', body }),
         onSuccess: data => {
-            setToken(data.accessToken)
+            setToken(data.access_token)
             setUserData(data.admins)
 
             navigateTo(route.query.to ? String(route.query.to) : '/')

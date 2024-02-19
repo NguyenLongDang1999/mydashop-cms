@@ -1,6 +1,6 @@
 // ** Access Token
 export const setToken = (token: string) => {
-    return localStorage.setItem(AUTH.TOKEN, JSON.stringify(token))
+    return localStorage.setItem(AUTH.TOKEN, token)
 }
 
 export const getToken = () => {

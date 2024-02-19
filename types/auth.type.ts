@@ -4,7 +4,7 @@ export interface IAuthForm {
 }
 
 export interface IAuthProfile {
-    accessToken: string
+    access_token: string
     admins: {
         id: number
         email: string

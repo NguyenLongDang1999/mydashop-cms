@@ -22,7 +22,6 @@ export const useFetcher = async <T>(
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
-                'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value as string,
                 ...useRequestHeaders()
             },
             keepalive: true,
@@ -51,7 +50,7 @@ export const useFetcher = async <T>(
 
 const onRequest = ({ options, request }: FetchContext) => {
     if (request !== 'auth/sign-in') {
-        const access_token = JSON.parse(getToken() || 'null')
+        const access_token = getToken()
 
         if (access_token) {
             options.headers = {
@@ -74,7 +73,7 @@ const onResponseError = async ({ response }: FetchContext & { response: FetchRes
                 try {
                     const res = await useFetcher<IAuthProfile>('/auth/refresh')
 
-                    setToken(res.accessToken)
+                    setToken(res.access_token)
                     resolve()
                 } catch {
                     removeToken()
