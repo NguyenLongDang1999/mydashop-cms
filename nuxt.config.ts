@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: process.env.NUXT_PUBLIC_API_BASE,
+            apiBaseCsrfToken: process.env.NUXT_PUBLIC_API_BASE_CSRF_TOKEN,
             previewCdn: process.env.NUXT_PUBLIC_BUNNY_CDN_URL,
             bunnyApiBase: process.env.NUXT_PUBLIC_BUNNY_API_BASE,
             bunnyAccessKey: process.env.BUNNY_ACCESS_KEY
