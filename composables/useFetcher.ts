@@ -63,26 +63,32 @@ const onResponseError = async ({ response }: FetchContext & { response: FetchRes
         response.status === 401 &&
         !response.ok
     ) {
-        if (!refreshTokenLock.value) {
-            refreshTokenLock.value = true
+        try {
+            if (!refreshTokenLock.value) {
+                refreshTokenLock.value = true
 
-            refreshTokenPromise = new Promise<void>(async (resolve, reject) => {
-                try {
-                    const res = await useFetcher<IAuthProfile>('/auth/refresh')
+                refreshTokenPromise = new Promise<void>(async (resolve, reject) => {
+                    try {
+                        const res = await useFetcher<IAuthProfile>('/auth/refresh')
 
-                    setToken(res.accessToken)
-                    resolve()
-                } catch {
-                    removeToken()
-                    removeUserData()
-                    navigateTo(ROUTER.LOGIN)
-                    reject()
-                } finally {
-                    refreshTokenLock.value = false
-                }
-            })
+                        setToken(res.accessToken)
+                        resolve()
+                    } catch {
+                        removeToken()
+                        removeUserData()
+                        navigateTo(ROUTER.LOGIN)
+                        reject()
+                    } finally {
+                        refreshTokenLock.value = false
+                    }
+                })
+            }
+
+            await refreshTokenPromise
+        } catch {
+            removeToken()
+            removeUserData()
+            navigateTo(ROUTER.LOGIN)
         }
-
-        await refreshTokenPromise
     }
 }

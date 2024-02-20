@@ -29,7 +29,7 @@ export enum PRODUCT_TYPE {
 }
 
 export enum AUTH {
-    TOKEN = 'accessToken',
+    TOKEN = 'accessTokenAdmin',
     USER_DATA = 'userData',
 }
 
