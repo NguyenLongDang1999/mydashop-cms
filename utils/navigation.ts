@@ -71,6 +71,10 @@ export default [
                 to: '/website-setup/system'
             },
             {
+                title: 'Thiết lập email',
+                to: '/website-setup/email'
+            },
+            {
                 title: 'Pages',
                 to: '/website-setup/pages'
             }
