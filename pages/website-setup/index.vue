@@ -56,7 +56,7 @@ const onChange = (index: number) => navigateTo({
 
                 <UTabs
                     :items="items"
-                    :ui="{ wrapper: 'flex items-start gap-4 space-y-0', list: { width: 'w-48', tab: { base: 'justify-start' } } }"
+                    :ui="{ wrapper: 'md:flex items-start gap-4 space-y-0', list: { width: 'md:w-48 mb-4', tab: { base: 'justify-start' } } }"
                     :default-index="defaultIndex === -1 ? 0 : defaultIndex"
                     orientation="vertical"
                     @change="onChange"
