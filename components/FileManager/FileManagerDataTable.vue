@@ -17,6 +17,8 @@ const { search, dataTable, isFetching, pathSplit, pathURL } = useFileManagerData
 const { mutateAsync, isPending } = useFileManagerDelete()
 
 // ** Data
+pathURL.value = ''
+
 const links = ref<BreadcrumbLink[]>([{
     label: 'Home',
     icon: 'i-heroicons-home'
@@ -123,7 +125,7 @@ const generateDynamicPath = (objectName: string) => {
                         mode="hover"
                     >
                         <div
-                            class="flex items-center gap-2 font-medium"
+                            class="flex items-center gap-2 font-medium w-full"
                             @click="closeButton"
                         >
                             <UIcon
