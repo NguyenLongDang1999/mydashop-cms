@@ -12,7 +12,7 @@ const { mutateAsync } = useFileManagerCreateFolder()
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await mutateAsync(values.folder_name)
+    await mutateAsync(values)
     isOpen.value = false
 })
 </script>

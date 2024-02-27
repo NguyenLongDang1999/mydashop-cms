@@ -60,12 +60,10 @@ export const formatSellingPrice = (row: IProduct | unknown) => {
 export const formatPathFile = (originalPath: string, ObjectName: string) => originalPath.replace(/^\/images-data/, '') + ObjectName
 
 export const getPathImageFile = (name?: string) => {
-    const config = useRuntimeConfig()
-
     if (name) {
         return name.includes('https://') ?
             name :
-            config.public.previewCdn + name
+            PATH.BUNNY_CDN_URL + name
     }
 
     return IMAGE.DEFAULT

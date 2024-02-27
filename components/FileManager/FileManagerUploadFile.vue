@@ -7,11 +7,10 @@ const { mutateAsync } = useFileManagerUploadFile()
 // ** Methods
 async function onFileInput(e: Event) {
     const fileValue = (e.target as HTMLInputElement).files![0]
+    const formData = new FormData()
 
-    await mutateAsync({
-        fileName: fileValue.name,
-        fileRaw: fileValue
-    })
+    formData.append('file', fileValue)
+    await mutateAsync(formData)
 }
 </script>
 

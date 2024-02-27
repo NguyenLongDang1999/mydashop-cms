@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 defineEmits(['imageUrl'])
 
 // ** useHooks
-const { search, dataTable, isFetching, pathSplit, refetch, pathURL } = useFileManagerDataTable()
+const { search, dataTable, isFetching, pathSplit, pathURL } = useFileManagerDataTable()
 const { mutateAsync, isPending } = useFileManagerDelete()
 
 // ** Data
@@ -87,15 +87,6 @@ const generateDynamicPath = (objectName: string) => {
                 <div class="flex gap-2">
                     <FileManagerCreateFolder />
                     <FileManagerUploadFile />
-                    <UButton
-                        icon="i-heroicons-arrow-path"
-                        size="sm"
-                        square
-                        label="Refresh"
-                        color="gray"
-                        variant="solid"
-                        @click="refetch"
-                    />
                 </div>
             </div>
 
@@ -179,8 +170,8 @@ const generateDynamicPath = (objectName: string) => {
 
                         <Confirm
                             :remove="() => mutateAsync({
-                                fileName: row.ObjectName,
-                                isFolder: !row.Length
+                                folder_name: row.ObjectName,
+                                is_folder: !row.Length
                             })"
                         />
                     </div>

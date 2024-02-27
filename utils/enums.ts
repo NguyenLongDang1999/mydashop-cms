@@ -30,7 +30,7 @@ export enum PRODUCT_TYPE {
 
 export enum AUTH {
     TOKEN = 'accessTokenAdmin',
-    USER_DATA = 'userData',
+    USER_DATA = 'adminData',
 }
 
 export enum ROUTE {
@@ -45,6 +45,7 @@ export enum ROUTE {
     WEBSITE_SETUP = 'website-setup',
     PAGES = 'pages',
     ORDERS = 'orders',
+    FILE_MANAGER = 'file-manager',
 }
 
 export enum ROUTER {
@@ -85,4 +86,8 @@ export enum WEBSITE_SETUP {
 
 export enum MESSAGE_ERROR {
     CONFLICT = 'conflict'
+}
+
+export enum PATH {
+    BUNNY_CDN_URL = 'https://nuxivy.b-cdn.net/'
 }
