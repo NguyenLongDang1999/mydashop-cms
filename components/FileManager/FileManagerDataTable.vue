@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { BreadcrumbLink } from '@nuxt/ui/dist/runtime/types'
+import type { BreadcrumbLink } from '#ui/types'
 
 // ** Props & Emits
 interface Props {

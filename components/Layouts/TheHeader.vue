@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { DropdownItem } from '@nuxt/ui/dist/runtime/types'
+import type { DropdownItem } from '#ui/types'
 
 // ** useHooks
 const { refetch } = useAuthLogout()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '@nuxt/ui/dist/runtime/types'
+import type { TabItem } from '#ui/types'
 import type { IProductForm } from '~/types/product.type'
 
 // ** Props & Emits
