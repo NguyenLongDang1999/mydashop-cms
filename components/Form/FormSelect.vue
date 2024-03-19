@@ -11,6 +11,7 @@ interface Props {
     options: IOptions[]
     modelValue?: string | number | string[] | (number | undefined)[]
     colour?: boolean
+    routePage?: string
 }
 
 const props = defineProps<Props>()
@@ -64,7 +65,7 @@ const dataList = computed(() => props.options.filter(_p => Array.isArray(value.v
                 </span>
 
                 <span v-else>
-                    {{ dataList.map(_v => _v.name).join(', ') || 'Vui Lòng Chọn' }}
+                    {{ dataList.length }} được chọn
                 </span>
             </template>
 
@@ -79,5 +80,21 @@ const dataList = computed(() => props.options.filter(_p => Array.isArray(value.v
                 <span class="truncate">{{ option.name }}</span>
             </template>
         </USelectMenu>
+
+        <div
+            v-if="Array.isArray(value)"
+            class="flex flex-wrap gap-1 mt-1"
+        >
+            <template v-for="option in options">
+                <UButton
+                    v-if="value.includes(option.id as never)"
+                    :key="option.id"
+                    :label="option.name.replace(/\|---/g, '')"
+                    :to="routePage ? goToPage(option.id, routePage) : undefined"
+                    size="2xs"
+                    variant="outline"
+                />
+            </template>
+        </div>
     </UFormGroup>
 </template>

@@ -176,6 +176,7 @@ const handleIsDefault = (index: number) => {
                             :label="label.attribute.name"
                             :options="attributeList"
                             :loading="isFetchingAttribute"
+                            :route-page="ROUTER.ATTRIBUTE"
                             name="attribute_id"
                             multiple
                             @change="handleChangeAttribute"

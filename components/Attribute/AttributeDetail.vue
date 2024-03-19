@@ -57,6 +57,7 @@ const onSubmit = handleSubmit(async values => mutateAsync({
                         :model-value="attribute.category_id"
                         :label="label.category_id"
                         :options="categoryList"
+                        :route-page="ROUTER.CATEGORY"
                         name="category_id"
                         multiple
                     />

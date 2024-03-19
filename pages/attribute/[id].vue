@@ -20,7 +20,7 @@ const items: TabItem[] = [{
     <section>
         <TheTitle
             label="Quản lý sản phẩm"
-            :title="`Cập nhật thương hiệu: ${data.name}`"
+            :title="`Cập nhật thuộc tính: ${data.name}`"
         />
 
         <div class="mt-8 pb-24 max-w-none">
