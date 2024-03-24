@@ -28,6 +28,14 @@ export enum PRODUCT_TYPE {
     VARIANT = 20
 }
 
+export enum ORDER_STATUS {
+    NEW = 10,
+    CONFIRMED = 20,
+    ON_THE_WAY = 30,
+    DELIVERED = 40,
+    CANCEL = 50,
+}
+
 export enum AUTH {
     TOKEN = 'accessTokenAdmin',
     USER_DATA = 'adminData',

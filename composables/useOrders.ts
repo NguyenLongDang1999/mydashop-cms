@@ -35,7 +35,7 @@ export const useOrdersDetail = async () => {
     // ** useHooks
     const id = Number(useRoute().params.id)
 
-    const { data, suspense } = useQuery<ICategoryForm>({
+    const { data, suspense } = useQuery({
         queryKey: [path.value + 'Detail', id],
         queryFn: () => useFetcher(path.value + '/' + id)
     })

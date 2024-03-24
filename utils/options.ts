@@ -53,6 +53,29 @@ export const optionProductType = [
     }
 ]
 
+export const optionOrderStatus = [
+    {
+        id: ORDER_STATUS.NEW,
+        name: 'Mới'
+    },
+    {
+        id: ORDER_STATUS.CONFIRMED,
+        name: 'Tiếp nhận đơn hàng'
+    },
+    {
+        id: ORDER_STATUS.ON_THE_WAY,
+        name: 'Đang vận chuyển'
+    },
+    {
+        id: ORDER_STATUS.DELIVERED,
+        name: 'Đã giao hàng'
+    },
+    {
+        id: ORDER_STATUS.CANCEL,
+        name: 'Huỷ đơn hàng'
+    }
+]
+
 export const optionColourWebsite = [
     // {
     //     id: 'slate',
