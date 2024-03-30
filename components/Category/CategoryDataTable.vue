@@ -69,7 +69,7 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
                 </template>
 
                 <template #status-data="{ row }: IRow<ICategory>">
-                    <UToggle :model-value="row.status === STATUS.ACTIVE" />
+                    <UToggle :model-value="String(row.status) === STATUS.ACTIVE" />
                 </template>
 
                 <template #created_at-data="{ row }: IRow<ICategory>">

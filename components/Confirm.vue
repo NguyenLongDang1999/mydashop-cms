@@ -54,7 +54,10 @@ const isOpen = ref<boolean>(false)
                         color="primary"
                         variant="solid"
                         label="Đồng Ý"
-                        @click="remove"
+                        @click="() => {
+                            remove()
+                            isOpen = false
+                        }"
                     />
                     <UButton
                         color="red"

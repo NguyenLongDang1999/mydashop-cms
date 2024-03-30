@@ -84,7 +84,7 @@ export const useBrandFormDelete = () => {
     const queryClient = useQueryClient()
 
     return useMutation<IDeleteRecord, Error, IDeleteRecord>({
-        mutationFn: body => useFetcher(`${path.value}/remove/${body.id}`, { method: 'PATCH' }),
+        mutationFn: body => useFetcher(`${path.value}/remove/${body.id}`, { method: 'DELETE' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })
