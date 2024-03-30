@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategorySearch } from '~/types/category.type'
+import type { ICategorySearch } from '~/types/category.type';
 
 // ** Validations Imports
-import { label } from '~/validations/category'
+import { label } from '~/validations/category';
 
 // ** useHooks
 const categoryList = useCategoryDataList()
@@ -19,7 +19,6 @@ const handleReset = () => {
         name: undefined,
         parent_id: undefined,
         status: undefined,
-        popular: undefined,
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
@@ -52,15 +51,6 @@ const handleReset = () => {
                     :label="label.status"
                     :options="optionStatus"
                     name="status"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormSelect
-                    v-model="searchTemp.popular"
-                    :label="label.popular"
-                    :options="optionPopular"
-                    name="popular"
                 />
             </div>
 

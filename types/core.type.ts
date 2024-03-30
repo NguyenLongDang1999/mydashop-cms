@@ -26,7 +26,7 @@ export interface ISearchDropdown {
 }
 
 export interface IDeleteRecord {
-    id: number
+    id: string
 }
 
 export interface IDateRangePicker {

@@ -88,7 +88,7 @@ export interface IProductSearch extends IPagination {
     sku?: string
     name?: string
     brand_id?: number
-    category_id?: number
+    category_id?: string
     status?: string
     popular?: string
 }

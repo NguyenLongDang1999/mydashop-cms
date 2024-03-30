@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types'
+import type { TabItem } from '#ui/types';
 
 // ** useHooks
-const { data } = await useCategoryDetail()
+const { data } = await useCategoryRetrieve()
 
 // ** Data
 const items: TabItem[] = [{
@@ -33,7 +33,7 @@ const items: TabItem[] = [{
                 </template>
 
                 <template #product>
-                    <CategoryDetailProduct :category-id="(data.id as number)" />
+                    <CategoryDetailProduct :category-id="(data.id as string)" />
                 </template>
             </UTabs>
         </div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrand } from '~/types/brand.type'
-import type { IRow } from '~/types/core.type'
+import type { IBrand } from '~/types/brand.type';
+import type { IRow } from '~/types/core.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useBrandDataTable()
@@ -46,14 +46,14 @@ const { isPending, mutateAsync } = useBrandFormDelete()
 
                 <template #category_id-data="{ row }: IRow<IBrand>">
                     <div
-                        v-if="row.categories.length"
+                        v-if="row.productCategoryBrand.length"
                         class="flex flex-wrap gap-1"
                     >
                         <UButton
-                            v-for="category in row.categories"
-                            :key="category.id"
-                            :label="category.name"
-                            :to="goToPage(category.id, ROUTER.CATEGORY)"
+                            v-for="category in row.productCategoryBrand"
+                            :key="category.productCategory.id"
+                            :label="category.productCategory.name"
+                            :to="goToPage(category.productCategory.id, ROUTER.CATEGORY)"
                             size="xs"
                             color="gray"
                             variant="solid"
@@ -64,11 +64,7 @@ const { isPending, mutateAsync } = useBrandFormDelete()
                 </template>
 
                 <template #status-data="{ row }: IRow<IBrand>">
-                    <UToggle :model-value="row.status === STATUS.ACTIVE" />
-                </template>
-
-                <template #popular-data="{ row }: IRow<IBrand>">
-                    <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
+                    <UToggle :model-value="String(row.status) === STATUS.ACTIVE" />
                 </template>
 
                 <template #actions-data="{ row }: IRow<IBrand>">

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategory } from '~/types/category.type'
-import type { IRow } from '~/types/core.type'
+import type { ICategory } from '~/types/category.type';
+import type { IRow } from '~/types/core.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useCategoryDataTable()
@@ -41,7 +41,7 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
 
                             <div class="flex flex-col flex-1 truncate">
                                 <span class="capitalize text-primary truncate">{{ row.name }}</span>
-                                <span>{{ row.Product.length }} Sản Phẩm</span>
+                                <span>{{ row.product.length }} Sản Phẩm</span>
                             </div>
                         </div>
                     </ULink>
@@ -49,18 +49,18 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
 
                 <template #parent_id-data="{ row }: IRow<ICategory>">
                     <ULink
-                        v-if="row.parent"
-                        :to="goToPage(row.parent.id)"
+                        v-if="row.parentCategory"
+                        :to="goToPage(row.parentCategory.id)"
                     >
                         <div class="flex items-center gap-1">
                             <UAvatar
-                                :src="getPathImageFile(row.parent.image_uri)"
-                                :alt="row.parent.name"
+                                :src="getPathImageFile(row.parentCategory.image_uri)"
+                                :alt="row.parentCategory.name"
                             />
 
                             <div class="flex flex-col flex-1 truncate">
-                                <span class="capitalize text-primary truncate">{{ row.parent.name }}</span>
-                                <span>{{ row.parent.Product?.length }} Sản Phẩm</span>
+                                <span class="capitalize text-primary truncate">{{ row.parentCategory.name }}</span>
+                                <span>{{ row.parentCategory.product?.length }} Sản Phẩm</span>
                             </div>
                         </div>
                     </ULink>
@@ -70,10 +70,6 @@ const { isPending, mutateAsync } = useCategoryFormDelete()
 
                 <template #status-data="{ row }: IRow<ICategory>">
                     <UToggle :model-value="row.status === STATUS.ACTIVE" />
-                </template>
-
-                <template #popular-data="{ row }: IRow<ICategory>">
-                    <UToggle :model-value="row.popular === POPULAR.ACTIVE" />
                 </template>
 
                 <template #created_at-data="{ row }: IRow<ICategory>">

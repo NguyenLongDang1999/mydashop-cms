@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrandForm } from '~/types/brand.type'
+import type { IBrandForm } from '~/types/brand.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/brand'
+import { label, schema } from '~/validations/brand';
 
 // ** useHooks
 const categoryList = useCategoryDataList()
@@ -18,7 +18,7 @@ const isOpen = ref<boolean>(false)
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
-        category_id: JSON.stringify(values.category_id)
+        product_category_id: JSON.stringify(values.product_category_id)
     })
 
     isOpen.value = false
@@ -70,9 +70,9 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
-                            :label="label.category_id"
+                            :label="label.product_category_id"
                             :options="categoryList"
-                            name="category_id"
+                            name="product_category_id"
                             multiple
                         />
                     </div>
@@ -85,32 +85,10 @@ const onSubmit = handleSubmit(async values => {
                         />
                     </div>
 
-                    <div class="sm:col-span-6 col-span-12">
-                        <FormSelect
-                            :label="label.popular"
-                            :options="optionPopular"
-                            name="popular"
-                        />
-                    </div>
-
-                    <div class="sm:col-span-6 col-span-12">
-                        <FormInput
+                    <div class="col-span-12">
+                        <FormTextarea
                             :label="label.description"
                             name="description"
-                        />
-                    </div>
-
-                    <div class="col-span-12">
-                        <FormInput
-                            :label="label.meta_title"
-                            name="meta_title"
-                        />
-                    </div>
-
-                    <div class="col-span-12">
-                        <FormInput
-                            :label="label.meta_description"
-                            name="meta_description"
                         />
                     </div>
                 </div>

@@ -108,7 +108,6 @@ export const brandColumns: Columns[] = [
         class: minWithColumn(250)
     },
     status,
-    popular,
     actions
 ]
 
@@ -124,7 +123,6 @@ export const categoryColumns: Columns[] = [
         class: minWithColumn(200)
     },
     status,
-    popular,
     {
         key: 'created_at',
         label: 'Ngày tạo',

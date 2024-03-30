@@ -4,32 +4,31 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export type IBrandList = ICategoryList
 export interface IBrandForm {
-    id?: number
+    id?: string
     name: string
     slug: string
-    category_id: number[] | string
+    product_category_id: string | string[]
     image_uri?: string
     status?: number
-    popular?: number
     description?: string
     meta_title?: string
     meta_description?: string
 }
 
 export interface IBrand {
-    id: number
+    id: string
     name: string
     image_uri: string
     status: number
-    popular: number
-    categories: ICategoryList[]
+    productCategoryBrand: {
+        productCategory: ICategoryList
+    }[]
 }
 
 export interface IBrandSearch extends IPagination {
     name?: string
-    category_id?: number
+    product_category_id?: string
     status?: number
-    popular?: number
 }
 
 export interface IBrandTable extends IAggregations {

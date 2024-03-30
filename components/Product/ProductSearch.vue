@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductSearch } from '~/types/product.type'
+import type { IProductSearch } from '~/types/product.type';
 
 // ** Validations Imports
-import { label } from '~/validations/product'
+import { label } from '~/validations/product';
 
 // ** Props & Emits
 interface Props {
-    categoryId?: number
+    categoryId?: string
 }
 
 const props = defineProps<Props>()

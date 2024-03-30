@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/category'
+import { label, schema } from '~/validations/category';
 
 // ** Types Imports
-import type { ICategoryForm } from '~/types/category.type'
+import type { ICategoryForm } from '~/types/category.type';
 
 // ** useHooks
 const categoryList = useCategoryDataList()
@@ -93,30 +93,22 @@ const onSubmit = handleSubmit(async values => {
                         />
                     </div>
 
-                    <div class="sm:col-span-6 col-span-12">
-                        <FormSelect
-                            :label="label.popular"
-                            :options="optionPopular"
-                            name="popular"
-                        />
-                    </div>
-
-                    <div class="sm:col-span-6  col-span-12">
-                        <FormInput
+                    <div class="col-span-12">
+                        <FormTextarea
                             :label="label.description"
                             name="description"
                         />
                     </div>
 
                     <div class="col-span-12">
-                        <FormInput
+                        <FormTextarea
                             :label="label.meta_title"
                             name="meta_title"
                         />
                     </div>
 
                     <div class="col-span-12">
-                        <FormInput
+                        <FormTextarea
                             :label="label.meta_description"
                             name="meta_description"
                         />

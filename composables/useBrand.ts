@@ -48,13 +48,13 @@ export const useBrandDataList = () => {
     return computed(() => data.value || [])
 }
 
-export const useBrandDetail = async () => {
+export const useBrandRetrieve = async () => {
     // ** useHooks
-    const id = Number(useRoute().params.id)
+    const { params } = useRoute()
 
     const { data, suspense } = useQuery<IBrandForm>({
-        queryKey: [path.value + 'Detail', id],
-        queryFn: () => useFetcher(path.value + '/' + id)
+        queryKey: [path.value + 'Detail', params.id],
+        queryFn: () => useFetcher(path.value + '/' + params.id)
     })
 
     await suspense()

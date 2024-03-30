@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrandSearch } from '~/types/brand.type'
+import type { IBrandSearch } from '~/types/brand.type';
 
 // ** Validations Imports
-import { label } from '~/validations/brand'
+import { label } from '~/validations/brand';
 
 // ** useHooks
 const categoryList = useCategoryDataList()
@@ -17,9 +17,8 @@ const searchTemp = reactive<IBrandSearch>(_clone(search))
 const handleReset = () => {
     _assign(searchTemp, {
         name: undefined,
-        category_id: undefined,
+        product_category_id: undefined,
         status: undefined,
-        popular: undefined,
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
@@ -39,10 +38,10 @@ const handleReset = () => {
 
             <div class="md:col-span-3 sm:col-span-6 col-span-12">
                 <FormSelect
-                    v-model="searchTemp.category_id"
-                    :label="label.category_id"
+                    v-model="searchTemp.product_category_id"
+                    :label="label.product_category_id"
                     :options="categoryList"
-                    name="category_id"
+                    name="product_category_id"
                 />
             </div>
 
@@ -52,15 +51,6 @@ const handleReset = () => {
                     :label="label.status"
                     :options="optionStatus"
                     name="status"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormSelect
-                    v-model="searchTemp.popular"
-                    :label="label.popular"
-                    :options="optionPopular"
-                    name="popular"
                 />
             </div>
 

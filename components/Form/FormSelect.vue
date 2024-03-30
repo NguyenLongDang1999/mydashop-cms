@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IOptions } from '~/types/core.type'
+import type { IOptions } from '~/types/core.type';
 
 // ** Props & Emits
 interface Props {
@@ -57,11 +57,11 @@ const dataList = computed(() => props.options.filter(_p => Array.isArray(value.v
                     >
                         <span
                             class="flex-shrink-0 w-2 h-2 mt-px rounded-full"
-                            :class="`bg-${valueTransform(options, value)?.id}-500`"
+                            :class="`bg-${valueTransform(options, String(value))?.id}-500`"
                         />
                     </span>
 
-                    <span>{{ valueTransform(options, value)?.name || 'Vui Lòng Chọn' }}</span>
+                    <span>{{ valueTransform(options, String(value))?.name || 'Vui Lòng Chọn' }}</span>
                 </span>
 
                 <span v-else>
