@@ -1,6 +1,6 @@
 export enum STATUS {
-    ACTIVE = "10",
-    INACTIVE = "20"
+    ACTIVE = '10',
+    INACTIVE = '20'
 }
 
 export enum POPULAR {
@@ -45,7 +45,7 @@ export enum ROUTE {
     AUTHENTICATION = 'auth',
     CATEGORY = 'product-categories',
     BRAND = 'product-brands',
-    ATTRIBUTE = 'attribute',
+    ATTRIBUTE = 'product-attributes',
     ATTRIBUTE_VALUES = 'attribute-values',
     PRODUCT = 'product',
     FLASH_DEALS = 'flash-deals',

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm } from '~/types/attribute.type'
+import type { IAttributeForm } from '~/types/attribute.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/attribute'
+import { label, schema } from '~/validations/attribute';
 
 // ** Props & Emits
 interface Props {
@@ -25,8 +25,7 @@ const { handleSubmit, values: attribute, setFieldValue } = useForm<IAttributeFor
 // ** Methods
 const onSubmit = handleSubmit(async values => mutateAsync({
     ...values,
-    category_id: JSON.stringify(values.category_id),
-    attribute_value_id: undefined
+    product_category_id: JSON.stringify(values.product_category_id)
 }))
 </script>
 
@@ -54,11 +53,11 @@ const onSubmit = handleSubmit(async values => mutateAsync({
 
                 <div class="sm:col-span-6 col-span-12">
                     <FormSelect
-                        :model-value="attribute.category_id"
-                        :label="label.category_id"
+                        :model-value="attribute.product_category_id"
+                        :label="label.product_category_id"
                         :options="categoryList"
                         :route-page="ROUTER.CATEGORY"
-                        name="category_id"
+                        name="product_category_id"
                         multiple
                     />
                 </div>
@@ -72,7 +71,7 @@ const onSubmit = handleSubmit(async values => mutateAsync({
                 </div>
 
                 <div class="col-span-12">
-                    <FormInput
+                    <FormTextarea
                         :label="label.description"
                         name="description"
                     />

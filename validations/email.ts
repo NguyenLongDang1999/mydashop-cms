@@ -21,5 +21,5 @@ export const schema = toTypedSchema(yup.object({
         .required(`${label.subject} không được bỏ trống.`),
     body: yup
         .string()
-        .required(`${label.body} không được bỏ trống.`),
+        .required(`${label.body} không được bỏ trống.`)
 }))

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrandSearch } from '~/types/brand.type';
+import type { IBrandSearch } from '~/types/brand.type'
 
 // ** Validations Imports
-import { label } from '~/validations/brand';
+import { label } from '~/validations/brand'
 
 // ** useHooks
 const categoryList = useCategoryDataList()

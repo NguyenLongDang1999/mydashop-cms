@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IPages } from '~/types/pages.type';
+import type { IRow } from '~/types/core.type'
+import type { IPages } from '~/types/pages.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = usePagesDataTable()

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrand } from '~/types/brand.type';
-import type { IRow } from '~/types/core.type';
+import type { IBrand } from '~/types/brand.type'
+import type { IRow } from '~/types/core.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useBrandDataTable()
@@ -51,9 +51,9 @@ const { isPending, mutateAsync } = useBrandFormDelete()
                     >
                         <UButton
                             v-for="category in row.productCategoryBrand"
-                            :key="category.productCategory.id"
-                            :label="category.productCategory.name"
-                            :to="goToPage(category.productCategory.id, ROUTER.CATEGORY)"
+                            :key="category.id"
+                            :label="category.name"
+                            :to="goToPage(category.id, ROUTER.CATEGORY)"
                             size="xs"
                             color="gray"
                             variant="solid"

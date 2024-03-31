@@ -20,9 +20,7 @@ export interface IBrand {
     name: string
     image_uri: string
     status: number
-    productCategoryBrand: {
-        productCategory: ICategoryList
-    }[]
+    productCategoryBrand: ICategoryList[]
 }
 
 export interface IBrandSearch extends IPagination {

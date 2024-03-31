@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IPagesForm } from '~/types/pages.type';
+import type { IPagesForm } from '~/types/pages.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/email';
+import { label, schema } from '~/validations/email'
 
 // ** useHooks
 const { isPending, mutateAsync } = usePagesFormInput()

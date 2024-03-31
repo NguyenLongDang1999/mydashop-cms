@@ -4,7 +4,7 @@
 import type { TabItem } from '#ui/types'
 
 // ** useHooks
-const { data } = await useAttributeDetail()
+const { data } = await useAttributeRetrieve()
 
 // ** Data
 const items: TabItem[] = [{

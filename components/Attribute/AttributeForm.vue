@@ -1,15 +1,15 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeForm, IAttributeValues } from '~/types/attribute.type'
+import type { IAttributeForm } from '~/types/attribute.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/attribute'
+import { label, schema } from '~/validations/attribute';
 
 // ** useHooks
 const categoryList = useCategoryDataList()
 const { isPending, mutateAsync } = useAttributeFormInput()
-const { handleSubmit, values: attribute, setFieldValue } = useForm<IAttributeForm>({ validationSchema: schema })
+const { handleSubmit, setFieldValue } = useForm<IAttributeForm>({ validationSchema: schema })
 
 // ** Data
 const isOpen = ref<boolean>(false)
@@ -18,10 +18,7 @@ const isOpen = ref<boolean>(false)
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
-        category_id: JSON.stringify(values.category_id),
-        attribute_value_id: attribute.attribute_value_id
-            ? JSON.stringify((values.attribute_value_id as IAttributeValues[]).map(_v => _v.value))
-            : undefined
+        product_category_id: JSON.stringify(values.product_category_id),
     })
 
     isOpen.value = false
@@ -72,9 +69,9 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
-                            :label="label.category_id"
+                            :label="label.product_category_id"
                             :options="categoryList"
-                            name="category_id"
+                            name="product_category_id"
                             multiple
                         />
                     </div>
@@ -88,17 +85,11 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        <FormInput
+                        <FormTextarea
                             :label="label.description"
                             name="description"
                         />
                     </div>
-
-                    <div class="col-span-12">
-                        <UDivider />
-                    </div>
-
-                    <AttributeValues :attribute-values="(attribute.attribute_value_id as IAttributeValues[])" />
                 </div>
 
                 <template #footer>

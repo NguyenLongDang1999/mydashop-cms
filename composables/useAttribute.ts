@@ -16,7 +16,7 @@ export default function () {
 
 export const useAttributeValueList = () => {
     // ** Data
-    const attribute_id = ref<number[]>([])
+    const attribute_id = ref<string[]>([])
 
     const attributeData = useQueries({
         queries: computed(() => attribute_id.value.map(_v => {
@@ -70,13 +70,13 @@ export const useAttributeDataList = () => {
     return computed(() => data.value || [])
 }
 
-export const useAttributeDetail = async () => {
+export const useAttributeRetrieve = async () => {
     // ** useHooks
-    const id = Number(useRoute().params.id)
+    const { params } = useRoute()
 
     const { data, suspense } = useQuery<IAttributeForm>({
-        queryKey: [path.value + 'Detail', id],
-        queryFn: () => useFetcher(path.value + '/' + id)
+        queryKey: [path.value + 'Detail', params.id],
+        queryFn: () => useFetcher(path.value + '/' + params.id)
     })
 
     await suspense()
@@ -107,7 +107,7 @@ export const useAttributeFormDelete = () => {
     const queryClient = useQueryClient()
 
     return useMutation<IDeleteRecord, Error, IDeleteRecord>({
-        mutationFn: body => useFetcher(`${path.value}/remove/${body.id}`, { method: 'PATCH' }),
+        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE' }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
             queryClient.invalidateQueries({ queryKey: [`${path.value}DataTable`] })

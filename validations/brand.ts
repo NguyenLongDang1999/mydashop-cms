@@ -22,7 +22,7 @@ export const schema = toTypedSchema(yup.object({
         .string()
         .notRequired(),
     product_category_id: yup
-        .mixed<number[] | string>()
+        .mixed<string[] | string>()
         .test('product_category_id', `${label.product_category_id} không được bỏ trống.`, value => {
             if (Array.isArray(value) && value.length > 0) {
                 return true

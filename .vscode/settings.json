@@ -26,13 +26,11 @@
         "strings": true
     },
     // Extension: Volar
-    "volar.preview.port": 3000,
-    "volar.completion.preferredTagNameCase": "pascal",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit",
-        "source.fixAll.stylelint": "explicit",
-        "source.organizeImports": "explicit"
+        "source.fixAll.eslint": true,
+        "source.fixAll.stylelint": true,
+        "source.organizeImports": true,
     },
     "eslint.alwaysShowStatus": true,
     "eslint.format.enable": true,

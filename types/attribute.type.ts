@@ -4,39 +4,37 @@ import type { IAggregations, IPagination } from '~/types/core.type'
 
 export type IAttributeList = ICategoryList
 export interface IAttributeForm {
-    id?: number
+    id?: string
     name: string
     slug: string
-    category_id: string | number[]
-    attribute_value_id?: string | IAttributeValues[]
+    product_category_id: string | string[]
     status?: number
     description?: string
 }
 
 export interface IAttributeValues {
-    id?: number
-    attribute_id?: number
+    id?: string
+    product_attribute_id: string
     value: string
 }
 
 export interface IAttributeValuesList {
-    id: number
+    id: string
     name: string
     values: string[] | number[]
 }
 
 export interface IAttribute {
-    id: number
+    id: string
     name: string
     status: number
     created_at: string
-    updated_at: string
-    categories: ICategoryList[]
+    productCategoryAttributes: ICategoryList[]
 }
 
 export interface IAttributeSearch extends IPagination {
     name?: string
-    category_id?: number
+    product_category_id?: number
     status?: number
 }
 
@@ -45,17 +43,17 @@ export interface IAttributeTable extends IAggregations {
 }
 
 export interface IAttributeValue {
-    id: number
+    id: string
     value: string
     attribute: {
-        id: number
+        id: string
         name: string
     }
 }
 
 export interface IAttributeValuesSearch extends IPagination {
     value?: string
-    attribute_id?: number
+    attribute_id?: string
 }
 
 export interface IAttributeValuesTable extends IAggregations {
@@ -63,12 +61,12 @@ export interface IAttributeValuesTable extends IAggregations {
 }
 
 export interface IAttributeValuesDataList {
-    id: number
+    id: string
     name: string
 }
 
 export interface IAttributeValuesForm {
-    id?: number
+    id?: string
     value: string
-    attribute_id: number
+    product_attribute_id: string
 }

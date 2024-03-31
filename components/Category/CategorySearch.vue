@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ICategorySearch } from '~/types/category.type';
+import type { ICategorySearch } from '~/types/category.type'
 
 // ** Validations Imports
-import { label } from '~/validations/category';
+import { label } from '~/validations/category'
 
 // ** useHooks
 const categoryList = useCategoryDataList()

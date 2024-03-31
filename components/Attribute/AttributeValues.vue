@@ -8,21 +8,16 @@ import { label } from '~/validations/attribute'
 
 // ** Props & Emits
 interface Props {
-    editPages?: boolean
-    attributeId?: number
     attributeValues: IAttributeValues[]
 }
 
 defineProps<Props>()
-
-// ** useHooks
-const { isPending, mutateAsync } = useAttributeValuesFormInput()
 </script>
 
 <template>
     <FieldArray
         v-slot="{ fields, push, remove }"
-        name="attribute_value_id"
+        name="attribute_value"
     >
         <div class="col-span-12">
             <UButton
@@ -48,37 +43,20 @@ const { isPending, mutateAsync } = useAttributeValuesFormInput()
                 >
                     <div class="col-span-5">
                         <FormInput
-                            :label="label.attribute_value_id"
-                            :name="`attribute_value_id.${index}.value`"
+                            :label="label.attribute_value"
+                            :name="`attribute_value.${index}.value`"
                         />
                     </div>
 
                     <div class="col-span-3">
                         <div class="mt-6 flex gap-2">
                             <UButton
-                                v-if="editPages"
-                                :ui="{ rounded: 'rounded-full' }"
-                                icon="i-heroicons-pencil-square"
-                                size="sm"
-                                color="orange"
-                                square
-                                variant="solid"
-                                :loading="Boolean(isPending)"
-                                @click="mutateAsync({
-                                    id: values.id,
-                                    value: values.value,
-                                    attribute_id: attributeId,
-                                })"
-                            />
-
-                            <UButton
                                 :ui="{ rounded: 'rounded-full' }"
                                 icon="i-heroicons-trash"
                                 size="sm"
                                 color="red"
                                 variant="solid"
-                                :loading="Boolean(isPending)"
-                                @click="values.id ? mutateAsync({ id: values.id, value: '' }) : remove(index)"
+                                @click="remove(index)"
                             />
                         </div>
                     </div>

@@ -42,11 +42,11 @@ const { isPending, mutateAsync } = useAttributeFormDelete()
 
                 <template #category_id-data="{ row }: IRow<IAttribute>">
                     <div
-                        v-if="row.categories.length"
+                        v-if="row.productCategoryAttributes.length"
                         class="flex flex-wrap gap-1"
                     >
                         <UButton
-                            v-for="category in row.categories"
+                            v-for="category in row.productCategoryAttributes"
                             :key="category.id"
                             :label="category.name"
                             :to="goToPage(category.id, ROUTER.CATEGORY)"
@@ -60,7 +60,7 @@ const { isPending, mutateAsync } = useAttributeFormDelete()
                 </template>
 
                 <template #status-data="{ row }: IRow<IAttribute>">
-                    <UToggle :model-value="row.status === STATUS.ACTIVE" />
+                    <UToggle :model-value="String(row.status) === STATUS.ACTIVE" />
                 </template>
 
                 <template #actions-data="{ row }: IRow<IAttribute>">

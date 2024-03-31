@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IBrandForm } from '~/types/brand.type';
+import type { IBrandForm } from '~/types/brand.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/brand';
+import { label, schema } from '~/validations/brand'
 
 // ** Props & Emits
 interface Props {

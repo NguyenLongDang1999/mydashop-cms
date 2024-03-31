@@ -17,7 +17,7 @@ const searchTemp = reactive<IAttributeSearch>(_clone(search))
 const handleReset = () => {
     _assign(searchTemp, {
         name: undefined,
-        category_id: undefined,
+        product_category_id: undefined,
         status: undefined,
         page: PAGE.CURRENT
     })
@@ -38,10 +38,10 @@ const handleReset = () => {
 
             <div class="md:col-span-3 sm:col-span-6 col-span-12">
                 <FormSelect
-                    v-model="searchTemp.category_id"
-                    :label="label.category_id"
+                    v-model="searchTemp.product_category_id"
+                    :label="label.product_category_id"
                     :options="categoryList"
-                    name="category_id"
+                    name="product_category_id"
                 />
             </div>
 
