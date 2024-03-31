@@ -1,8 +1,8 @@
 // ** Types Imports
-import type { IAttributeValuesList } from '~/types/attribute.type'
 import type { IBrandList } from '~/types/brand.type'
-import type { ICategoryList } from '~/types/category.type'
 import type { IAggregations, IPagination } from '~/types/core.type'
+import type { IAttributeValuesList } from '~/types/product-attribute.type'
+import type { ICategoryList } from '~/types/product-category.type'
 
 export interface IProductList {
     id: number

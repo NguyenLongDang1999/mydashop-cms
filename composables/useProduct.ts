@@ -2,9 +2,9 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
-import type { IAttributeList } from '~/types/attribute.type'
-import type { IBrandList } from '~/types/brand.type'
 import type { IDeleteRecord } from '~/types/core.type'
+import type { IProductAttributeList } from '~/types/product-attribute.type'
+import type { IProductBrandList } from '~/types/product-brand.type'
 import type { IProductForm, IProductList, IProductSearch, IProductTable } from '~/types/product.type'
 
 // ** State
@@ -101,20 +101,20 @@ export const useProductFormDelete = () => {
 export const useProductSelectedWithCategory = () => {
     // ** Data
     const endPoint = '/data-list-category'
-    const queryKey = 'DataListCategory'
-    const category_id = ref<number>()
+    const queryKey = 'data-list-category'
+    const category_id = ref<string>()
 
     // ** useHooks
-    const { path: pathBrand } = useBrand()
-    const { path: pathAttribute } = useAttribute()
+    const { path: pathBrand } = useProductBrand()
+    const { path: pathAttribute } = useProductAttribute()
 
-    const { isFetching: isFetchingBrand, data: dataBrand } = useQuery<IBrandList[]>({
+    const { isFetching: isFetchingBrand, data: dataBrand } = useQuery<IProductBrandList[]>({
         queryKey: [pathBrand.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathBrand.value + endPoint}/${category_id.value}`),
         enabled: () => !!category_id.value
     })
 
-    const { isFetching: isFetchingAttribute, data: dataAttribute } = useQuery<IAttributeList[]>({
+    const { isFetching: isFetchingAttribute, data: dataAttribute } = useQuery<IProductAttributeList[]>({
         queryKey: [pathAttribute.value + queryKey, category_id],
         queryFn: () => useFetcher(`${pathAttribute.value + endPoint}/${category_id.value}`),
         enabled: () => !!category_id.value

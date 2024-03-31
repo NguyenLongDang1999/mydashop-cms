@@ -89,7 +89,7 @@ export const attributeValuesColumns: Columns[] = [
         class: minWithColumn(250)
     },
     {
-        key: 'values',
+        key: 'value',
         label: 'Giá trị',
         class: minWithColumn(250)
     },

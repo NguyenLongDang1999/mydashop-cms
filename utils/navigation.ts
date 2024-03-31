@@ -13,19 +13,19 @@ export default [
         children: [
             {
                 title: 'Danh mục',
-                to: '/category'
+                to: `${ROUTER.PRODUCT_CATEGORY}`
             },
             {
                 title: 'Thương hiệu',
-                to: '/brand'
+                to: `${ROUTER.PRODUCT_BRAND}`
             },
             {
                 title: 'Thuộc tính',
-                to: '/attribute'
+                to: `${ROUTER.PRODUCT_ATTRIBUTE}`
             },
             {
                 title: 'Thuộc tính (Giá trị)',
-                to: '/attribute-values'
+                to: `${ROUTER.PRODUCT_ATTRIBUTE_VALUES}`
             },
             {
                 title: 'Chiến dịch',

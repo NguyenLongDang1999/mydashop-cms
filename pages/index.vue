@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TheTitle
+        <BaseTitle
             label="Bảng điều khiển"
             title="Thống kê"
         />

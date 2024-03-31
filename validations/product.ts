@@ -3,7 +3,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 
 // ** Types Imports
-import type { IAttributeValuesList } from '~/types/attribute.type'
+import type { IAttributeValuesList } from '~/types/product-attribute.type'
 import type { IProductUpload } from '~/types/product.type'
 
 export const label = {

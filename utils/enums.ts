@@ -43,9 +43,10 @@ export enum AUTH {
 
 export enum ROUTE {
     AUTHENTICATION = 'auth',
-    CATEGORY = 'product-categories',
-    BRAND = 'product-brands',
-    ATTRIBUTE = 'product-attributes',
+    PRODUCT_CATEGORY = 'product-categories',
+    PRODUCT_BRAND = 'product-brands',
+    PRODUCT_ATTRIBUTE = 'product-attributes',
+    PRODUCT_ATTRIBUTE_VALUES = 'product-attribute-values',
     ATTRIBUTE_VALUES = 'attribute-values',
     PRODUCT = 'product',
     FLASH_DEALS = 'flash-deals',
@@ -66,6 +67,11 @@ export enum ROUTER {
     COUPONS = '/coupons',
     FLASH_DEALS = '/flash-deals',
     WEBSITE_SETUP = '/website-setup',
+
+    PRODUCT_ATTRIBUTE = '/product-attribute',
+    PRODUCT_ATTRIBUTE_VALUES = '/product-attribute-values',
+    PRODUCT_BRAND = '/product-brand',
+    PRODUCT_CATEGORY = '/product-category',
 }
 
 export enum IMAGE {

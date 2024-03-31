@@ -1,21 +1,21 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IAttributeList, IAttributeValuesList } from '~/types/attribute.type'
-import type { IProductForm, IProductVariant } from '~/types/product.type'
+import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type';
+import type { IProductForm, IProductVariant } from '~/types/product.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product'
+import { label, schema } from '~/validations/product';
 
 // ** Data
-const attributeValueName = ref<Omit<IAttributeValuesList[], 'values'>[]>([])
+const attributeValueName = ref<Omit<IProductAttributeValuesList[], 'values'>[]>([])
 
 // ** useHooks
-const categoryList = useCategoryDataList()
+const categoryList = useProductCategoryDataList()
 const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttribute } = useProductSelectedWithCategory()
 const { handleSubmit, values: product, setFieldValue } = useForm<IProductForm>({ validationSchema: schema })
 const { isPending, mutateAsync } = useProductFormInput()
-const { attribute_id, attributeValueList } = useAttributeValueList()
+const { attribute_id, attributeValueList } = useProductAttributeValueList()
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
@@ -24,7 +24,7 @@ const hasTechnicalSpecifications = computed(() => product.technical_specificatio
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
-        attributes: values.attributes?.length ? JSON.stringify((values.attributes as IAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
+        attributes: values.attributes?.length ? JSON.stringify((values.attributes as IProductAttributeValuesList[]).map(item => ({ id: item.id, attribute_value_id: item.values }))) : undefined,
         variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
         related_products: product.related_products ? JSON.stringify(product.related_products) : undefined,
         upsell_products: product.upsell_products ? JSON.stringify(product.upsell_products) : undefined,
@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async values => {
 })
 
 const handleChangeAttribute = () => {
-    const attributeData: IAttributeList[] = attributeList.value.filter(attributeItem => product.attribute_id?.includes(attributeItem.id))
+    const attributeData: IProductAttributeList[] = attributeList.value.filter(attributeItem => product.attribute_id?.includes(attributeItem.id))
 
     if (product.attribute_id) {
         attributeData.sort((a, b) => {
@@ -144,13 +144,6 @@ const handleIsDefault = (index: number) => {
 
                         <div class="md:col-span-4 sm:col-span-6 col-span-12">
                             <FormInput
-                                :label="label.sku"
-                                name="sku"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormInput
                                 :label="label.name"
                                 name="name"
                                 @update:model-value="val => setFieldValue('slug', slugify(val))"
@@ -169,14 +162,6 @@ const handleIsDefault = (index: number) => {
                                 :label="label.status"
                                 :options="optionStatus"
                                 name="status"
-                            />
-                        </div>
-
-                        <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                            <FormSelect
-                                :label="label.popular"
-                                :options="optionPopular"
-                                name="popular"
                             />
                         </div>
 
@@ -367,7 +352,7 @@ const handleIsDefault = (index: number) => {
                                 class="col-span-12 flex flex-col gap-4"
                             >
                                 <div
-                                    v-for="(attributeItem, index) in (product.attributes as IAttributeValuesList[])"
+                                    v-for="(attributeItem, index) in (product.attributes as IProductAttributeValuesList[])"
                                     :key="attributeItem.name"
                                     class="grid grid-cols-12 gap-4"
                                 >
@@ -384,9 +369,9 @@ const handleIsDefault = (index: number) => {
                                         <FormSelect
                                             :label="label.attribute.values"
                                             :name="`attributes.${index}.values`"
-                                            :options="attributeValueList[index]?.data as IAttributeValuesList[] || []"
+                                            :options="attributeValueList[index]?.data as IProductAttributeValuesList[] || []"
                                             multiple
-                                            @change="attributeValueName[index] = (attributeValueList[index].data as IAttributeValuesList[])?.filter(_v => ((product.attributes as IAttributeValuesList[])[index].values as number[])?.includes(_v.id))"
+                                            @change="attributeValueName[index] = (attributeValueList[index].data as IProductAttributeValuesList[])?.filter(_v => ((product.attributes as IProductAttributeValuesList[])[index].values as number[])?.includes(_v.id))"
                                         />
                                     </div>
 
