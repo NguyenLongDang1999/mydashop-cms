@@ -13,14 +13,14 @@ export enum PAGE {
     SIZE = 10
 }
 
-export enum INVENTORY_STATUS {
-    STOCK = 10,
-    OUT_OF_STOCK = 20
+export enum MANAGE_STOCK {
+    YES = '10',
+    NO = '20'
 }
 
 export enum SPECIAL_PRICE {
-    PRICE = 10,
-    PERCENT = 20
+    PRICE = '10',
+    PERCENT = '20'
 }
 
 export enum PRODUCT_TYPE {

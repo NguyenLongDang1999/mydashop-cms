@@ -10,16 +10,15 @@ export const label = {
     sku: 'Mã sản phẩm',
     name: 'Tên sản phẩm',
     slug: 'Đường dẫn URL',
-    category_id: 'Danh mục',
+    product_category_id: 'Danh mục',
     product_type: 'Loại sản phẩm',
-    brand_id: 'Thương hiệu',
+    product_brand_id: 'Thương hiệu',
     status: 'Trạng thái',
-    popular: 'Phổ biến',
     quantity: 'Số lượng',
+    manage_stock: 'Quản lý hàng tồn kho?',
     price: 'Giá tiền',
     special_price: 'Giá ưu đãi',
     special_price_type: 'Loại ưu đãi',
-    in_stock: 'Tình trạng hàng hóa',
     selling_price: 'Giá bán',
     technical_specifications: {
         name: 'Thông số kỹ thuật',
@@ -51,9 +50,9 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    category_id: yup
-        .number()
-        .required(`${label.category_id} không được bỏ trống.`),
+    product_category_id: yup
+        .string()
+        .required(`${label.product_category_id} không được bỏ trống.`),
     short_description: yup.string().notRequired(),
     description: yup
         .string()
@@ -94,9 +93,6 @@ export const schema = toTypedSchema(yup.object({
                 .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
                 .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
         }),
-    in_stock: yup
-        .number()
-        .default(INVENTORY_STATUS.OUT_OF_STOCK),
     variants: yup.array()
         .of(
             yup.object().shape({

@@ -18,29 +18,44 @@ export interface IProductFormInit {
     product_type: number
 }
 
-export interface IProductForm extends IProductFormInit {
+// export interface IProductForm extends IProductFormInit {
+//     image_uri?: string
+//     category_id?: number
+//     attributes?: string | IAttributeValuesList[]
+//     variants?: string | IProductVariant[]
+//     technical_specifications?: string | IProductSpecification[]
+//     short_description?: string
+//     description?: string
+//     brand_id?: string
+//     status?: number
+//     popular?: number
+//     meta_title?: string
+//     meta_description?: string
+//     related_products?: string | number[]
+//     upsell_products?: string | number[]
+//     cross_sell_products?: string | number[]
+//     productImage: IProductUpload[] | string
+
+//     special_price_type?: number
+//     quantity?: number
+//     in_stock?: number
+//     attribute_id?: number[]
+//     FlashDealsProduct: string[]
+// }
+
+export interface IProductFormSingle extends IProductFormInit {
     image_uri?: string
-    category_id?: number
-    attributes?: string | IAttributeValuesList[]
-    variants?: string | IProductVariant[]
+    product_category_id?: string
+    product_brand_id?: string
     technical_specifications?: string | IProductSpecification[]
     short_description?: string
     description?: string
-    brand_id?: string
     status?: number
-    popular?: number
     meta_title?: string
     meta_description?: string
-    related_products?: string | number[]
-    upsell_products?: string | number[]
-    cross_sell_products?: string | number[]
-    productImage: IProductUpload[] | string
-
     special_price_type?: number
     quantity?: number
-    in_stock?: number
-    attribute_id?: number[]
-    FlashDealsProduct: string[]
+    manage_stock?: string
 }
 
 export interface IProductFormInformations extends IProductFormInit {

@@ -31,14 +31,14 @@ export const optionTypeDiscount = [
     }
 ]
 
-export const optionInventoryStatus = [
+export const optionManageStock = [
     {
-        id: INVENTORY_STATUS.STOCK,
-        name: 'Còn hàng'
+        id: MANAGE_STOCK.YES,
+        name: 'Có'
     },
     {
-        id: INVENTORY_STATUS.OUT_OF_STOCK,
-        name: 'Hết hàng'
+        id: MANAGE_STOCK.NO,
+        name: 'Không'
     }
 ]
 

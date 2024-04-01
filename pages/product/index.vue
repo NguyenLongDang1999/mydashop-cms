@@ -1,6 +1,6 @@
 <template>
     <section>
-        <TheTitle
+        <BaseTitle
             label="Quản lý sản phẩm"
             title="Sản phẩm"
         />

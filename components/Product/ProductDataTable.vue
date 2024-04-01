@@ -1,12 +1,26 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct } from '~/types/product.type'
+// import type { IRow } from '~/types/core.type'
+// import type { IProduct } from '~/types/product.type'
+import type { DropdownItem } from '#ui/types';
 
-// ** useHooks
-const { isFetching, dataTable, dataAggregations } = useProductDataTable()
-const { isPending, mutateAsync } = useProductFormDelete()
+// // ** useHooks
+// const { isFetching, dataTable, dataAggregations } = useProductDataTable()
+// const { isPending, mutateAsync } = useProductFormDelete()
+// ** Data
+const items: DropdownItem[][] = [
+    [
+        {
+            label: 'Sản phẩm đơn',
+            to: goToPage(`create?product_type=${PRODUCT_TYPE.SINGLE}`)
+        },
+        {
+            label: 'Sản phẩm biến thể',
+            to: goToPage(`create?product_type=${PRODUCT_TYPE.VARIANT}`)
+        }
+    ]
+]
 </script>
 
 <template>
@@ -17,22 +31,25 @@ const { isPending, mutateAsync } = useProductFormDelete()
                     Danh sách sản phẩm
                 </h2>
 
-                <UButton
-                    icon="i-heroicons-plus"
-                    size="sm"
-                    color="primary"
-                    variant="solid"
-                    label="Thêm Mới"
-                    :trailing="false"
-                    to="/product/create"
-                />
+                <UDropdown
+                    :items="items"
+                    :popper="{ placement: 'bottom-start' }"
+                >
+                    <UButton
+                        size="sm"
+                        color="primary"
+                        variant="solid"
+                        label="Thêm Mới"
+                        trailing-icon="i-heroicons-chevron-down-20-solid"
+                    />
+                </UDropdown>
             </div>
         </template>
 
-        <ProductSearch />
+        <!-- <ProductSearch /> -->
 
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
-            <UTable
+            <!-- <UTable
                 :rows="dataTable"
                 :columns="productColumns"
                 :loading="Boolean(isFetching) || Boolean(isPending)"
@@ -166,11 +183,11 @@ const { isPending, mutateAsync } = useProductFormDelete()
                         <Confirm :remove="() => mutateAsync({ id: row.id })" />
                     </div>
                 </template>
-            </UTable>
+            </UTable> -->
         </div>
 
         <template #footer>
-            <Pagination :data-aggregations="dataAggregations" />
+            <!-- <Pagination :data-aggregations="dataAggregations" /> -->
         </template>
     </UCard>
 </template>
