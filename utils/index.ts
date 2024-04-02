@@ -29,12 +29,12 @@ export const formatSellingPrice = (row: IProduct | unknown) => {
     const formatPrice = Number(productRow.price)
     const formatSpecialPrice = Number(productRow.special_price)
 
-    if (productRow.special_price_type === SPECIAL_PRICE.PERCENT) {
+    if (String(productRow.special_price_type) === SPECIAL_PRICE.PERCENT) {
         discount = (formatPrice / 100) * formatSpecialPrice
         sellingPrice = Math.round((formatPrice - discount) / 1000) * 1000
     }
 
-    if (productRow.special_price_type === SPECIAL_PRICE.PRICE) {
+    if (String(productRow.special_price_type) === SPECIAL_PRICE.PRICE) {
         discount = formatSpecialPrice
         sellingPrice = formatPrice - discount
     }

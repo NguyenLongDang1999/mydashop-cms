@@ -1,8 +1,8 @@
 // ** Types Imports
-import type { IBrandList } from '~/types/brand.type'
 import type { IAggregations, IPagination } from '~/types/core.type'
-import type { IAttributeValuesList } from '~/types/product-attribute.type'
-import type { ICategoryList } from '~/types/product-category.type'
+import type { IProductBrandList } from '~/types/product-brand.type'
+import type { IProductCategoryList } from '~/types/product-category.type'
+import type { IProductAttributeValuesList } from './product-attribute.type'
 
 export interface IProductList {
     id: number
@@ -12,36 +12,11 @@ export interface IProductList {
 
 export interface IProductFormInit {
     id?: number
-    sku: string
+    sku?: string
     name: string
     slug: string
-    product_type: number
+    product_type?: number
 }
-
-// export interface IProductForm extends IProductFormInit {
-//     image_uri?: string
-//     category_id?: number
-//     attributes?: string | IAttributeValuesList[]
-//     variants?: string | IProductVariant[]
-//     technical_specifications?: string | IProductSpecification[]
-//     short_description?: string
-//     description?: string
-//     brand_id?: string
-//     status?: number
-//     popular?: number
-//     meta_title?: string
-//     meta_description?: string
-//     related_products?: string | number[]
-//     upsell_products?: string | number[]
-//     cross_sell_products?: string | number[]
-//     productImage: IProductUpload[] | string
-
-//     special_price_type?: number
-//     quantity?: number
-//     in_stock?: number
-//     attribute_id?: number[]
-//     FlashDealsProduct: string[]
-// }
 
 export interface IProductFormSingle extends IProductFormInit {
     image_uri?: string
@@ -53,14 +28,31 @@ export interface IProductFormSingle extends IProductFormInit {
     status?: number
     meta_title?: string
     meta_description?: string
+    price?: number
+    special_price?: number
     special_price_type?: number
     quantity?: number
     manage_stock?: string
 }
 
+export interface IProductFormVariant extends IProductFormInit {
+    image_uri?: string
+    product_category_id?: string
+    product_brand_id?: string
+    product_attribute_id?: string[]
+    technical_specifications?: string | IProductSpecification[]
+    short_description?: string
+    description?: string
+    status?: number
+    meta_title?: string
+    meta_description?: string
+    special_price_type?: number
+    product_attributes?: string | IProductAttributeValuesList[]
+    product_variants?: string | IProductVariant[]
+}
+
 export interface IProductFormInformations extends IProductFormInit {
     status?: number
-    popular?: number
     technical_specifications?: string | IProductSpecification[]
     short_description?: string
     description?: string
@@ -78,7 +70,7 @@ export interface IProductFormAttributes extends IProductFormInit {
     category_id: number
     brand_id?: string
     attribute_id?: number[]
-    attributes?: string | IAttributeValuesList[]
+    attributes?: string | IProductAttributeValuesList[]
     variants?: string | IProductVariant[]
 }
 
@@ -109,23 +101,18 @@ export interface IProductSearch extends IPagination {
 }
 
 export interface IProduct {
-    id: number
+    id: string
     sku: string
     name: string
     price: string
     special_price: string
     special_price_type: number
-    discount_start_date: string
-    discount_end_date: string
-    discount_type: number
-    discount_amount: string
     quantity: number
     status: number
-    popular: number
     image_uri: string
     created_at: string
-    brand: IBrandList
-    category: ICategoryList
+    productBrand: IProductBrandList
+    productCategory: IProductCategoryList
 }
 export interface IProductTable extends IAggregations {
     data: IProduct[]
@@ -141,7 +128,8 @@ export interface IProductVariant {
     sku: string
     price: number
     special_price: number
-    special_price_type: number
+    special_price_type: string
     quantity: number
-    in_stock: number
+    manage_stock: string
+    product_attribute_value_id: string[]
 }

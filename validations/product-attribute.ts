@@ -18,14 +18,9 @@ export const schema = toTypedSchema(yup.object({
         .string()
         .required(`${label.slug} không được bỏ trống.`),
     product_category_id: yup
-        .mixed<string[] | string>()
-        .test('product_category_id', `${label.product_category_id} không được bỏ trống.`, value => {
-            if (Array.isArray(value) && value.length > 0) {
-                return true
-            }
-
-            return !!(typeof value === 'string' && value.trim() !== '')
-        })
+        .array()
+        .of(yup.string())
+        .min(1, `${label.product_category_id} không được bỏ trống.`)
         .default([]),
     description: yup
         .string()

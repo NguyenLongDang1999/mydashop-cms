@@ -20,10 +20,11 @@ const items: TabItem[] = [{
 
 // ** useHooks
 const route = useRoute()
-const { data } = await useProductDetail()
+const { data } = await useProductRetrieve()
 
 // ** Computed
 const defaultIndex = computed(() => items.findIndex(item => item.slot === route.query.tab))
+const productTypeSingle = computed(() => data.value.product_type === PRODUCT_TYPE.SINGLE)
 
 // ** Methods
 const onChange = (index: number) => {
@@ -40,7 +41,7 @@ const onChange = (index: number) => {
 
 <template>
     <section>
-        <TheTitle
+        <BaseTitle
             label="Quản lý sản phẩm"
             :title="`Cập nhật sản phẩm: ${data.name}`"
         />
@@ -53,19 +54,27 @@ const onChange = (index: number) => {
                 @change="onChange"
             >
                 <template #detail>
-                    <ProductDetailInformation :data="data" />
+                    <ProductProductRetrieveGeneralSingle
+                        v-if="productTypeSingle"
+                        :data="data"
+                    />
+
+                    <ProductProductRetrieveGeneralVariants
+                        v-else
+                        :data="data"
+                    />
                 </template>
 
                 <template #attribute_products>
-                    <ProductDetailAttribute :data="data" />
+                    <ProductProductRetrieveAttributeVariants :data="data" />
                 </template>
 
                 <template #sale_products>
-                    <ProductDetailSale :data="data" />
+                    <!-- <ProductDetailSale :data="data" /> -->
                 </template>
 
                 <template #image_products>
-                    <ProductDetailImage :data="data" />
+                    <!-- <ProductDetailImage :data="data" /> -->
                 </template>
             </UTabs>
         </div>

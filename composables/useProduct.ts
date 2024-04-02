@@ -5,10 +5,17 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import type { IDeleteRecord } from '~/types/core.type'
 import type { IProductAttributeList } from '~/types/product-attribute.type'
 import type { IProductBrandList } from '~/types/product-brand.type'
-import type { IProductForm, IProductList, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProductFormVariant, IProductList, IProductSearch, IProductTable } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT)
+
+const queryKey = {
+    dataTable: `${path.value}-data-table`,
+    dataList: `${path.value}-data-list`,
+    retrieve: `${path.value}-retrieve`,
+    dataListCategory: `${path.value}-data-list-category`
+}
 
 export default function () {
     return {
@@ -25,7 +32,7 @@ export const useProductDataTable = () => {
 
     // ** useHooks
     const { data, isFetching, suspense } = useQuery<IProductTable>({
-        queryKey: [path.value + 'DataTable', search],
+        queryKey: [queryKey.dataTable, search],
         queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
     })
@@ -44,26 +51,26 @@ export const useProductDataTable = () => {
 export const useProductDataList = () => {
     // ** useHooks
     const { data } = useQuery<IProductList[]>({
-        queryKey: [path.value + 'DataList'],
+        queryKey: [queryKey.dataList],
         queryFn: () => useFetcher(path.value + '/data-list')
     })
 
     return computed(() => data.value || [])
 }
 
-export const useProductDetail = async () => {
+export const useProductRetrieve = async () => {
     // ** useHooks
-    const id = Number(useRoute().params.id)
+    const { params } = useRoute()
 
-    const { data, suspense } = useQuery<IProductForm>({
-        queryKey: [path.value + 'Detail', id],
-        queryFn: () => useFetcher(path.value + '/' + id)
+    const { data, suspense } = useQuery<IProductFormVariant>({
+        queryKey: [queryKey.retrieve, params.id],
+        queryFn: () => useFetcher(path.value + '/' + params.id)
     })
 
     await suspense()
 
     return {
-        data: computed(() => data.value as IProductForm || {})
+        data: computed(() => data.value as IProductFormVariant || {})
     }
 }
 
@@ -73,9 +80,9 @@ export const useProductFormInput = <T extends { id?: number } = IProductForm>() 
     return useMutation<T, Error, T>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: (_data, variables) => {
-            queryClient.refetchQueries({ queryKey: [`${path.value}DataTable`] })
-            queryClient.invalidateQueries({ queryKey: [`${path.value}DataList`] })
-            if (variables.id) queryClient.invalidateQueries({ queryKey: [`${path.value}Detail`, { id: variables.id }] })
+            queryClient.refetchQueries({ queryKey: [queryKey.dataTable] })
+            queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
+            if (variables.id) queryClient.invalidateQueries({ queryKey: [queryKey.retrieve, variables.id] })
 
             useNotification(MESSAGE.SUCCESS)
         },
@@ -101,7 +108,6 @@ export const useProductFormDelete = () => {
 export const useProductSelectedWithCategory = () => {
     // ** Data
     const endPoint = '/data-list-category'
-    const queryKey = 'data-list-category'
     const category_id = ref<string>()
 
     // ** useHooks
@@ -109,13 +115,13 @@ export const useProductSelectedWithCategory = () => {
     const { path: pathAttribute } = useProductAttribute()
 
     const { isFetching: isFetchingBrand, data: dataBrand } = useQuery<IProductBrandList[]>({
-        queryKey: [pathBrand.value + queryKey, category_id],
+        queryKey: [pathBrand.value + queryKey.dataListCategory, category_id],
         queryFn: () => useFetcher(`${pathBrand.value + endPoint}/${category_id.value}`),
         enabled: () => !!category_id.value
     })
 
     const { isFetching: isFetchingAttribute, data: dataAttribute } = useQuery<IProductAttributeList[]>({
-        queryKey: [pathAttribute.value + queryKey, category_id],
+        queryKey: [pathAttribute.value + queryKey.dataListCategory, category_id],
         queryFn: () => useFetcher(`${pathAttribute.value + endPoint}/${category_id.value}`),
         enabled: () => !!category_id.value
     })

@@ -16,6 +16,7 @@ const productType = computed(() => Number(route.query?.product_type))
 
         <div class="mt-8 pb-24 max-w-none">
             <ProductProductCreateSingle v-if="productType === PRODUCT_TYPE.SINGLE" />
+            <ProductProductCreateVariants v-if="productType === PRODUCT_TYPE.VARIANT" />
         </div>
     </section>
 </template>

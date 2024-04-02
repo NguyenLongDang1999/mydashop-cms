@@ -6,27 +6,50 @@ import type { IProductFormSingle } from '~/types/product.type'
 // ** Validations Imports
 import { label, schema } from '~/validations/product'
 
+// ** Props & Emits
+interface Props {
+    data: IProductFormSingle
+}
+
+const props = defineProps<Props>()
+
 // ** useHooks
 const categoryList = useProductCategoryDataList()
 const { category_id, brandList, isFetchingBrand } = useProductSelectedWithCategory()
-const { isPending, mutateAsync } = useProductFormInput()
+const { isPending, mutateAsync } = useProductFormInput<IProductFormSingle>()
 
 const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormSingle>({
-    validationSchema: schema
+    validationSchema: schema,
+    initialValues: _omitBy(props.data, _isNil)
 })
 
 // ** Computed
+const productTypeSingle = computed(() => product.product_type === PRODUCT_TYPE.SINGLE)
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
 
-// ** Methods
-const onSubmit = handleSubmit(async values => {
-    await mutateAsync({
-        ...values,
-        technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
-    })
+// ** Lifecycle
+onMounted(() => category_id.value = props.data.product_category_id)
 
-    navigateTo(ROUTER.PRODUCT)
-})
+// ** Methods
+const onSubmit = handleSubmit(values => mutateAsync({
+    id: values.id,
+    sku: values.sku,
+    name: values.name,
+    slug: values.slug,
+    status: values.status,
+    short_description: values.short_description,
+    description: values.description,
+    technical_specifications: values.technical_specifications ? JSON.stringify(values.technical_specifications) : undefined,
+    quantity: values.quantity,
+    manage_stock: values.manage_stock,
+    price: values.price,
+    special_price: values.special_price,
+    special_price_type: values.special_price_type,
+    meta_title: values.meta_title,
+    meta_description: values.meta_description,
+    product_category_id: values.product_category_id,
+    product_brand_id: values.product_brand_id
+}))
 </script>
 
 <template>
@@ -35,23 +58,11 @@ const onSubmit = handleSubmit(async values => {
         @submit="onSubmit"
     >
         <UCard>
-            <template #header>
-                <div class="flex justify-between items-center">
-                    <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                        Thêm mới sản phẩm (Đơn thể)
-                    </h2>
-                </div>
-            </template>
-
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
                     <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
                         1. Thông tin cơ bản
                     </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormUpload />
                 </div>
 
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
@@ -88,6 +99,7 @@ const onSubmit = handleSubmit(async values => {
                     <FormSelect
                         :label="label.product_category_id"
                         :options="categoryList"
+                        :disabled="!productTypeSingle"
                         name="product_category_id"
                         @update:model-value="val => category_id = val"
                     />
@@ -98,6 +110,7 @@ const onSubmit = handleSubmit(async values => {
                         :label="label.product_brand_id"
                         :options="brandList"
                         :loading="isFetchingBrand"
+                        :disabled="!productTypeSingle"
                         name="product_brand_id"
                     />
                 </div>
@@ -106,6 +119,7 @@ const onSubmit = handleSubmit(async values => {
                     <FormSelect
                         :label="label.manage_stock"
                         :options="optionManageStock"
+                        :disabled="!productTypeSingle"
                         name="manage_stock"
                     />
                 </div>
@@ -113,7 +127,7 @@ const onSubmit = handleSubmit(async values => {
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.quantity"
-                        :disabled="MANAGE_STOCK.YES !== String(product.manage_stock)"
+                        :disabled="!productTypeSingle"
                         name="quantity"
                     />
                 </div>
@@ -122,6 +136,7 @@ const onSubmit = handleSubmit(async values => {
                     <FormSelect
                         :label="label.special_price_type"
                         :options="optionTypeDiscount"
+                        :disabled="!productTypeSingle"
                         name="special_price_type"
                     />
                 </div>
@@ -129,6 +144,7 @@ const onSubmit = handleSubmit(async values => {
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.price"
+                        :disabled="!productTypeSingle"
                         name="price"
                         text-trailing="VNĐ"
                         help="Giá Gốc"
@@ -138,8 +154,9 @@ const onSubmit = handleSubmit(async values => {
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.special_price"
-                        name="special_price"
+                        :disabled="!productTypeSingle"
                         :text-trailing="String(product.special_price_type) === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                        name="special_price"
                     />
                 </div>
 
@@ -221,7 +238,7 @@ const onSubmit = handleSubmit(async values => {
                 </div>
 
                 <div class="col-span-12">
-                    <FormTextarea
+                    <FormInput
                         :label="label.short_description"
                         name="short_description"
                     />
@@ -253,33 +270,6 @@ const onSubmit = handleSubmit(async values => {
                         name="meta_description"
                     />
                 </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        5. Lựa chọn sản phẩm
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.related_products"
-                        name="related_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.upsell_products"
-                        name="upsell_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.cross_sell_products"
-                        name="cross_sell_products"
-                    />
-                </div>
             </div>
 
             <template #footer>
@@ -288,7 +278,7 @@ const onSubmit = handleSubmit(async values => {
                         type="submit"
                         size="sm"
                         variant="solid"
-                        label="Thêm Mới"
+                        label="Cập Nhật"
                         :loading="Boolean(isPending)"
                         :trailing="false"
                     />
@@ -298,7 +288,7 @@ const onSubmit = handleSubmit(async values => {
                         size="sm"
                         color="gray"
                         variant="solid"
-                        label="Huỷ Bỏ"
+                        label="Quay Lại"
                         :trailing="false"
                         @click="$router.go(-1)"
                     />

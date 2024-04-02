@@ -43,7 +43,6 @@ export const productColumns: Columns[] = [
         class: minWithColumn(160)
     },
     status,
-    popular,
     actions
 ]
 

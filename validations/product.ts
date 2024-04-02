@@ -3,7 +3,6 @@ import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 
 // ** Types Imports
-import type { IAttributeValuesList } from '~/types/product-attribute.type'
 import type { IProductUpload } from '~/types/product.type'
 
 export const label = {
@@ -57,8 +56,6 @@ export const schema = toTypedSchema(yup.object({
     description: yup
         .string()
         .required(`${label.description} không được bỏ trống.`),
-    attribute_id: yup.array(yup.number().required()),
-    attributes: yup.mixed<string | IAttributeValuesList[]>().nullable(),
     technical_specifications: yup.array()
         .of(
             yup.object().shape({
@@ -66,7 +63,6 @@ export const schema = toTypedSchema(yup.object({
                 content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
             }).default({ title: '', content: '' })
         ),
-    product_type: yup.number().default(PRODUCT_TYPE.SINGLE),
     price: yup
         .number()
         .required(`${label.price} không được bỏ trống.`)
@@ -78,22 +74,59 @@ export const schema = toTypedSchema(yup.object({
         .default(0)
         .min(0, ({ min }) => `${label.quantity} phải lớn hơn hoặc bằng ${min}.`),
     special_price_type: yup
-        .number()
+        .string()
         .required(`${label.special_price_type} không được bỏ trống.`)
         .default(SPECIAL_PRICE.PRICE),
-    special_price: yup
-        .number()
+    special_price: yup.number()
         .required(`${label.special_price} không được bỏ trống.`)
         .default(0)
-        .min(0, ({ min }) => `${label.special_price} phải lớn hơn hoặc bằng ${min}.`)
-        .when('special_price_type', {
-            is: SPECIAL_PRICE.PERCENT,
-            // eslint-disable-next-line @typescript-eslint/no-shadow
-            then: schema => schema
-                .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
-                .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
-        }),
-    variants: yup.array()
+        .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
+        .when('special_price_type', (special_price_type, schemaContext) => special_price_type.toString() === SPECIAL_PRICE.PERCENT
+            ? schemaContext.max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
+            : schemaContext),
+    productImage: yup.mixed<string | IProductUpload[]>().notRequired(),
+    related_products: yup.array(yup.number().required()),
+    upsell_products: yup.array(yup.number().required()),
+    cross_sell_products: yup.array(yup.number().required())
+}))
+
+export const schemaVariants = toTypedSchema(yup.object({
+    name: yup
+        .string()
+        .required(`${label.name} không được bỏ trống.`)
+        .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+    slug: yup
+        .string()
+        .required(`${label.slug} không được bỏ trống.`),
+    short_description: yup.string().notRequired(),
+    description: yup
+        .string()
+        .required(`${label.description} không được bỏ trống.`),
+    technical_specifications: yup.array()
+        .of(
+            yup.object().shape({
+                title: yup.string().required(`${label.technical_specifications.title} không được bỏ trống.`),
+                content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
+            }).default({ title: '', content: '' })
+        ),
+    product_category_id: yup
+        .string()
+        .required(`${label.product_category_id} không được bỏ trống.`),
+    product_attribute_id: yup
+        .array()
+        .of(yup.string())
+        .min(1, `${label.attribute.name} không được bỏ trống.`)
+        .default([]),
+    product_attributes: yup.array().of(
+        yup.object({
+            name: yup.string().required(`${label.attribute.name} không được bỏ trống.`),
+            values: yup.array()
+                .of(yup.string())
+                .min(1, `${label.attribute.values} không được bỏ trống.`)
+                .required(`${label.attribute.values} không được bỏ trống.`)
+        })
+    ),
+    product_variants: yup.array()
         .of(
             yup.object().shape({
                 is_default: yup.boolean(),
@@ -108,22 +141,19 @@ export const schema = toTypedSchema(yup.object({
                     .required(`${label.quantity} không được bỏ trống.`)
                     .min(0, ({ min }) => `${label.quantity} phải lớn hơn hoặc bằng ${min}.`),
                 special_price_type: yup
-                    .number()
-                    .required(`${label.special_price_type} không được bỏ trống.`),
-                special_price: yup
-                    .number()
+                    .string()
+                    .required(`${label.special_price_type} không được bỏ trống.`)
+                    .default(SPECIAL_PRICE.PRICE),
+                special_price: yup.number()
                     .required(`${label.special_price} không được bỏ trống.`)
-                    .min(0, ({ min }) => `${label.special_price} phải lớn hơn hoặc bằng ${min}.`)
-                    .when('special_price_type', {
-                        is: SPECIAL_PRICE.PERCENT,
-                        // eslint-disable-next-line @typescript-eslint/no-shadow
-                        then: schema => schema
-                            .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
-                            .max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
-                    }),
-                in_stock: yup.number()
+                    .default(0)
+                    .min(0, `${label.special_price} phải lớn hơn hoặc bằng 0.`)
+                    .when('special_price_type', (special_price_type, schemaContext) => special_price_type.toString() === SPECIAL_PRICE.PERCENT
+                        ? schemaContext.max(100, `${label.special_price} phải nhỏ hơn hoặc bằng 100.`)
+                        : schemaContext)
+
             })
-        ),
+        ).test('is-default-check', 'Phải có ít nhất một sản phẩm được đặt làm mặc định.', (variants = []) => variants.some(variant => variant.is_default)),
     productImage: yup.mixed<string | IProductUpload[]>().notRequired(),
     related_products: yup.array(yup.number().required()),
     upsell_products: yup.array(yup.number().required()),

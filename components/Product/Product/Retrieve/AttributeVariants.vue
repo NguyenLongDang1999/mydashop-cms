@@ -7,6 +7,13 @@ import type { IProductFormVariant, IProductVariant } from '~/types/product.type'
 // ** Validations Imports
 import { label, schemaVariants } from '~/validations/product'
 
+// ** Props & Emits
+interface Props {
+    data: IProductFormVariant
+}
+
+const props = defineProps<Props>()
+
 // ** Data
 const attributeValueName = ref<Omit<IProductAttributeValuesList[], 'values'>[]>([])
 
@@ -17,11 +24,22 @@ const { isPending, mutateAsync } = useProductFormInput()
 const { attribute_id, attributeValueList } = useProductAttributeValueList()
 
 const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormVariant>({
-    validationSchema: schemaVariants
+    validationSchema: schemaVariants,
+    initialValues: _omitBy(props.data, _isNil)
 })
 
-// ** Computed
-const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
+// ** Lifecycle
+onMounted(() => {
+    category_id.value = props.data.product_category_id
+
+    const attributes = product.product_attributes as IProductAttributeValuesList[]
+
+    attribute_id.value = attributes.map(_attributeItem => _attributeItem.id)
+
+    for (const index in attributes) {
+        attributeValueName.value[index] = (attributeValueList.value[index].data as IProductAttributeValuesList[])?.filter(_v => (attributes[index].values as string[])?.includes(_v.id))
+    }
+})
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
@@ -117,135 +135,12 @@ const handleIsDefault = (index: number) => {
         :state="{}"
         @submit="onSubmit"
     >
-        <UCard>
-            <template #header>
-                <div class="flex justify-between items-center">
-                    <h2 class="capitalize font-semibold text-xl text-gray-900 dark:text-white leading-tight my-0">
-                        Thêm mới sản phẩm (Biến thể)
-                    </h2>
-                </div>
-            </template>
-
+        <UCard
+            :ui="{
+                body: { base: 'min-h-[400px]' }
+            }"
+        >
             <div class="grid gap-4 grid-cols-12">
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        1. Thông tin cơ bản
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormUpload />
-                </div>
-
-                <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                    <FormInput
-                        :label="label.name"
-                        name="name"
-                        @update:model-value="val => setFieldValue('slug', slugify(val))"
-                    />
-                </div>
-
-                <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                    <FormInput
-                        :label="label.slug"
-                        name="slug"
-                    />
-                </div>
-
-                <div class="md:col-span-4 sm:col-span-6 col-span-12">
-                    <FormSelect
-                        :label="label.status"
-                        :options="optionStatus"
-                        name="status"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        2. Thông số kỹ thuật
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FieldArray
-                        v-slot="{ push, remove }"
-                        name="technical_specifications"
-                    >
-                        <UButton
-                            icon="i-heroicons-plus"
-                            size="sm"
-                            color="primary"
-                            variant="solid"
-                            label="Thêm Thông Số"
-                            :trailing="false"
-                            @click="push({ title: '', content: '' })"
-                        />
-
-                        <div
-                            class="flex flex-col gap-4"
-                            :class="hasTechnicalSpecifications ? 'mt-4' : ''"
-                        >
-                            <div
-                                v-for="(value, index) in product.technical_specifications"
-                                :key="index"
-                                class="grid gap-4 grid-cols-12"
-                            >
-                                <div class="col-span-4">
-                                    <FormInput
-                                        :label="label.technical_specifications.title"
-                                        :name="`technical_specifications.${index}.title`"
-                                    />
-                                </div>
-
-                                <div class="col-span-4">
-                                    <FormInput
-                                        :label="label.technical_specifications.content"
-                                        :name="`technical_specifications.${index}.content`"
-                                    />
-                                </div>
-
-                                <div class="col-span-3">
-                                    <UButton
-                                        :ui="{ rounded: 'rounded-full' }"
-                                        icon="i-heroicons-trash"
-                                        size="sm"
-                                        color="red"
-                                        variant="solid"
-                                        class="mt-6"
-                                        @click="remove(index)"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </FieldArray>
-                </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        3. Mô tả sản phẩm
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormInput
-                        :label="label.short_description"
-                        name="short_description"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormEditor
-                        :label="label.description"
-                        name="description"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        4. Thông tin danh mục và thuộc tính
-                    </p>
-                </div>
-
                 <div class="sm:col-span-4 col-span-12">
                     <FormSelect
                         :label="label.product_category_id"
@@ -299,6 +194,7 @@ const handleIsDefault = (index: number) => {
 
                         <div class="col-span-6">
                             <FormSelect
+                                :model-value="attributeItem.values"
                                 :label="label.attribute.values"
                                 :name="`product_attributes.${index}.values`"
                                 :options="attributeValueList[index]?.data as IProductAttributeValuesList[] || []"
@@ -415,53 +311,6 @@ const handleIsDefault = (index: number) => {
                         </div>
                     </div>
                 </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        5. Meta SEO
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormInput
-                        :label="label.meta_title"
-                        name="meta_title"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormInput
-                        :label="label.meta_description"
-                        name="meta_description"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        6. Lựa chọn sản phẩm
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.related_products"
-                        name="related_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.upsell_products"
-                        name="upsell_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.cross_sell_products"
-                        name="cross_sell_products"
-                    />
-                </div>
             </div>
 
             <template #footer>
@@ -470,7 +319,7 @@ const handleIsDefault = (index: number) => {
                         type="submit"
                         size="sm"
                         variant="solid"
-                        label="Thêm Mới"
+                        label="Cập Nhật"
                         :loading="Boolean(isPending)"
                         :trailing="false"
                     />
@@ -480,9 +329,9 @@ const handleIsDefault = (index: number) => {
                         size="sm"
                         color="gray"
                         variant="solid"
-                        label="Huỷ Bỏ"
+                        label="Quay Lại"
                         :trailing="false"
-                        :to="goToPage('', ROUTER.PRODUCT)"
+                        @click="$router.go(-1)"
                     />
                 </div>
             </template>
