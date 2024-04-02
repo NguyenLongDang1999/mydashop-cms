@@ -15,6 +15,7 @@ export interface IProductFormInit {
     sku?: string
     name: string
     slug: string
+    image_uri?: string
     product_type?: number
 }
 
@@ -49,6 +50,7 @@ export interface IProductFormVariant extends IProductFormInit {
     special_price_type?: number
     product_attributes?: string | IProductAttributeValuesList[]
     product_variants?: string | IProductVariant[]
+    product_images?: string | IProductUpload[]
 }
 
 export interface IProductFormInformations extends IProductFormInit {
@@ -81,7 +83,7 @@ export interface IProductFormSales extends IProductFormInit {
 }
 
 export interface IProductFormImages extends IProductFormInit {
-    productImage: IProductUpload[] | string
+    product_images: IProductUpload[] | string
 }
 
 export interface IProductSpecification {

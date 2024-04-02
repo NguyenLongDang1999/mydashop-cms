@@ -1,15 +1,12 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types'
+import type { TabItem } from '#ui/types';
 
 // ** Data
 const items: TabItem[] = [{
     slot: 'detail',
     label: 'Thông tin chi tiết'
-}, {
-    slot: 'attribute_products',
-    label: 'Thuộc tính'
 }, {
     slot: 'sale_products',
     label: 'Sản phẩm Sale'
@@ -23,12 +20,28 @@ const route = useRoute()
 const { data } = await useProductRetrieve()
 
 // ** Computed
-const defaultIndex = computed(() => items.findIndex(item => item.slot === route.query.tab))
+const defaultIndex = computed(() => computedItems.value.findIndex(item => item.slot === route.query.tab))
 const productTypeSingle = computed(() => data.value.product_type === PRODUCT_TYPE.SINGLE)
+const computedItems = computed(() => {
+    const newItems = [...items]
+    
+    if (!productTypeSingle.value) {
+        const detailIndex = newItems.findIndex(item => item.slot === 'detail')
+        
+        if (detailIndex !== -1) {
+            newItems.splice(detailIndex + 1, 0, {
+                slot: 'attribute_products',
+                label: 'Thuộc tính'
+            })
+        }
+    }
+    
+    return newItems
+})
 
 // ** Methods
 const onChange = (index: number) => {
-    const item = items[index]
+    const item = computedItems.value[index]
 
     return navigateTo({
         path: route.path,
@@ -48,7 +61,7 @@ const onChange = (index: number) => {
 
         <div class="mt-8 pb-24 max-w-none">
             <UTabs
-                :items="items"
+                :items="computedItems"
                 class="w-full"
                 :default-index="defaultIndex === -1 ? 0 : defaultIndex"
                 @change="onChange"
@@ -74,7 +87,7 @@ const onChange = (index: number) => {
                 </template>
 
                 <template #image_products>
-                    <!-- <ProductDetailImage :data="data" /> -->
+                    <ProductProductRetrieveImages :data="data" />
                 </template>
             </UTabs>
         </div>
