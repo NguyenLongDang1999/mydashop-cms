@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductBrandForm } from '~/types/product-brand.type';
+import type { IProductBrandForm } from '~/types/product-brand.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-brand';
+import { label, schema } from '~/validations/product-brand'
 
 // ** Props & Emits
 interface Props {
@@ -23,10 +23,7 @@ const { handleSubmit, values: productBrand, setFieldValue } = useForm<IProductBr
 })
 
 // ** Methods
-const onSubmit = handleSubmit(values => mutateAsync({
-    ...values,
-    product_category_id: JSON.stringify(values.product_category_id)
-}))
+const onSubmit = handleSubmit(values => mutateAsync(values))
 </script>
 
 <template>
