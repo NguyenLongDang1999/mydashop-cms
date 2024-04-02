@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProductAttributeValue } from '~/types/product-attribute.type';
+import type { IRow } from '~/types/core.type'
+import type { IProductAttributeValue } from '~/types/product-attribute.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductAttributeValuesDataTable()
@@ -50,7 +50,7 @@ const { isPending, mutateAsync } = useProductAttributeValuesFormDelete()
 
                 <template #actions-data="{ row }: IRow<IProductAttributeValue>">
                     <div class="flex gap-2">
-                        <ProductAttributeValuesRetrieve 
+                        <ProductAttributeValuesRetrieve
                             :product-attribute-value="{
                                 id: row.id,
                                 value: row.value,

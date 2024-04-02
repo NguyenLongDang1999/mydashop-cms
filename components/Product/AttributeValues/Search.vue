@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeValuesSearch } from '~/types/product-attribute.type';
+import type { IProductAttributeValuesSearch } from '~/types/product-attribute.type'
 
 // ** Validations Imports
-import { label } from '~/validations/product-attribute-values';
+import { label } from '~/validations/product-attribute-values'
 
 // ** useHooks
 const productAttributeDataList = useProductAttributeDataList()
@@ -35,7 +35,7 @@ const handleReset = () => {
                     name="product_attribute_id"
                 />
             </div>
-            
+
             <div class="md:col-span-3 sm:col-span-6 col-span-12">
                 <FormInput
                     v-model="searchTemp.value"

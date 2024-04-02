@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types';
+import type { TabItem } from '#ui/types'
 
 // ** useHooks
 const { data } = await useProductAttributeRetrieve()
@@ -32,8 +32,7 @@ const items: TabItem[] = [{
                     <ProductAttributeGeneral :data="data" />
                 </template>
 
-                <template #product>
-                </template>
+                <template #product />
             </UTabs>
         </div>
     </section>

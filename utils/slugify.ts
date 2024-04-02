@@ -3,7 +3,7 @@ export default function (str: string) {
     str = str.replace(/^\s+|\s+$/g, '')
     str = str.toLowerCase()
 
-    const swaps: any = {
+    const swaps: Record<string, string[]> = {
         '0': ['°', '₀', '۰', '０'],
         '1': ['¹', '₁', '۱', '１'],
         '2': ['²', '₂', '۲', '２'],
@@ -119,8 +119,8 @@ export default function (str: string) {
     }
 
     Object.keys(swaps).forEach(swap => {
-        swaps[swap].forEach((s: string | RegExp) => {
-            str = str.replace(new RegExp(s, 'g'), swap)
+        swaps[swap].forEach(symbol => {
+            str = str.replace(new RegExp(symbol, 'g'), swap)
         })
     })
 

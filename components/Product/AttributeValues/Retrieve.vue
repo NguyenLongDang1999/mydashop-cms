@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-attribute-values';
+import { label, schema } from '~/validations/product-attribute-values'
 
 // ** Types Imports
-import type { IProductAttributeValuesForm } from '~/types/product-attribute.type';
+import type { IProductAttributeValuesForm } from '~/types/product-attribute.type'
 
 // ** Props & Emits
 interface Props {
@@ -16,6 +16,7 @@ const props = defineProps<Props>()
 // ** useHooks
 const productAttributeDataList = useProductAttributeDataList()
 const { isPending, mutateAsync } = useProductAttributeValuesFormInput()
+
 const { handleSubmit } = useForm<IProductAttributeValuesForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.productAttributeValue, _isNil)

@@ -7,10 +7,11 @@ import type { IProductAttributeValuesForm, IProductAttributeValuesSearch, IProdu
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT_ATTRIBUTE_VALUES)
+
 const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
-    dataValueCategory: `${path.value}-data-value-category`,
+    dataValueCategory: `${path.value}-data-value-category`
 }
 
 export default function () {
@@ -48,7 +49,7 @@ export const useProductAttributeValuesFormInput = () => {
 
     return useMutation<IProductAttributeValuesForm, Error, IProductAttributeValuesForm>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
-        onSuccess: (_data, variables) => {
+        onSuccess: () => {
             queryClient.refetchQueries({ queryKey: [queryKey.dataTable] })
             queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
 

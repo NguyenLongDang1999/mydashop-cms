@@ -7,10 +7,11 @@ import type { IProductBrandForm, IProductBrandSearch, IProductBrandTable } from 
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT_BRAND)
+
 const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
-    retrieve: `${path.value}-retrieve`,
+    retrieve: `${path.value}-retrieve`
 }
 
 export default function () {

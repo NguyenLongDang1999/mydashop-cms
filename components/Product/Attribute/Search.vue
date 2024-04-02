@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeSearch } from '~/types/product-attribute.type';
+import type { IProductAttributeSearch } from '~/types/product-attribute.type'
 
 // ** Validations Imports
-import { label } from '~/validations/product-attribute';
+import { label } from '~/validations/product-attribute'
 
 // ** useHooks
 const categoryList = useProductCategoryDataList()

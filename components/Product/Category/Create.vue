@@ -1,14 +1,15 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-category';
+import { label, schema } from '~/validations/product-category'
 
 // ** Types Imports
-import type { IProductCategoryForm } from '~/types/product-category.type';
+import type { IProductCategoryForm } from '~/types/product-category.type'
 
 // ** useHooks
 const categoryList = useProductCategoryDataList()
 const { isPending, mutateAsync } = useProductCategoryFormInput()
+
 const { handleSubmit, setFieldValue } = useForm<IProductCategoryForm>({
     validationSchema: schema
 })

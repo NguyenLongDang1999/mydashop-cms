@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFormSingle } from '~/types/product.type';
+import type { IProductFormSingle } from '~/types/product.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product';
+import { label, schema } from '~/validations/product'
 
 // ** useHooks
 const categoryList = useProductCategoryDataList()
@@ -19,6 +19,7 @@ const hasTechnicalSpecifications = computed(() => product.technical_specificatio
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
         ...values,
+
         // attributes: undefined,
         // variants: values.variants?.length ? JSON.stringify((values.variants as IProductVariant[])) : undefined,
         // related_products: product.related_products ? JSON.stringify(product.related_products) : undefined,

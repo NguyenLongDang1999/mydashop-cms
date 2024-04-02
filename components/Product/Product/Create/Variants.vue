@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type';
-import type { IProductForm, IProductVariant } from '~/types/product.type';
+import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type'
+import type { IProductForm, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product';
+import { label, schema } from '~/validations/product'
 
 // ** Data
 const attributeValueName = ref<Omit<IProductAttributeValuesList[], 'values'>[]>([])
@@ -76,6 +76,7 @@ const generateProductVariants = () => {
                     price: 0,
                     quantity: 0,
                     sku: product.sku as string,
+
                     // in_stock: INVENTORY_STATUS.OUT_OF_STOCK,
                     is_default: false,
                     special_price: 0,
