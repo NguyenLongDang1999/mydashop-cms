@@ -5,18 +5,21 @@ import type { IProductCategoryList } from '~/types/product-category.type'
 import type { IProductAttributeValuesList } from './product-attribute.type'
 
 export interface IProductList {
-    id: number
+    id: string
     name: string
     image_uri: string
 }
 
 export interface IProductFormInit {
-    id?: number
+    id?: string
     sku?: string
     name: string
     slug: string
     image_uri?: string
     product_type?: number
+    product_upsell?: string[]
+    product_cross_sell?: string[]
+    product_related?: string[]
 }
 
 export interface IProductFormSingle extends IProductFormInit {
@@ -71,15 +74,16 @@ export interface IProductFormInformations extends IProductFormInit {
 export interface IProductFormAttributes extends IProductFormInit {
     category_id: number
     brand_id?: string
-    attribute_id?: number[]
+    attribute_id?: string[]
     attributes?: string | IProductAttributeValuesList[]
     variants?: string | IProductVariant[]
 }
 
 export interface IProductFormSales extends IProductFormInit {
-    related_products?: string | number[]
-    upsell_products?: string | number[]
-    cross_sell_products?: string | number[]
+    product_relations: string | {
+        related_product_id: string
+        relation_type: number
+    }[]
 }
 
 export interface IProductFormImages extends IProductFormInit {
@@ -87,16 +91,16 @@ export interface IProductFormImages extends IProductFormInit {
 }
 
 export interface IProductSpecification {
-    id: number
+    id: string
     title: string
     content: string
 }
 
 export interface IProductSearch extends IPagination {
-    id?: number
+    id?: string
     sku?: string
     name?: string
-    brand_id?: number
+    brand_id?: string
     category_id?: string
     status?: string
     popular?: string

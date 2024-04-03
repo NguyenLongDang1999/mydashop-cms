@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types';
+import type { TabItem } from '#ui/types'
 
 // ** Data
 const items: TabItem[] = [{
@@ -22,12 +22,13 @@ const { data } = await useProductRetrieve()
 // ** Computed
 const defaultIndex = computed(() => computedItems.value.findIndex(item => item.slot === route.query.tab))
 const productTypeSingle = computed(() => data.value.product_type === PRODUCT_TYPE.SINGLE)
+
 const computedItems = computed(() => {
     const newItems = [...items]
-    
+
     if (!productTypeSingle.value) {
         const detailIndex = newItems.findIndex(item => item.slot === 'detail')
-        
+
         if (detailIndex !== -1) {
             newItems.splice(detailIndex + 1, 0, {
                 slot: 'attribute_products',
@@ -35,7 +36,7 @@ const computedItems = computed(() => {
             })
         }
     }
-    
+
     return newItems
 })
 
@@ -83,7 +84,7 @@ const onChange = (index: number) => {
                 </template>
 
                 <template #sale_products>
-                    <!-- <ProductDetailSale :data="data" /> -->
+                    <ProductProductRetrieveRelations :data="data" />
                 </template>
 
                 <template #image_products>

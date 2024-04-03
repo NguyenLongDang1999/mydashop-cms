@@ -117,6 +117,7 @@ const handleIsDefault = (index: number) => {
         :state="{}"
         @submit="onSubmit"
     >
+        {{ attributeValueName }}
         <UCard>
             <template #header>
                 <div class="flex justify-between items-center">
@@ -433,33 +434,6 @@ const handleIsDefault = (index: number) => {
                     <FormInput
                         :label="label.meta_description"
                         name="meta_description"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        6. Lựa chọn sản phẩm
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.related_products"
-                        name="related_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.upsell_products"
-                        name="upsell_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.cross_sell_products"
-                        name="cross_sell_products"
                     />
                 </div>
             </div>

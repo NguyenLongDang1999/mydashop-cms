@@ -74,7 +74,7 @@ export const useProductRetrieve = async () => {
     }
 }
 
-export const useProductFormInput = <T extends { id?: number } = IProductForm>() => {
+export const useProductFormInput = <T extends { id?: string } = IProductForm>() => {
     const queryClient = useQueryClient()
 
     return useMutation<T, Error, T>({

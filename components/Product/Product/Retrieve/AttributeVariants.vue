@@ -29,29 +29,34 @@ const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormVar
 })
 
 // ** Lifecycle
-onMounted(() => {
+watchEffect(() => {
     category_id.value = props.data.product_category_id
 
     const attributes = product.product_attributes as IProductAttributeValuesList[]
 
     attribute_id.value = attributes.map(_attributeItem => _attributeItem.id)
 
-    for (const index in attributes) {
-        attributeValueName.value[index] = (attributeValueList.value[index].data as IProductAttributeValuesList[])?.filter(_v => (attributes[index].values as string[])?.includes(_v.id))
-    }
+    attributes.forEach((attr, index) => {
+        if (attributeValueList.value[index]?.data) {
+            attributeValueName.value[index] = (attributeValueList.value[index].data as IProductAttributeValuesList[]).filter(_v =>
+                attr.values.includes(_v.id)
+            )
+        }
+    })
 })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     await mutateAsync({
-        ...values,
-        product_variants: JSON.stringify(values.product_variants),
-        technical_specifications: product.technical_specifications ? JSON.stringify(product.technical_specifications) : undefined
+        id: values.id,
+        name: values.name,
+        slug: values.slug,
+        product_category_id: values.product_category_id,
+        product_brand_id: values.product_brand_id,
+        product_variants: JSON.stringify(values.product_variants)
     })
 
     attribute_id.value = []
-
-    navigateTo(ROUTER.PRODUCT)
 })
 
 const handleChangeAttribute = () => {

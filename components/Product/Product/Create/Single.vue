@@ -253,33 +253,6 @@ const onSubmit = handleSubmit(async values => {
                         name="meta_description"
                     />
                 </div>
-
-                <div class="col-span-12">
-                    <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        5. Lựa chọn sản phẩm
-                    </p>
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.related_products"
-                        name="related_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.upsell_products"
-                        name="upsell_products"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormProductSearchSelected
-                        :label="label.cross_sell_products"
-                        name="cross_sell_products"
-                    />
-                </div>
             </div>
 
             <template #footer>

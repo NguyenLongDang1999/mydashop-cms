@@ -2,11 +2,11 @@
 
 // ** Types Imports
 import type { TabItem } from '#ui/types'
-import type { IProductForm } from '~/types/product.type'
+import type { IProductFormVariant } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
-    data: IProductForm
+    data: IProductFormVariant
 }
 
 const props = defineProps<Props>()
@@ -23,7 +23,7 @@ const items: TabItem[] = [{
     label: 'Sản phẩm liên quan'
 }]
 
-const product = ref<IProductForm>(_cloneDeep(props.data))
+const product = ref<IProductFormVariant>(_cloneDeep(props.data))
 </script>
 
 <template>
@@ -32,26 +32,26 @@ const product = ref<IProductForm>(_cloneDeep(props.data))
         class="w-full"
     >
         <template #upsell_products>
-            <ProductSelectedTable
-                v-model="product.upsell_products"
+            <ProductProductRetrieveSelectedTable
+                v-model="product.product_upsell"
                 :data="data"
-                name="upsell_products"
+                :name="RELATIONS_TYPE.UPSELL"
             />
         </template>
 
         <template #cross_sell_products>
-            <ProductSelectedTable
-                v-model="product.cross_sell_products"
+            <ProductProductRetrieveSelectedTable
+                v-model="product.product_cross_sell"
                 :data="data"
-                name="cross_sell_products"
+                :name="RELATIONS_TYPE.CROSS_SELL"
             />
         </template>
 
         <template #related_products>
-            <ProductSelectedTable
-                v-model="product.related_products"
+            <ProductProductRetrieveSelectedTable
+                v-model="product.product_related"
                 :data="data"
-                name="related_products"
+                :name="RELATIONS_TYPE.RELATED"
             />
         </template>
     </UTabs>

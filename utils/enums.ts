@@ -28,6 +28,12 @@ export enum PRODUCT_TYPE {
     VARIANT = 20
 }
 
+export enum RELATIONS_TYPE {
+    UPSELL = 10,
+    CROSS_SELL = 20,
+    RELATED = 30
+}
+
 export enum ORDER_STATUS {
     NEW = 10,
     CONFIRMED = 20,
