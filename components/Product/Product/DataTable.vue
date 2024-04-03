@@ -47,7 +47,7 @@ const items: DropdownItem[][] = [
             </div>
         </template>
 
-        <!-- <ProductSearch /> -->
+        <ProductProductSearch />
 
         <div class="mt-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
             <UTable

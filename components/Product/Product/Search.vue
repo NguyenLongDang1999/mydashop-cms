@@ -14,7 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** useHooks
-const categoryList = useCategoryDataList()
+const categoryList = useProductCategoryDataList()
 
 // ** Data
 const search = inject('search') as IProductSearch
@@ -25,9 +25,9 @@ const handleReset = () => {
     _assign(searchTemp, {
         sku: undefined,
         name: undefined,
-        category_id: props.categoryId,
+        product_category_id: props.categoryId,
+        product_brand_id: undefined,
         status: undefined,
-        popular: undefined,
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
@@ -58,10 +58,10 @@ const handleReset = () => {
                 class="md:col-span-3 sm:col-span-6 col-span-12"
             >
                 <FormSelect
-                    v-model="searchTemp.category_id"
-                    :label="label.category_id"
+                    v-model="searchTemp.product_category_id"
+                    :label="label.product_category_id"
                     :options="categoryList"
-                    name="category_id"
+                    name="product_category_id"
                 />
             </div>
 
@@ -71,15 +71,6 @@ const handleReset = () => {
                     :label="label.status"
                     :options="optionStatus"
                     name="status"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormSelect
-                    v-model="searchTemp.popular"
-                    :label="label.popular"
-                    :options="optionPopular"
-                    name="popular"
                 />
             </div>
 

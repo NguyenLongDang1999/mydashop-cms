@@ -56,28 +56,6 @@ export interface IProductFormVariant extends IProductFormInit {
     product_images?: string | IProductUpload[]
 }
 
-export interface IProductFormInformations extends IProductFormInit {
-    status?: number
-    technical_specifications?: string | IProductSpecification[]
-    short_description?: string
-    description?: string
-    quantity?: number
-    in_stock?: number
-    special_price_type?: number
-    price?: number
-    special_price?: number
-    selling_price?: number
-    meta_title?: string
-    meta_description?: string
-}
-
-export interface IProductFormAttributes extends IProductFormInit {
-    category_id: number
-    brand_id?: string
-    attribute_id?: string[]
-    attributes?: string | IProductAttributeValuesList[]
-    variants?: string | IProductVariant[]
-}
 
 export interface IProductFormSales extends IProductFormInit {
     product_relations: string | {
@@ -100,10 +78,9 @@ export interface IProductSearch extends IPagination {
     id?: string
     sku?: string
     name?: string
-    brand_id?: string
-    category_id?: string
+    product_brand_id?: string
+    product_category_id?: string
     status?: string
-    popular?: string
 }
 
 export interface IProduct {
