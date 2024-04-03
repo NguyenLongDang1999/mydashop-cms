@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFormImages, IProductFormVariant } from '~/types/product.type';
+import type { IProductFormImages, IProductFormVariant } from '~/types/product.type'
 
 // ** Validations Imports
-import { schema } from '~/validations/product';
+import { schema } from '~/validations/product'
 
 // ** Props & Emits
 interface Props {
@@ -15,6 +15,7 @@ const props = defineProps<Props>()
 
 // ** Computed
 const productImagesCount = computed(() => props.data.product_images?.length || 0)
+const remainingUploads = computed(() => Math.max(6 - productImagesCount.value, 0))
 
 // ** useHooks
 const { isPending, mutateAsync } = useProductFormInput<IProductFormImages>()
@@ -58,13 +59,13 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         </div>
 
                         <div
-                            v-for="(_value, index) in (6 - productImagesCount)"
+                            v-for="(_value, index) in remainingUploads"
                             :key="index"
                             class="col-span-12"
                         >
                             <FormUpload
                                 label="Ảnh bổ sung"
-                                :name="`product_images.${index}.image_uri`"
+                                :name="`product_images.${index + productImagesCount}.image_uri`"
                             />
                         </div>
                     </div>
