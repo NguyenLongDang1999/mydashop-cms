@@ -1,88 +1,149 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { ISearchDropdown } from '~/types/core.type'
-import type { IProductList } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct } from '~/types/product.type';
 
 // ** Props & Emits
 interface Props {
-    label?: string
     name: string
-    modelValue?: number[]
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const { path } = useProduct()
-
-const { value, errorMessage } = useField(() => props.name, undefined, {
-    syncVModel: true,
-    initialValue: props.modelValue || []
-})
+const { isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
+const { value, errorMessage, setValue } = useField<string[]>(() => props.name, undefined, { syncVModel: true })
 
 // ** Data
-const productList = ref<ISearchDropdown[]>([])
-const productSelected = ref<ISearchDropdown[]>([])
+const selected = ref<IProduct[]>([])
+
+// ** Set Data
+productColumns.pop()
+
+onMounted(async () => {
+    await suspense()
+
+    selected.value = dataTable.value.filter(_d => value.value.includes(_d.id))
+})
 
 // ** Computed
 const error = computed(() => errorMessage.value)
 
-const search = async (q?: string) => {
-    if (q) {
-        const dataList = await useFetcher<IProductList[]>(`${path.value}/data-list`, { params: { q } })
-
-        productList.value = dataList.map(_p => ({
-            id: _p.id,
-            label: _p.name,
-            avatar: { src: getPathImageFile(_p.image_uri) }
-        })).filter(Boolean)
-
-        return productList.value
-    }
-
-    return []
-}
-
 // ** Watch
-watch(value, newValue => productSelected.value = _cloneDeep(newValue))
+watch(selected, () => setValue(selected.value.map(_p => _p.id)))
 </script>
 
 <template>
     <UFormGroup
-        :label="label"
         :name="name"
         :error="error"
     >
-        <USelectMenu
-            v-model="value"
-            :searchable="search"
-            multiple
-            placeholder="Vui Lòng Chọn"
-            by="id"
-        >
-            <template #label>
-                <ul
-                    v-if="value.length"
-                    class="flex flex-col gap-1"
-                >
-                    <li
-                        v-for="product in productSelected"
-                        :key="product.id"
+        <div class="grid gap-4 grid-cols-12">
+            <div class="col-span-12">
+                <h1 class="text-2xl text-center font-bold text-gray-900 dark:text-white tracking-tight capitalize">
+                    Lựa chọn sản phẩm
+                </h1>
+            </div>
+
+            <div class="col-span-12">
+                <ProductProductSearch />
+            </div>
+
+            <div class="col-span-12">
+                <div class="flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
+                    <UTable
+                        v-model="selected"
+                        :rows="dataTable"
+                        :columns="productColumns"
+                        :loading="Boolean(isFetching)"
+                        class="w-full"
+                        :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
-                        <div class="flex items-center gap-1">
-                            <UAvatar
-                                :src="product.avatar.src"
-                                :alt="product.label"
-                            />
+                        <template #name-data="{ row }: IRow<IProduct>">
+                            <ULink :to="goToPage(row.id)">
+                                <div class="flex items-center gap-1">
+                                    <UAvatar
+                                        :src="getPathImageFile(row.image_uri)"
+                                        :alt="row.name"
+                                    />
 
-                            <span class="capitalize line-clamp-1 flex-1">{{ product.label }}</span>
-                        </div>
-                    </li>
-                </ul>
+                                    <div class="flex flex-col flex-1 truncate">
+                                        <span class="capitalize text-primary truncate">{{ row.name }}</span>
+                                        <span>{{ row.sku }}</span>
+                                    </div>
+                                </div>
+                            </ULink>
+                        </template>
 
-                <span v-else>Vui Lòng Chọn</span>
-            </template>
-        </USelectMenu>
+                        <template #price-data="{ row }: IRow<IProduct>">
+                            <ul>
+                                <li>
+                                    <span class="font-semibold capitalize">Giá gốc:</span>
+                                    {{ formatCurrency(Number(row.price)) }}
+                                </li>
+
+                                <li :class="compareDateTime(row) ? 'line-through' : ''">
+                                    <span class="font-semibold capitalize">Giá giảm: </span>
+
+                                    <template v-if="String(row.special_price_type) === SPECIAL_PRICE.PERCENT">
+                                        {{ row.special_price }}%
+                                    </template>
+
+                                    <template v-else>
+                                        {{ formatCurrency(Number(row.special_price)) }}
+                                    </template>
+                                </li>
+
+                                <li>
+                                    <span class="font-semibold capitalize">Giá bán:</span>
+                                    {{ formatSellingPrice(row) }}
+                                </li>
+                            </ul>
+                        </template>
+
+                        <template #category_id-data="{ row }: IRow<IProduct>">
+                            <div class="flex flex-col gap-1">
+                                <ULink
+                                    v-if="row.productBrand"
+                                    :to="goToPage(row.productBrand.id, ROUTER.PRODUCT_BRAND)"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <UAvatar
+                                            :src="getPathImageFile(row.productBrand.image_uri)"
+                                            :alt="row.productBrand.name"
+                                        />
+
+                                        <span class="capitalize text-primary flex-1 truncate">{{ row.productBrand.name }}</span>
+                                    </div>
+                                </ULink>
+
+                                <ULink
+                                    v-if="row.productCategory"
+                                    :to="goToPage(row.productCategory.id, ROUTER.PRODUCT_CATEGORY)"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <UAvatar
+                                            :src="getPathImageFile(row.productCategory.image_uri)"
+                                            :alt="row.productCategory.name"
+                                        />
+
+                                        <span class="capitalize text-primary flex-1 truncate">{{ row.productCategory.name }}</span>
+                                    </div>
+                                </ULink>
+                            </div>
+                        </template>
+
+                        <template #status-data="{ row }: IRow<IProduct>">
+                            <UToggle :model-value="String(row.status) === STATUS.ACTIVE" />
+                        </template>
+                    </UTable>
+                </div>
+            </div>
+
+            <div class="col-span-12">
+                <Pagination :data-aggregations="dataAggregations" />
+            </div>
+        </div>
     </UFormGroup>
 </template>

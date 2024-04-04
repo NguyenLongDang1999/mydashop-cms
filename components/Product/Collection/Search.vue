@@ -1,23 +1,19 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductCategorySearch } from '~/types/product-category.type'
+import type { IProductCollectionSearch } from '~/types/product-collection.type';
 
 // ** Validations Imports
-import { label } from '~/validations/product-category'
-
-// ** useHooks
-const categoryList = useProductCategoryDataList()
+import { label } from '~/validations/product-collection';
 
 // ** Data
-const search = inject('search') as IProductCategorySearch
-const searchTemp = reactive<IProductCategorySearch>(_clone(search))
+const search = inject('search') as IProductCollectionSearch
+const searchTemp = reactive<IProductCollectionSearch>(_clone(search))
 
 // ** Methods
 const handleReset = () => {
     _assign(searchTemp, {
-        name: undefined,
-        parent_id: undefined,
+        title: undefined,
         status: undefined,
         page: PAGE.CURRENT
     })
@@ -30,18 +26,9 @@ const handleReset = () => {
         <div class="grid gap-4 grid-cols-12">
             <div class="md:col-span-3 sm:col-span-6 col-span-12">
                 <FormInput
-                    v-model="searchTemp.name"
-                    :label="label.name"
-                    name="name"
-                />
-            </div>
-
-            <div class="md:col-span-3 sm:col-span-6 col-span-12">
-                <FormSelect
-                    v-model="searchTemp.parent_id"
-                    :label="label.parent_id"
-                    :options="categoryList"
-                    name="parent_id"
+                    v-model="searchTemp.title"
+                    :label="label.title"
+                    name="search_title"
                 />
             </div>
 
@@ -50,7 +37,7 @@ const handleReset = () => {
                     v-model="searchTemp.status"
                     :label="label.status"
                     :options="optionStatus"
-                    name="status"
+                    name="search_status"
                 />
             </div>
 

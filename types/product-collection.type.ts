@@ -6,6 +6,7 @@ export interface IProductCollectionForm {
     title: string
     slug: string
     status?: number
+    product_id: string[]
 }
 
 export interface IProductCollectionList {

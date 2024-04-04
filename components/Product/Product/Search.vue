@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductSearch } from '~/types/product.type'
+import type { IProductSearch } from '~/types/product.type';
 
 // ** Validations Imports
-import { label } from '~/validations/product'
+import { label } from '~/validations/product';
 
 // ** Props & Emits
 interface Props {
@@ -41,7 +41,7 @@ const handleReset = () => {
                 <FormInput
                     v-model="searchTemp.sku"
                     :label="label.sku"
-                    name="sku"
+                    name="search_sku"
                 />
             </div>
 
@@ -49,7 +49,7 @@ const handleReset = () => {
                 <FormInput
                     v-model="searchTemp.name"
                     :label="label.name"
-                    name="name"
+                    name="search_name"
                 />
             </div>
 
@@ -61,7 +61,7 @@ const handleReset = () => {
                     v-model="searchTemp.product_category_id"
                     :label="label.product_category_id"
                     :options="categoryList"
-                    name="product_category_id"
+                    name="search_product_category_id"
                 />
             </div>
 
@@ -70,7 +70,7 @@ const handleReset = () => {
                     v-model="searchTemp.status"
                     :label="label.status"
                     :options="optionStatus"
-                    name="status"
+                    name="search_status"
                 />
             </div>
 

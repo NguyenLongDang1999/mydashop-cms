@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IOptions } from '~/types/core.type'
+import type { IOptions } from '~/types/core.type';
 
 // ** Props & Emits
 interface Props {

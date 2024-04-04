@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types'
+import type { TabItem } from '#ui/types';
 
 // ** useHooks
 const { data } = await useProductCollectionRetrieve()
@@ -10,9 +10,6 @@ const { data } = await useProductCollectionRetrieve()
 const items: TabItem[] = [{
     slot: 'detail',
     label: 'Thông tin chi tiết'
-}, {
-    slot: 'product',
-    label: 'Sản phẩm'
 }]
 </script>
 
@@ -30,10 +27,6 @@ const items: TabItem[] = [{
             >
                 <template #detail>
                     <ProductCollectionGeneral :data="data" />
-                </template>
-
-                <template #product>
-                    <ProductCollectionProduct />
                 </template>
             </UTabs>
         </div>

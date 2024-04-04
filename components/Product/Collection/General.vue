@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductCollectionForm } from '~/types/product-collection.type'
+import type { IProductCollectionForm } from '~/types/product-collection.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-collection'
+import { label, schema } from '~/validations/product-collection';
 
 // ** Props & Emits
 interface Props {
@@ -53,6 +53,14 @@ const onSubmit = handleSubmit(values => mutateAsync(values))
                         :options="optionStatus"
                         name="status"
                     />
+                </div>
+
+                <div class="col-span-12">
+                    <UDivider />
+                </div>
+
+                <div class="col-span-12">
+                    <FormProductSearchSelected name="product_id" />
                 </div>
             </div>
 
