@@ -1,23 +1,22 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductCategoryForm } from '~/types/product-category.type'
+import type { IProductCollectionForm } from '~/types/product-collection.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-category'
+import { label, schema } from '~/validations/product-collection'
 
 // ** Props & Emits
 interface Props {
-    data: IProductCategoryForm
+    data: IProductCollectionForm
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const categoryList = useProductCategoryDataList()
-const { isPending, mutateAsync } = useProductCategoryFormInput()
+const { isPending, mutateAsync } = useProductCollectionFormInput()
 
-const { handleSubmit, setFieldValue } = useForm<IProductCategoryForm>({
+const { handleSubmit, setFieldValue } = useForm<IProductCollectionForm>({
     validationSchema: schema,
     initialValues: _omitBy(props.data, _isNil)
 })
@@ -33,59 +32,26 @@ const onSubmit = handleSubmit(values => mutateAsync(values))
     >
         <UCard>
             <div class="grid gap-4 grid-cols-12">
-                <div class="col-span-12">
-                    <FormUpload />
-                </div>
-
-                <div class="sm:col-span-6 col-span-12">
+                <div class="sm:col-span-4 col-span-12">
                     <FormInput
-                        :label="label.name"
-                        name="name"
+                        :label="label.title"
+                        name="title"
                         @update:model-value="val => setFieldValue('slug', slugify(val))"
                     />
                 </div>
 
-                <div class="sm:col-span-6 col-span-12">
+                <div class="sm:col-span-4 col-span-12">
                     <FormInput
                         :label="label.slug"
                         name="slug"
                     />
                 </div>
 
-                <div class="sm:col-span-6 col-span-12">
-                    <FormSelect
-                        :label="label.parent_id"
-                        :options="categoryList"
-                        name="parent_id"
-                    />
-                </div>
-
-                <div class="sm:col-span-6 col-span-12">
+                <div class="sm:col-span-4 col-span-12">
                     <FormSelect
                         :label="label.status"
                         :options="optionStatus"
                         name="status"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormTextarea
-                        :label="label.description"
-                        name="description"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormTextarea
-                        :label="label.meta_title"
-                        name="meta_title"
-                    />
-                </div>
-
-                <div class="col-span-12">
-                    <FormTextarea
-                        :label="label.meta_description"
-                        name="meta_description"
                     />
                 </div>
             </div>

@@ -4,7 +4,7 @@
 import type { TabItem } from '#ui/types'
 
 // ** useHooks
-const { data } = await useProductCategoryRetrieve()
+const { data } = await useProductCollectionRetrieve()
 
 // ** Data
 const items: TabItem[] = [{
@@ -20,7 +20,7 @@ const items: TabItem[] = [{
     <section>
         <BaseTitle
             label="Quản lý sản phẩm"
-            :title="`Cập nhật danh mục: ${data.name}`"
+            :title="`Cập nhật bộ sưu tập: ${data.title}`"
         />
 
         <div class="mt-8 pb-24 max-w-none">
@@ -29,11 +29,11 @@ const items: TabItem[] = [{
                 class="w-full"
             >
                 <template #detail>
-                    <ProductCategoryGeneral :data="data" />
+                    <ProductCollectionGeneral :data="data" />
                 </template>
 
                 <template #product>
-                    <ProductCategoryProduct />
+                    <ProductCollectionProduct />
                 </template>
             </UTabs>
         </div>
