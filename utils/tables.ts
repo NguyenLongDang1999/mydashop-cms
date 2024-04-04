@@ -130,6 +130,21 @@ export const categoryColumns: Columns[] = [
     actions
 ]
 
+export const collectionColumns: Columns[] = [
+    {
+        key: 'name',
+        label: 'Tên bộ sưu tập',
+        class: minWithColumn(200)
+    },
+    status,
+    {
+        key: 'created_at',
+        label: 'Ngày tạo',
+        class: minWithColumn(120)
+    },
+    actions
+]
+
 export const flashDealsColumns: Columns[] = [
     {
         key: 'name',

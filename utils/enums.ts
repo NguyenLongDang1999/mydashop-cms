@@ -53,23 +53,20 @@ export enum ROUTE {
     PRODUCT_BRAND = 'product-brands',
     PRODUCT_ATTRIBUTE = 'product-attributes',
     PRODUCT_ATTRIBUTE_VALUES = 'product-attribute-values',
-    ATTRIBUTE_VALUES = 'attribute-values',
     PRODUCT = 'product',
+    FILE_MANAGER = 'file-manager',
+    PRODUCT_COLLECTION = 'product-collections',
+
     FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',
     WEBSITE_SETUP = 'website-setup',
     PAGES = 'pages',
     ORDERS = 'orders',
-    FILE_MANAGER = 'file-manager',
 }
 
 export enum ROUTER {
     DASHBOARD = '/',
     LOGIN = '/auth/login',
-    CATEGORY = '/category',
-    BRAND = '/brand',
-    ATTRIBUTE = '/attribute',
-    PRODUCT = '/product',
     COUPONS = '/coupons',
     FLASH_DEALS = '/flash-deals',
     WEBSITE_SETUP = '/website-setup',
@@ -78,6 +75,8 @@ export enum ROUTER {
     PRODUCT_ATTRIBUTE_VALUES = '/product-attribute-values',
     PRODUCT_BRAND = '/product-brand',
     PRODUCT_CATEGORY = '/product-category',
+    PRODUCT_COLLECTION = '/product-collection',
+    PRODUCT = '/product',
 }
 
 export enum IMAGE {

@@ -28,6 +28,10 @@ export default [
                 to: `${ROUTER.PRODUCT_ATTRIBUTE_VALUES}`
             },
             {
+                title: 'Bộ sưu tập',
+                to: `${ROUTER.PRODUCT_COLLECTION}`
+            },
+            {
                 title: 'Chiến dịch',
                 to: '/flash-deals'
             },
@@ -37,7 +41,7 @@ export default [
             },
             {
                 title: 'Sản phẩm',
-                to: '/product'
+                to: `${ROUTER.PRODUCT}`
             }
         ]
     },
