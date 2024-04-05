@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProduct } from '~/types/product.type';
+import type { IRow } from '~/types/core.type'
+import type { IProduct } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {
@@ -17,9 +17,10 @@ const { value, errorMessage, setValue } = useField<string[]>(() => props.name, u
 
 // ** Data
 const selected = ref<IProduct[]>([])
+const productTableColumns = ref(_clone(productColumns))
 
 // ** Set Data
-productColumns.pop()
+productTableColumns.value.pop()
 
 onMounted(async () => {
     await suspense()
@@ -55,7 +56,7 @@ watch(selected, () => setValue(selected.value.map(_p => _p.id)))
                     <UTable
                         v-model="selected"
                         :rows="dataTable"
-                        :columns="productColumns"
+                        :columns="productTableColumns"
                         :loading="Boolean(isFetching)"
                         class="w-full"
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
