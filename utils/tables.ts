@@ -148,7 +148,7 @@ export const collectionColumns: Columns[] = [
 export const flashDealsColumns: Columns[] = [
     {
         key: 'name',
-        label: 'Tên chiến dịch',
+        label: 'Thông tin flash deals',
         class: minWithColumn(200)
     },
     {
@@ -157,7 +157,6 @@ export const flashDealsColumns: Columns[] = [
         class: minWithColumn(250)
     },
     status,
-    popular,
     actions
 ]
 

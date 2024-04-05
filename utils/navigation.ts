@@ -28,12 +28,8 @@ export default [
                 to: `${ROUTER.PRODUCT_ATTRIBUTE_VALUES}`
             },
             {
-                title: 'Bộ sưu tập',
-                to: `${ROUTER.PRODUCT_COLLECTION}`
-            },
-            {
-                title: 'Chiến dịch',
-                to: '/flash-deals'
+                title: 'Flash Deals',
+                to: `${ROUTER.PRODUCT_FLASH_DEALS}`
             },
             {
                 title: 'Coupons',

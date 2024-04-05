@@ -6,7 +6,7 @@
         />
 
         <div class="mt-8 pb-24 max-w-none">
-            <FlashDealsDataTable />
+            <ProductFlashDealsDataTable />
         </div>
     </section>
 </template>
