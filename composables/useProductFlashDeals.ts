@@ -47,6 +47,7 @@ export const useProductFlashDealsDataTable = () => {
 export const useProductFlashDealsRetrieve = async () => {
     // ** useHooks
     const { params } = useRoute()
+    const { productVariants } = useProduct()
 
     const { data, suspense } = useQuery<IProductFlashDealsForm>({
         queryKey: [queryKey.retrieve, params.id],
@@ -54,6 +55,8 @@ export const useProductFlashDealsRetrieve = async () => {
     })
 
     await suspense()
+
+    productVariants.value = data.value?.product
 
     return {
         data: computed(() => data.value as IProductFlashDealsForm || {})

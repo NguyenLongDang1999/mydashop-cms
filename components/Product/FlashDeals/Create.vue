@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-flash-deals'
+import { label, schema } from '~/validations/product-flash-deals';
 
 // ** Types Imports
-import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type'
+import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type';
 
 // ** useHooks
+const { productVariants } = useProduct()
+const { mutateAsync: mutateGenerate } = useProductFormGenerateVariant()
 const { isPending, mutateAsync } = useProductFlashDealsFormInput()
 
 const { handleSubmit, values: flashDeals, setFieldValue } = useForm<IProductFlashDealsForm>({
@@ -18,7 +20,31 @@ const isOpen = ref<boolean>(false)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await mutateAsync(values)
+    const product_variants = []
+
+    for (const _product_id of values.product_id as string[]) {
+        const productVariantItem = values.product[_product_id].productVariants
+
+        for (const variantItem in productVariantItem) {
+            product_variants.push({
+                id: productVariantItem[variantItem].id,
+                price: productVariantItem[variantItem].price,
+                special_price: productVariantItem[variantItem].special_price,
+                special_price_type: productVariantItem[variantItem].special_price_type,
+            })
+        }
+    }
+    
+    await mutateAsync({
+        title: values.title,
+        slug: values.slug,
+        status: values.status,
+        description: values.description,
+        start_time: values.date_range?.start as Date,
+        end_time: values.date_range?.end as Date,
+        product_variants
+    })
+
     isOpen.value = false
 })
 </script>
@@ -63,6 +89,12 @@ const onSubmit = handleSubmit(async values => {
                 </template>
 
                 <div class="grid gap-4 grid-cols-12">
+                    <div class="col-span-12">
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            1. Thông tin cơ bản
+                        </p>
+                    </div>
+                    
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
                             :label="label.title"
@@ -101,7 +133,9 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        <UDivider />
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            2. Lựa chọn sản phẩm
+                        </p>
                     </div>
 
                     <div class="col-span-12">
@@ -109,7 +143,98 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        {{ flashDeals.product_id }}
+                        <UButton
+                            size="sm"
+                            variant="solid"
+                            label="Tạo sản phẩm"
+                            :trailing="false"
+                            @click="mutateGenerate({
+                                product_id: flashDeals.product_id as string[]
+                            })"
+                        />
+                    </div>
+
+                    <div class="col-span-12 flex flex-col gap-4">
+                        <div
+                            v-for="product in productVariants"
+                            :key="product.id"
+                            class="grid grid-cols-12 gap-4"
+                        >
+                            <div class="col-span-12">
+                                <div class="flex items-center gap-1">
+                                    <UAvatar
+                                        :src="getPathImageFile(product.image_uri)"
+                                        :alt="product.name"
+                                    />
+
+                                    <div class="flex flex-col flex-1 truncate">
+                                        <span class="capitalize font-medium truncate">{{ product.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-12 flex flex-col gap-4">
+                                <div
+                                    v-for="(variant, index) in product.productVariants"
+                                    :key="variant.id"
+                                    class="grid grid-cols-12 gap-4"
+                                >
+                                    <FormInput
+                                        type="hidden"
+                                        :model-value="variant.id"
+                                        :name="`product.${product.id}.productVariants.${index}.id`"
+                                    />
+
+                                    <div class="col-span-12">
+                                        <strong>SKU: {{ variant.sku }}</strong>
+                                        <p v-if="variant.label">Biến Thể: {{ variant.label }}</p>
+                                    </div>
+
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                        <FormSelect
+                                            v-model="variant.special_price_type"
+                                            :label="label.special_price_type"
+                                            :options="optionTypeDiscount"
+                                            :name="`product.${product.id}.productVariants.${index}.special_price_type`"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                        <FormMoney
+                                            v-model="variant.price"
+                                            :label="label.price"
+                                            :name="`product.${product.id}.productVariants.${index}.price`"
+                                            text-trailing="VNĐ"
+                                            help="Giá Gốc"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                        <FormMoney
+                                            v-model="variant.special_price"
+                                            :label="label.special_price"
+                                            :name="`product.${product.id}.productVariants.${index}.special_price`"
+                                            :text-trailing="String(variant.special_price_type) === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                        <FormMoney
+                                            :value="formatSellingPrice(variant)"
+                                            :label="label.selling_price"
+                                            :name="`product.${product.id}.productVariants.${index}.selling_price`"
+                                            :help="`${String(variant.special_price_type) === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                            text-trailing="VNĐ"
+                                            disabled
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-12">
+                                <UDivider />
+                            </div>
+                        </div>
                     </div>
                 </div>
 

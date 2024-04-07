@@ -116,3 +116,17 @@ export interface IProductVariant {
     manage_stock: string
     product_attribute_value_id: string[]
 }
+
+export interface IProductGenerateVariant {
+    id: string
+    name: string
+    image_uri: string
+    productVariants: {
+        id: string
+        sku: string
+        label: string
+        price: number
+        special_price: number
+        special_price_type?: number
+    }[]
+}

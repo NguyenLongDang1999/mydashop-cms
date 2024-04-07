@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct } from '~/types/product.type';
 
 // ** Props & Emits
 interface Props {
@@ -41,12 +41,6 @@ watch(selected, () => setValue(selected.value.map(_p => _p.id)))
         :error="error"
     >
         <div class="grid gap-4 grid-cols-12">
-            <div class="col-span-12">
-                <h1 class="text-2xl text-center font-bold text-gray-900 dark:text-white tracking-tight capitalize">
-                    Lựa chọn sản phẩm
-                </h1>
-            </div>
-
             <div class="col-span-12">
                 <ProductProductSearch />
             </div>

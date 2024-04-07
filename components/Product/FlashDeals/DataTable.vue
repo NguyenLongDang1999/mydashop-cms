@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProductFlashDeals } from '~/types/product-flash-deals.type'
+import type { IRow } from '~/types/core.type';
+import type { IProductFlashDeals } from '~/types/product-flash-deals.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductFlashDealsDataTable()
@@ -36,18 +36,18 @@ const { isPending, mutateAsync } = useProductFlashDealsFormDelete()
                         <div class="flex items-center gap-1">
                             <div class="flex flex-col flex-1 truncate">
                                 <span class="capitalize text-primary truncate">{{ row.title }}</span>
-                                <span>{{ row.product.length }} Sản Phẩm</span>
+                                <span>{{ row.flashDealProducts.length }} Biến Thể</span>
                             </div>
                         </div>
                     </ULink>
                 </template>
+                
+                <template #date_range-data="{ row }: IRow<IProductFlashDeals>">
+                    <span>{{ formatDateTime(row.start_time) }} - {{ formatDateTime(row.end_time) }}</span>
+                </template>
 
                 <template #status-data="{ row }: IRow<IProductFlashDeals>">
                     <UToggle :model-value="String(row.status) === STATUS.ACTIVE" />
-                </template>
-
-                <template #created_at-data="{ row }: IRow<IProductFlashDeals>">
-                    <span>{{ formatDateTime(row.created_at) }}</span>
                 </template>
 
                 <template #actions-data="{ row }: IRow<IProductFlashDeals>">

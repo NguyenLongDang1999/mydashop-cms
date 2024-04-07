@@ -7,7 +7,20 @@ export interface IProductFlashDealsForm {
     slug: string
     description?: string
     status?: number
-    product_id: string[]
+    start_time: Date
+    end_time: Date
+    date_range?: {
+        start: Date
+        end: Date
+    }
+    product?: any
+    product_variants: {
+        id: string
+        price: number
+        special_price: number
+        special_price_type?: number
+    }[]
+    product_id?: string[]
 }
 
 export interface IProductFlashDeals {

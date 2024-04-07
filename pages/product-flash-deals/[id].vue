@@ -1,38 +1,57 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IFlashDealsForm } from '~/types/flash-deals.type'
-import type { IProduct } from '~/types/product.type'
+import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/flash-deals'
+import { label, schema } from '~/validations/product-flash-deals';
 
 // ** useHooks
-const { data } = await useFlashDealDetail()
-const { isPending, mutateAsync } = useFlashDealFormInput()
+const { productVariants } = useProduct()
+const { data } = await useProductFlashDealsRetrieve()
+const { mutateAsync: mutateGenerate } = useProductFormGenerateVariant()
+const { isPending, mutateAsync } = useProductFlashDealsFormInput()
 
-const { handleSubmit, values: flashDeals } = useForm<IFlashDealsForm>({
+const { handleSubmit, values: flashDeals, setFieldValue } = useForm<IProductFlashDealsForm>({
     validationSchema: schema,
     initialValues: _omitBy(data.value, _isNil)
 })
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
-    await mutateAsync({
-        ...values,
-        start_date: flashDeals.date_range?.start as string,
-        end_date: flashDeals.date_range?.end as string
-    })
+    const product_variants = []
 
-    navigateTo(ROUTER.FLASH_DEALS)
+    for (const _product_id of values.product_id as string[]) {
+        const productVariantItem = values.product[_product_id].productVariants
+
+        for (const variantItem in productVariantItem) {
+            product_variants.push({
+                id: productVariantItem[variantItem].id,
+                price: productVariantItem[variantItem].price,
+                special_price: productVariantItem[variantItem].special_price,
+                special_price_type: productVariantItem[variantItem].special_price_type,
+            })
+        }
+    }
+    
+    await mutateAsync({
+        id: values.id,
+        title: values.title,
+        slug: values.slug,
+        status: values.status,
+        description: values.description,
+        start_time: values.date_range?.start as Date,
+        end_time: values.date_range?.end as Date,
+        product_variants
+    })
 })
 </script>
 
 <template>
     <section>
-        <TheTitle
+        <BaseTitle
             label="Quản lý sản phẩm"
-            :title="`Cập nhật chiến dịch: ${data.campaign_name}`"
+            :title="`Cập nhật flash deals: ${data.title}`"
         />
 
         <div class="mt-8 pb-24 max-w-none">
@@ -42,22 +61,24 @@ const onSubmit = handleSubmit(async values => {
             >
                 <UCard>
                     <div class="grid gap-4 grid-cols-12">
+                        <div class="col-span-12">
+                            <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                                1. Thông tin cơ bản
+                            </p>
+                        </div>
+                        
                         <div class="sm:col-span-6 col-span-12">
                             <FormInput
-                                :label="label.campaign_name"
-                                name="campaign_name"
+                                :label="label.title"
+                                name="title"
+                                @update:model-value="val => setFieldValue('slug', slugify(val))"
                             />
                         </div>
 
                         <div class="sm:col-span-6 col-span-12">
-                            <FormDatePickerRange
-                                :label="label.date_range"
-                                :flash-deals="flashDeals"
-                                :data="{
-                                    start_date: flashDeals.start_date,
-                                    end_date: flashDeals.end_date
-                                }"
-                                name="date_range"
+                            <FormInput
+                                :label="label.slug"
+                                name="slug"
                             />
                         </div>
 
@@ -70,72 +91,116 @@ const onSubmit = handleSubmit(async values => {
                         </div>
 
                         <div class="sm:col-span-6 col-span-12">
-                            <FormSelect
-                                :label="label.popular"
-                                :options="optionPopular"
-                                name="popular"
+                            <FormDatePickerRange
+                                :label="label.date_range"
+                                name="date_range"
                             />
                         </div>
 
                         <div class="col-span-12">
-                            <FlashDealsProductSelected
-                                :label="label.product_selected"
-                                name="product_id"
+                            <FormTextarea
+                                :label="label.description"
+                                name="description"
                             />
                         </div>
 
-                        <div
-                            v-if="flashDeals.product_id?.length"
-                            class="col-span-12"
-                        >
-                            <UDivider icon="i-heroicons-chevron-double-down" />
+                        <div class="col-span-12">
+                            <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                                2. Lựa chọn sản phẩm
+                            </p>
+                        </div>
+
+                        <div class="col-span-12">
+                            <FormProductSearchSelected name="product_id" />
+                        </div>
+
+                        <div class="col-span-12">
+                            <UButton
+                                size="sm"
+                                variant="solid"
+                                label="Tạo sản phẩm"
+                                :trailing="false"
+                                @click="mutateGenerate({
+                                    product_id: flashDeals.product_id as string[]
+                                })"
+                            />
                         </div>
 
                         <div class="col-span-12 flex flex-col gap-4">
                             <div
-                                v-for="(productItem, index) in (flashDeals.product_id as IProduct[])"
-                                :key="productItem.id"
-                                class="grid grid-cols-12 items-center gap-4"
+                                v-for="product in productVariants"
+                                :key="product.id"
+                                class="grid grid-cols-12 gap-4"
                             >
-                                <div class="md:col-span-3 col-span-6">
+                                <div class="col-span-12">
                                     <div class="flex items-center gap-1">
                                         <UAvatar
-                                            :src="getPathImageFile(productItem.image_uri)"
-                                            :alt="productItem.name"
+                                            :src="getPathImageFile(product.image_uri)"
+                                            :alt="product.name"
                                         />
 
                                         <div class="flex flex-col flex-1 truncate">
-                                            <span class="capitalize truncate">{{ productItem.name }}</span>
-                                            <span>{{ formatCurrency(Number(productItem.price)) }}</span>
+                                            <span class="capitalize font-medium truncate">{{ product.name }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="md:col-span-3 col-span-6">
-                                    <FormSelect
-                                        :label="label.discount_type"
-                                        :options="optionTypeDiscount"
-                                        :name="`flashDealsProduct.${index}.discount_type`"
-                                    />
-                                </div>
+                                <div class="col-span-12 flex flex-col gap-4">
+                                    <div
+                                        v-for="(variant, index) in product.productVariants"
+                                        :key="variant.id"
+                                        class="grid grid-cols-12 gap-4"
+                                    >
+                                        <FormInput
+                                            type="hidden"
+                                            :model-value="variant.id"
+                                            :name="`product.${product.id}.productVariants.${index}.id`"
+                                        />
 
-                                <div class="md:col-span-3 col-span-6">
-                                    <FormMoney
-                                        :label="label.discount_amount"
-                                        :name="`flashDealsProduct.${index}.discount_amount`"
-                                    />
-                                </div>
+                                        <div class="col-span-12">
+                                            <strong>SKU: {{ variant.sku }}</strong>
+                                            <p v-if="variant.label">Biến Thể: {{ variant.label }}</p>
+                                        </div>
 
-                                <div class="col-span-1">
-                                    <FormInput
-                                        type="hidden"
-                                        :model-value="productItem.id"
-                                        :name="`flashDealsProduct.${index}.id`"
-                                    />
-                                </div>
+                                        <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                            <FormSelect
+                                                :model-value="variant.special_price_type"
+                                                :label="label.special_price_type"
+                                                :options="optionTypeDiscount"
+                                                :name="`product.${product.id}.productVariants.${index}.special_price_type`"
+                                            />
+                                        </div>
 
-                                <div class="col-span-12">
-                                    <UDivider />
+                                        <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                            <FormMoney
+                                                :model-value="variant.price"
+                                                :label="label.price"
+                                                :name="`product.${product.id}.productVariants.${index}.price`"
+                                                text-trailing="VNĐ"
+                                                help="Giá Gốc"
+                                            />
+                                        </div>
+
+                                        <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                            <FormMoney
+                                                :model-value="variant.special_price"
+                                                :label="label.special_price"
+                                                :name="`product.${product.id}.productVariants.${index}.special_price`"
+                                                :text-trailing="String(variant.special_price_type) === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
+                                            />
+                                        </div>
+
+                                        <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                                            <FormMoney
+                                                :value="formatSellingPrice(variant)"
+                                                :label="label.selling_price"
+                                                :name="`product.${product.id}.productVariants.${index}.selling_price`"
+                                                :help="`${String(variant.special_price_type) === SPECIAL_PRICE.PRICE ? 'Giá Tiền - Giá Ưu Đãi' : 'Giá Tiền - (Giá Tiền / 100) * Giá Ưu Đãi'}`"
+                                                text-trailing="VNĐ"
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +224,7 @@ const onSubmit = handleSubmit(async values => {
                                 variant="solid"
                                 label="Quay Lại"
                                 :trailing="false"
-                                :to="goToPage('', ROUTER.FLASH_DEALS)"
+                                @click="$router.go(-1)"
                             />
                         </div>
                     </template>

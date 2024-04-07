@@ -5,10 +5,11 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import type { IDeleteRecord } from '~/types/core.type'
 import type { IProductAttributeList } from '~/types/product-attribute.type'
 import type { IProductBrandList } from '~/types/product-brand.type'
-import type { IProductFormVariant, IProductList, IProductSearch, IProductTable } from '~/types/product.type'
+import type { IProductFormVariant, IProductGenerateVariant, IProductList, IProductSearch, IProductTable } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT)
+const productVariants = ref<IProductGenerateVariant[]>([])
 
 const queryKey = {
     dataTable: `${path.value}-data-table`,
@@ -19,7 +20,8 @@ const queryKey = {
 
 export default function () {
     return {
-        path
+        path,
+        productVariants
     }
 }
 
@@ -137,3 +139,9 @@ export const useProductSelectedWithCategory = () => {
         isFetchingAttribute
     }
 }
+
+export const useProductFormGenerateVariant = () => useMutation<IProductGenerateVariant[], Error, { product_id: string[] }>({
+    mutationFn: body => useFetcher(`${path.value}/generate-variant`, { method: 'POST', body }),
+    onSuccess: (data) => productVariants.value = data,
+    onError: () => useNotificationError(MESSAGE.ERROR)
+})
