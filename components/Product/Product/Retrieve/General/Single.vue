@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFormSingle } from '~/types/product.type'
+import type { IProductFormSingle } from '~/types/product.type';
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product'
+import { label, schema } from '~/validations/product';
 
 // ** Props & Emits
 interface Props {
@@ -24,7 +24,6 @@ const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormSin
 })
 
 // ** Computed
-const productTypeSingle = computed(() => product.product_type === PRODUCT_TYPE.SINGLE)
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
 
 // ** Lifecycle
@@ -99,7 +98,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     <FormSelect
                         :label="label.product_category_id"
                         :options="categoryList"
-                        :disabled="!productTypeSingle"
                         name="product_category_id"
                         @update:model-value="val => category_id = val"
                     />
@@ -110,7 +108,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         :label="label.product_brand_id"
                         :options="brandList"
                         :loading="isFetchingBrand"
-                        :disabled="!productTypeSingle"
                         name="product_brand_id"
                     />
                 </div>
@@ -119,7 +116,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     <FormSelect
                         :label="label.manage_stock"
                         :options="optionManageStock"
-                        :disabled="!productTypeSingle"
+                        disabled
                         name="manage_stock"
                     />
                 </div>
@@ -127,7 +124,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.quantity"
-                        :disabled="!productTypeSingle"
+                        disabled
                         name="quantity"
                     />
                 </div>
@@ -136,7 +133,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     <FormSelect
                         :label="label.special_price_type"
                         :options="optionTypeDiscount"
-                        :disabled="!productTypeSingle"
                         name="special_price_type"
                     />
                 </div>
@@ -144,7 +140,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.price"
-                        :disabled="!productTypeSingle"
                         name="price"
                         text-trailing="VNĐ"
                         help="Giá Gốc"
@@ -154,7 +149,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
                 <div class="md:col-span-4 sm:col-span-6 col-span-12">
                     <FormMoney
                         :label="label.special_price"
-                        :disabled="!productTypeSingle"
                         :text-trailing="String(product.special_price_type) === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"
                         name="special_price"
                     />
@@ -290,7 +284,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="$router.go(-1)"
+                        :to="goToPage('', ROUTER.PRODUCT)"
                     />
                 </div>
             </template>

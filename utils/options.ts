@@ -45,7 +45,7 @@ export const optionManageStock = [
 export const optionProductType = [
     {
         id: PRODUCT_TYPE.SINGLE,
-        name: 'Sản phẩm đơn'
+        name: 'Sản phẩm đơn thể'
     },
     {
         id: PRODUCT_TYPE.VARIANT,

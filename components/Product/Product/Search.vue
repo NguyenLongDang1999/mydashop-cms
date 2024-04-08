@@ -28,6 +28,7 @@ const handleReset = () => {
         product_category_id: props.categoryId,
         product_brand_id: undefined,
         status: undefined,
+        product_type: undefined,
         page: PAGE.CURRENT
     })
     _assign(search, searchTemp)
@@ -71,6 +72,15 @@ const handleReset = () => {
                     :label="label.status"
                     :options="optionStatus"
                     name="search_status"
+                />
+            </div>
+
+            <div class="md:col-span-3 sm:col-span-6 col-span-12">
+                <FormSelect
+                    v-model="searchTemp.product_type"
+                    :label="label.product_type"
+                    :options="optionProductType"
+                    name="search_product_type"
                 />
             </div>
 

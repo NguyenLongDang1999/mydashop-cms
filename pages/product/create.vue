@@ -4,7 +4,7 @@
 const route = useRoute()
 
 // ** Computed
-const productType = computed(() => Number(route.query?.product_type))
+const productType = computed(() => route.query?.product_type)
 </script>
 
 <template>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type'
-import type { IProductFormVariant, IProductVariant } from '~/types/product.type'
+import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type';
+import type { IProductFormVariant, IProductVariant } from '~/types/product.type';
 
 // ** Validations Imports
-import { label, schemaVariants } from '~/validations/product'
+import { label, schemaVariants } from '~/validations/product';
 
 // ** Data
 const attributeValueName = ref<Omit<IProductAttributeValuesList[], 'values'>[]>([])
@@ -71,6 +71,7 @@ const generateProductVariants = () => {
         if (Array.isArray(product.product_attributes)) {
             if (currentIndex === product.product_attributes.length) {
                 combinations.push({
+                    deleted_flg: false,
                     is_default: combinations.length === 0,
                     label: currentCombination.map(item => item.name).join(' - '),
                     sku: '',
@@ -110,6 +111,10 @@ const handleIsDefault = (index: number) => {
         })
     }
 }
+
+const removeProductVariant = (index: number, deleted_flg: boolean) => {
+    setFieldValue(`product_variants.${index}.deleted_flg`, deleted_flg)
+}
 </script>
 
 <template>
@@ -117,7 +122,6 @@ const handleIsDefault = (index: number) => {
         :state="{}"
         @submit="onSubmit"
     >
-        {{ attributeValueName }}
         <UCard>
             <template #header>
                 <div class="flex justify-between items-center">
@@ -340,7 +344,19 @@ const handleIsDefault = (index: number) => {
                         :key="variant.label"
                         class="grid grid-cols-12 gap-4"
                     >
-                        <div class="md:col-span-3 sm:col-span-4 col-span-6">
+                        <div class="col-span-12">
+                            <UButton
+                                icon="i-heroicons-trash"
+                                size="sm"
+                                square
+                                variant="soft"
+                                :color="variant.deleted_flg ? 'primary' : 'red'"
+                                :label="variant.deleted_flg ? 'Khôi Phục' : 'Xoá'"
+                                @click="removeProductVariant(index, !variant.deleted_flg)"
+                            />
+                        </div>
+
+                        <div v-if="!variant.deleted_flg" class="md:col-span-3 sm:col-span-4 col-span-6">
                             <FormToggle
                                 v-model="variant.is_default"
                                 label="Mặc định"

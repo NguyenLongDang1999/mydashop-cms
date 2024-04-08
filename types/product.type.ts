@@ -81,6 +81,7 @@ export interface IProductSearch extends IPagination {
     product_brand_id?: string
     product_category_id?: string
     status?: string
+    product_type?: string
 }
 
 export interface IProduct {
@@ -106,6 +107,7 @@ export interface IProductUpload {
 }
 
 export interface IProductVariant {
+    deleted_flg: boolean
     label: string
     is_default: boolean
     sku: string

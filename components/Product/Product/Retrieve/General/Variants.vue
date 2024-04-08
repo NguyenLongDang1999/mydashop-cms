@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFormVariant } from '~/types/product.type'
+import type { IProductFormVariant } from '~/types/product.type';
 
 // ** Validations Imports
-import { label, schemaVariants } from '~/validations/product'
+import { label, schemaVariantsGeneral } from '~/validations/product';
 
 // ** Props & Emits
 interface Props {
@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 const { isPending, mutateAsync } = useProductFormInput<IProductFormVariant>()
 
 const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormVariant>({
-    validationSchema: schemaVariants,
+    validationSchema: schemaVariantsGeneral,
     initialValues: _omitBy(props.data, _isNil)
 })
 
@@ -193,7 +193,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                         variant="solid"
                         label="Quay Lại"
                         :trailing="false"
-                        @click="$router.go(-1)"
+                        :to="goToPage('', ROUTER.PRODUCT)"
                     />
                 </div>
             </template>

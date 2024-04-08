@@ -24,8 +24,8 @@ export enum SPECIAL_PRICE {
 }
 
 export enum PRODUCT_TYPE {
-    SINGLE = 10,
-    VARIANT = 20
+    SINGLE = '10',
+    VARIANT = '20'
 }
 
 export enum RELATIONS_TYPE {

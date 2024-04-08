@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct, IProductFormSales, IProductFormVariant } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct, IProductFormSales, IProductFormVariant } from '~/types/product.type';
 
 // ** Props & Emits
 interface Props {
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(() => mutateAsync({
                             :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                         >
                             <template #name-data="{ row }: IRow<IProduct>">
-                                <ULink :to="goToPage(row.id)">
+                                <ULink :to="goToPage(row.id, ROUTER.PRODUCT)">
                                     <div class="flex items-center gap-1">
                                         <UAvatar
                                             :src="getPathImageFile(row.image_uri)"
@@ -143,7 +143,7 @@ const onSubmit = handleSubmit(() => mutateAsync({
                                         color="orange"
                                         square
                                         variant="solid"
-                                        :to="goToPage(row.id)"
+                                        :to="goToPage(row.id, ROUTER.PRODUCT)"
                                     />
                                 </div>
                             </template>

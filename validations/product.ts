@@ -159,3 +159,24 @@ export const schemaVariants = toTypedSchema(yup.object({
     upsell_products: yup.array(yup.number().required()),
     cross_sell_products: yup.array(yup.number().required())
 }))
+
+export const schemaVariantsGeneral = toTypedSchema(yup.object({
+    name: yup
+        .string()
+        .required(`${label.name} không được bỏ trống.`)
+        .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+    slug: yup
+        .string()
+        .required(`${label.slug} không được bỏ trống.`),
+    short_description: yup.string().notRequired(),
+    description: yup
+        .string()
+        .required(`${label.description} không được bỏ trống.`),
+    technical_specifications: yup.array()
+        .of(
+            yup.object().shape({
+                title: yup.string().required(`${label.technical_specifications.title} không được bỏ trống.`),
+                content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
+            }).default({ title: '', content: '' })
+        ),
+}))
