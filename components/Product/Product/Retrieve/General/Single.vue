@@ -39,8 +39,6 @@ const onSubmit = handleSubmit(values => mutateAsync({
     short_description: values.short_description,
     description: values.description,
     technical_specifications: values.technical_specifications ? JSON.stringify(values.technical_specifications) : undefined,
-    quantity: values.quantity,
-    manage_stock: values.manage_stock,
     price: values.price,
     special_price: values.special_price,
     special_price_type: values.special_price_type,

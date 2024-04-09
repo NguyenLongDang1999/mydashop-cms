@@ -311,7 +311,10 @@ const handleIsDefault = (index: number) => {
                             />
                         </div>
 
-                        <div class="col-span-12">
+                        <div
+                            v-if="index < (product.product_variants as IProductVariant[]).length - 1"
+                            class="col-span-12"
+                        >
                             <UDivider />
                         </div>
                     </div>

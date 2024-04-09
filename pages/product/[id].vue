@@ -21,7 +21,7 @@ const { data } = await useProductRetrieve()
 
 // ** Computed
 const defaultIndex = computed(() => computedItems.value.findIndex(item => item.slot === route.query.tab))
-const productTypeSingle = computed(() => data.value.product_type === PRODUCT_TYPE.SINGLE)
+const productTypeSingle = computed(() => String(data.value.product_type) === PRODUCT_TYPE.SINGLE)
 
 const computedItems = computed(() => {
     const newItems = [...items]

@@ -107,7 +107,6 @@ export interface IProductUpload {
 }
 
 export interface IProductVariant {
-    deleted_flg: boolean
     label: string
     is_default: boolean
     sku: string
