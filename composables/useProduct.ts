@@ -142,6 +142,6 @@ export const useProductSelectedWithCategory = () => {
 
 export const useProductFormGenerateVariant = () => useMutation<IProductGenerateVariant[], Error, { product_id: string[] }>({
     mutationFn: body => useFetcher(`${path.value}/generate-variant`, { method: 'POST', body }),
-    onSuccess: (data) => productVariants.value = data,
+    onSuccess: data => productVariants.value = data,
     onError: () => useNotificationError(MESSAGE.ERROR)
 })

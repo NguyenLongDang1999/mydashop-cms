@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-collection';
+import { label, schema } from '~/validations/product-collection'
 
 // ** Types Imports
-import type { IProductCollectionForm } from '~/types/product-collection.type';
+import type { IProductCollectionForm } from '~/types/product-collection.type'
 
 // ** useHooks
 const { isPending, mutateAsync } = useProductCollectionFormInput()

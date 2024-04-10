@@ -55,7 +55,7 @@ const onSubmit = handleSubmit(async values => {
                 <template #header>
                     <div class="flex items-center justify-between">
                         <h2 class="capitalize my-0 font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                            Thêm mới thiết lập
+                            Chỉnh sửa thiết lập
                         </h2>
 
                         <UButton
@@ -77,6 +77,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
+                            :model-value="settingSystem.label"
                             :label="label.label"
                             name="label"
                         />
@@ -84,6 +85,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
+                            :model-value="settingSystem.key"
                             :label="label.key"
                             name="key"
                         />
@@ -91,6 +93,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="col-span-12">
                         <FormTextarea
+                            :model-value="settingSystem.description"
                             :label="label.description"
                             name="description"
                         />
@@ -98,6 +101,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
+                            :model-value="settingSystem.input_type"
                             :label="label.input_type"
                             :options="optionInputType"
                             name="input_type"
@@ -128,12 +132,13 @@ const onSubmit = handleSubmit(async values => {
 
                                 <div class="flex flex-col gap-4 mt-4">
                                     <div
-                                        v-for="(value, index) in setting.setting_system_options"
+                                        v-for="(value, index) in settingSystem.setting_system_options"
                                         :key="index"
                                         class="grid gap-4 grid-cols-12"
                                     >
                                         <div class="col-span-4">
                                             <FormInput
+                                                :model-value="value.id"
                                                 :label="label.setting_system_options.id"
                                                 :name="`setting_system_options.${index}.id`"
                                             />
@@ -141,6 +146,7 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="col-span-4">
                                             <FormInput
+                                                :model-value="value.name"
                                                 :label="label.setting_system_options.name"
                                                 :name="`setting_system_options.${index}.name`"
                                             />
@@ -172,19 +178,22 @@ const onSubmit = handleSubmit(async values => {
                     <div class="col-span-12">
                         <FormSelect
                             v-if="inputTypeIsSelect"
+                            :model-value="settingSystem.value"
                             :label="label.value"
-                            :options="setting.setting_system_options ?? []"
+                            :options="settingSystem.setting_system_options ?? []"
                             name="value"
                         />
 
                         <FormInput
-                            v-if="String(setting.input_type) === INPUT_TYPE.TEXT"
+                            v-if="String(settingSystem.input_type) === INPUT_TYPE.TEXT"
+                            :model-value="settingSystem.value"
                             :label="label.value"
                             name="value"
                         />
 
                         <FormTextarea
-                            v-if="String(setting.input_type) === INPUT_TYPE.TEXTAREA"
+                            v-if="String(settingSystem.input_type) === INPUT_TYPE.TEXTAREA"
+                            :model-value="settingSystem.value"
                             :label="label.value"
                             name="value"
                         />
@@ -197,7 +206,7 @@ const onSubmit = handleSubmit(async values => {
                             type="submit"
                             size="sm"
                             variant="solid"
-                            label="Thêm Mới"
+                            label="Chỉnh Sửa"
                             :loading="Boolean(isPending)"
                             :trailing="false"
                         />

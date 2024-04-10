@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProductFlashDeals } from '~/types/product-flash-deals.type';
+import type { IRow } from '~/types/core.type'
+import type { IProductFlashDeals } from '~/types/product-flash-deals.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductFlashDealsDataTable()
@@ -41,7 +41,7 @@ const { isPending, mutateAsync } = useProductFlashDealsFormDelete()
                         </div>
                     </ULink>
                 </template>
-                
+
                 <template #date_range-data="{ row }: IRow<IProductFlashDeals>">
                     <span>{{ formatDateTime(row.start_time) }} - {{ formatDateTime(row.end_time) }}</span>
                 </template>

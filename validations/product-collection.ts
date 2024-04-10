@@ -20,5 +20,5 @@ export const schema = toTypedSchema(yup.object({
         .array()
         .of(yup.string())
         .min(1, `${label.product_id} không được bỏ trống.`)
-        .default([]),
+        .default([])
 }))

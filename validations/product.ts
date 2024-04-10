@@ -178,5 +178,5 @@ export const schemaVariantsGeneral = toTypedSchema(yup.object({
                 title: yup.string().required(`${label.technical_specifications.title} không được bỏ trống.`),
                 content: yup.string().required(`${label.technical_specifications.content} không được bỏ trống.`)
             }).default({ title: '', content: '' })
-        ),
+        )
 }))

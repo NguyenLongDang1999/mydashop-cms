@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type';
+import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-flash-deals';
+import { label, schema } from '~/validations/product-flash-deals'
 
 // ** useHooks
 const { productVariants } = useProduct()
@@ -29,11 +29,11 @@ const onSubmit = handleSubmit(async values => {
                 id: productVariantItem[variantItem].id,
                 price: productVariantItem[variantItem].price,
                 special_price: productVariantItem[variantItem].special_price,
-                special_price_type: productVariantItem[variantItem].special_price_type,
+                special_price_type: productVariantItem[variantItem].special_price_type
             })
         }
     }
-    
+
     await mutateAsync({
         id: values.id,
         title: values.title,
@@ -66,7 +66,7 @@ const onSubmit = handleSubmit(async values => {
                                 1. Thông tin cơ bản
                             </p>
                         </div>
-                        
+
                         <div class="sm:col-span-6 col-span-12">
                             <FormInput
                                 :label="label.title"
@@ -159,7 +159,9 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="col-span-12">
                                             <strong>SKU: {{ variant.sku }}</strong>
-                                            <p v-if="variant.label">Biến Thể: {{ variant.label }}</p>
+                                            <p v-if="variant.label">
+                                                Biến Thể: {{ variant.label }}
+                                            </p>
                                         </div>
 
                                         <div class="md:col-span-3 sm:col-span-4 col-span-6">

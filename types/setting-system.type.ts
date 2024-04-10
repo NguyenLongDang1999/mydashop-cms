@@ -3,6 +3,7 @@ export interface ISettingSystemForm {
     label: string
     key: string
     value: string
+    description: string
     input_type: string
     setting_system_options: {
         id: string

@@ -12,7 +12,7 @@ export const label = {
     price: 'Giá tiền',
     special_price: 'Giá ưu đãi',
     special_price_type: 'Loại ưu đãi',
-    selling_price: 'Giá bán',
+    selling_price: 'Giá bán'
 }
 
 export const schema = toTypedSchema(yup.object({

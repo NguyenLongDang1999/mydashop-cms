@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProduct } from '~/types/product.type';
+import type { IRow } from '~/types/core.type'
+import type { IProduct } from '~/types/product.type'
 
 // ** Props & Emits
 interface Props {

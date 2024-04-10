@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types';
+import type { TabItem } from '#ui/types'
 
 // ** Data
 const items: TabItem[] = [{

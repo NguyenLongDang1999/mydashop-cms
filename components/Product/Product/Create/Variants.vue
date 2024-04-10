@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type';
-import type { IProductFormVariant, IProductVariant } from '~/types/product.type';
+import type { IProductAttributeList, IProductAttributeValuesList } from '~/types/product-attribute.type'
+import type { IProductFormVariant, IProductVariant } from '~/types/product.type'
 
 // ** Validations Imports
-import { label, schemaVariants } from '~/validations/product';
+import { label, schemaVariants } from '~/validations/product'
 
 // ** Data
 const attributeValueName = ref<Omit<IProductAttributeValuesList[], 'values'>[]>([])

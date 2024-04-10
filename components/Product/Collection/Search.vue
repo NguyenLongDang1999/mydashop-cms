@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductCollectionSearch } from '~/types/product-collection.type';
+import type { IProductCollectionSearch } from '~/types/product-collection.type'
 
 // ** Validations Imports
-import { label } from '~/validations/product-collection';
+import { label } from '~/validations/product-collection'
 
 // ** Data
 const search = inject('search') as IProductCollectionSearch

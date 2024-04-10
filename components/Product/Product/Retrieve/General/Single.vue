@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductFormSingle } from '~/types/product.type';
+import type { IProductFormSingle } from '~/types/product.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product';
+import { label, schema } from '~/validations/product'
 
 // ** Props & Emits
 interface Props {
