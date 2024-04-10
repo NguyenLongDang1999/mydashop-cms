@@ -9,17 +9,6 @@ export const optionStatus = [
     }
 ]
 
-export const optionPopular = [
-    {
-        id: POPULAR.ACTIVE,
-        name: 'Phổ biến'
-    },
-    {
-        id: POPULAR.INACTIVE,
-        name: 'Không phổ biến'
-    }
-]
-
 export const optionTypeDiscount = [
     {
         id: SPECIAL_PRICE.PRICE,
@@ -73,6 +62,25 @@ export const optionOrderStatus = [
     {
         id: ORDER_STATUS.CANCEL,
         name: 'Huỷ đơn hàng'
+    }
+]
+
+export const optionInputType = [
+    {
+        id: INPUT_TYPE.TEXT,
+        name: 'Văn bản'
+    },
+    {
+        id: INPUT_TYPE.TEXTAREA,
+        name: 'Văn bản dài'
+    },
+    {
+        id: INPUT_TYPE.SELECT,
+        name: 'Lựa chọn'
+    },
+    {
+        id: INPUT_TYPE.UPLOAD,
+        name: 'Tải hình'
     }
 ]
 

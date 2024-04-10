@@ -68,7 +68,7 @@ export default [
             },
             {
                 title: 'Thiết lập hệ thống',
-                to: '/website-setup/system'
+                to: `${ROUTER.SYSTEM_SETTINGS}`
             },
             {
                 title: 'Thiết lập email',

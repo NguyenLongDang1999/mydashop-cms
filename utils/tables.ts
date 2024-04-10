@@ -15,11 +15,6 @@ const status: Columns = {
     label: 'Trạng thái'
 }
 
-const popular: Columns = {
-    key: 'popular',
-    label: 'Phổ biến'
-}
-
 const actions: Columns = {
     key: 'actions',
     label: 'Thao tác',
@@ -62,8 +57,7 @@ export const productNoActionColumns: Columns[] = [
         label: 'Danh mục',
         class: minWithColumn(160)
     },
-    status,
-    popular
+    status
 ]
 
 export const attributeColumns: Columns[] = [

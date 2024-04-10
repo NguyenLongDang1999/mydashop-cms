@@ -3,11 +3,6 @@ export enum STATUS {
     INACTIVE = '20'
 }
 
-export enum POPULAR {
-    ACTIVE = 10,
-    INACTIVE = 20
-}
-
 export enum PAGE {
     CURRENT = 1,
     SIZE = 10
@@ -26,6 +21,13 @@ export enum SPECIAL_PRICE {
 export enum PRODUCT_TYPE {
     SINGLE = '10',
     VARIANT = '20'
+}
+
+export enum INPUT_TYPE {
+    TEXT = '10',
+    TEXTAREA = '20',
+    SELECT = '30',
+    UPLOAD = '40'
 }
 
 export enum RELATIONS_TYPE {
@@ -57,6 +59,7 @@ export enum ROUTE {
     PRODUCT = 'product',
     FILE_MANAGER = 'file-manager',
     PRODUCT_COLLECTION = 'product-collections',
+    SYSTEM_SETTINGS = 'system-settings',
 
     FLASH_DEALS = 'flash-deals',
     COUPONS = 'coupons',
@@ -79,6 +82,8 @@ export enum ROUTER {
     PRODUCT_COLLECTION = '/product-collection',
     PRODUCT_FLASH_DEALS = '/product-flash-deals',
     PRODUCT = '/product',
+
+    SYSTEM_SETTINGS = '/system-settings'
 }
 
 export enum IMAGE {
