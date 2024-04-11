@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/setting-system'
+import { label, schema } from '~/validations/setting-system';
 
 // ** Types Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type'
+import type { ISettingSystemForm } from '~/types/setting-system.type';
 
 // ** Props & Emits
 interface Props {
@@ -16,9 +16,10 @@ const props = defineProps<Props>()
 // ** useHooks
 const { isPending, mutateAsync } = useSettingSystemFormInput()
 
-const { handleSubmit, values: setting } = useForm<ISettingSystemForm>({
+const { handleSubmit, values: setting, setFieldValue } = useForm<ISettingSystemForm>({
     validationSchema: schema,
-    initialValues: _omitBy(props.settingSystem, _isNil)
+    initialValues: _omitBy(props.settingSystem, _isNil),
+    keepValuesOnUnmount: true
 })
 
 // ** Data
@@ -77,7 +78,6 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :model-value="settingSystem.label"
                             :label="label.label"
                             name="label"
                         />
@@ -85,7 +85,6 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :model-value="settingSystem.key"
                             :label="label.key"
                             name="key"
                         />
@@ -93,7 +92,6 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="col-span-12">
                         <FormTextarea
-                            :model-value="settingSystem.description"
                             :label="label.description"
                             name="description"
                         />
@@ -101,7 +99,6 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
-                            :model-value="settingSystem.input_type"
                             :label="label.input_type"
                             :options="optionInputType"
                             name="input_type"
@@ -132,21 +129,20 @@ const onSubmit = handleSubmit(async values => {
 
                                 <div class="flex flex-col gap-4 mt-4">
                                     <div
-                                        v-for="(value, index) in settingSystem.setting_system_options"
+                                        v-for="(value, index) in setting.setting_system_options"
                                         :key="index"
                                         class="grid gap-4 grid-cols-12"
                                     >
                                         <div class="col-span-4">
                                             <FormInput
-                                                :model-value="value.id"
                                                 :label="label.setting_system_options.id"
                                                 :name="`setting_system_options.${index}.id`"
+                                                disabled
                                             />
                                         </div>
 
                                         <div class="col-span-4">
                                             <FormInput
-                                                :model-value="value.name"
                                                 :label="label.setting_system_options.name"
                                                 :name="`setting_system_options.${index}.name`"
                                             />
@@ -160,7 +156,7 @@ const onSubmit = handleSubmit(async values => {
                                                 color="red"
                                                 variant="solid"
                                                 class="mt-6"
-                                                @click="remove(index)"
+                                                @click="setFieldValue('value', ''), remove(index)"
                                             />
                                         </div>
                                     </div>
@@ -178,22 +174,25 @@ const onSubmit = handleSubmit(async values => {
                     <div class="col-span-12">
                         <FormSelect
                             v-if="inputTypeIsSelect"
-                            :model-value="settingSystem.value"
                             :label="label.value"
-                            :options="settingSystem.setting_system_options ?? []"
+                            :options="setting.setting_system_options ?? []"
                             name="value"
                         />
 
                         <FormInput
-                            v-if="String(settingSystem.input_type) === INPUT_TYPE.TEXT"
-                            :model-value="settingSystem.value"
+                            v-if="String(setting.input_type) === INPUT_TYPE.TEXT"
                             :label="label.value"
                             name="value"
                         />
 
                         <FormTextarea
-                            v-if="String(settingSystem.input_type) === INPUT_TYPE.TEXTAREA"
-                            :model-value="settingSystem.value"
+                            v-if="String(setting.input_type) === INPUT_TYPE.TEXTAREA"
+                            :label="label.value"
+                            name="value"
+                        />
+
+                        <FormUpload
+                            v-if="String(setting.input_type) === INPUT_TYPE.UPLOAD"
                             :label="label.value"
                             name="value"
                         />

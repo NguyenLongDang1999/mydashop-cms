@@ -182,6 +182,12 @@ const onSubmit = handleSubmit(async values => {
                             :label="label.value"
                             name="value"
                         />
+
+                        <FormUpload
+                            v-if="String(setting.input_type) === INPUT_TYPE.UPLOAD"
+                            :label="label.value"
+                            name="value"
+                        />
                     </div>
                 </div>
 

@@ -1,13 +1,7 @@
 <script setup lang="ts">
 
-// ** Types Imports
-// import type { IRow } from '~/types/core.type'
-// import type { IProductAttribute } from '~/types/product-attribute.type'
-
 // ** useHooks
-const { data } = useSettingSystemRetrieve()
-
-// const { isPending, mutateAsync } = useProductAttributeFormDelete()
+const { data } = useSettingSystemDataList()
 </script>
 
 <template>
@@ -35,6 +29,7 @@ const { data } = useSettingSystemRetrieve()
                     :label="item.label"
                     :options="item.setting_system_options"
                     name="value"
+                    disabled
                 />
 
                 <FormInput
@@ -42,6 +37,7 @@ const { data } = useSettingSystemRetrieve()
                     :model-value="item.value"
                     :label="item.label"
                     name="value"
+                    disabled
                 />
 
                 <FormTextarea
@@ -49,7 +45,16 @@ const { data } = useSettingSystemRetrieve()
                     :model-value="item.value"
                     :label="item.label"
                     name="value"
+                    disabled
                 />
+
+                <UFormGroup
+                    v-if="String(item.input_type) === INPUT_TYPE.UPLOAD"
+                    :label="item.label"
+                    :name="item.key"
+                >
+                    <NuxtImg :src="item.value" class="rounded-md" />
+                </UFormGroup>
             </div>
 
             <div class="col-span-1 mt-6">

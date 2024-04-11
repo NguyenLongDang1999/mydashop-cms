@@ -4,6 +4,7 @@
 interface Props {
     label?: string
     name?: string
+    modelValue?: string | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -13,7 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 // ** useHooks
 const { value, setValue, errorMessage } = useField(() => props.name, undefined, {
-    syncVModel: true
+    syncVModel: true,
+    initialValue: props.modelValue
 })
 
 // ** Data

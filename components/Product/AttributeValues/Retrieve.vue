@@ -19,7 +19,8 @@ const { isPending, mutateAsync } = useProductAttributeValuesFormInput()
 
 const { handleSubmit } = useForm<IProductAttributeValuesForm>({
     validationSchema: schema,
-    initialValues: _omitBy(props.productAttributeValue, _isNil)
+    initialValues: _omitBy(props.productAttributeValue, _isNil),
+    keepValuesOnUnmount: true
 })
 
 // ** Data
@@ -70,7 +71,6 @@ const onSubmit = handleSubmit(async values => {
                 <div class="grid gap-4 grid-cols-12">
                     <div class="sm:col-span-6 col-span-12">
                         <FormSelect
-                            :model-value="productAttributeValue.product_attribute_id"
                             :label="label.product_attribute_id"
                             :options="productAttributeDataList"
                             name="product_attribute_id"
@@ -79,7 +79,6 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
-                            :model-value="productAttributeValue.value"
                             :label="label.value"
                             name="value"
                         />

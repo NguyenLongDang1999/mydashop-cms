@@ -6,6 +6,7 @@ export default defineNuxtConfig({
         '@nuxtjs/google-fonts',
         '@vueuse/nuxt',
         '@nuxt/ui',
+        '@nuxt/image',
         '@vee-validate/nuxt',
         '@samk-dev/nuxt-vcalendar'
     ],
@@ -29,5 +30,11 @@ export default defineNuxtConfig({
         public: {
             apiBase: process.env.NUXT_PUBLIC_API_BASE
         }
+    },
+    image: {
+        provider: 'bunny',
+        bunny: {
+            baseURL: "https://nuxivy.b-cdn.net",
+        },
     }
 })

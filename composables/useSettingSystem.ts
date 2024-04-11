@@ -25,13 +25,25 @@ export const useSettingSystemFormInput = () => {
     return useMutation<ISettingSystemForm, Error, ISettingSystemForm>({
         mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
         onSuccess: () => {
-            queryClient.refetchQueries({ queryKey: [queryKey.dataTable] })
+            queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
             queryClient.invalidateQueries({ queryKey: [queryKey.retrieve] })
 
             useNotification(MESSAGE.SUCCESS)
         },
         onError: error => useNotificationMessage(error.message)
     })
+}
+
+export const useSettingSystemDataList = () => {
+    // ** useHooks
+    const { data } = useQuery({
+        queryKey: [queryKey.dataList],
+        queryFn: () => useFetcher(path.value)
+    })
+
+    return {
+        data: computed(() => data.value as ISettingSystemForm[])
+    }
 }
 
 export const useSettingSystemRetrieve = () => {
