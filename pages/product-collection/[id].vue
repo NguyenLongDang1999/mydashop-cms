@@ -1,16 +1,24 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types'
+import type { IProductCollectionForm } from '~/types/product-collection.type'
+
+// ** Validations Imports
+import { label, schema } from '~/validations/product-collection'
 
 // ** useHooks
 const { data } = await useProductCollectionRetrieve()
 
-// ** Data
-const items: TabItem[] = [{
-    slot: 'detail',
-    label: 'Thông tin chi tiết'
-}]
+// ** useHooks
+const { isPending, mutateAsync } = useProductCollectionFormInput()
+
+const { handleSubmit, setFieldValue } = useForm<IProductCollectionForm>({
+    validationSchema: schema,
+    initialValues: _omitBy(data.value, _isNil)
+})
+
+// ** Methods
+const onSubmit = handleSubmit(values => mutateAsync(values))
 </script>
 
 <template>
@@ -21,14 +29,76 @@ const items: TabItem[] = [{
         />
 
         <div class="mt-8 pb-24 max-w-none">
-            <UTabs
-                :items="items"
-                class="w-full"
+            <UForm
+                :state="{}"
+                @submit="onSubmit"
             >
-                <template #detail>
-                    <ProductCollectionGeneral :data="data" />
-                </template>
-            </UTabs>
+                <UCard>
+                    <div class="grid gap-4 grid-cols-12">
+                        <div class="col-span-12">
+                            <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                                1. Thông tin chung
+                            </p>
+                        </div>
+
+                        <div class="sm:col-span-4 col-span-12">
+                            <FormInput
+                                :label="label.title"
+                                name="title"
+                                @update:model-value="val => setFieldValue('slug', slugify(val))"
+                            />
+                        </div>
+
+                        <div class="sm:col-span-4 col-span-12">
+                            <FormInput
+                                :label="label.slug"
+                                name="slug"
+                            />
+                        </div>
+
+                        <div class="sm:col-span-4 col-span-12">
+                            <FormSelect
+                                :label="label.status"
+                                :options="optionStatus"
+                                name="status"
+                            />
+                        </div>
+
+                        <div class="col-span-12">
+                            <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                                2. Lựa chọn sản phẩm
+                            </p>
+                        </div>
+
+                        <div class="col-span-12">
+                            <FormProductSearchSelected name="product_id" />
+                        </div>
+                    </div>
+
+                    <template #footer>
+                        <div class="flex justify-start gap-4">
+                            <UButton
+                                type="submit"
+                                size="sm"
+                                variant="solid"
+                                label="Cập Nhật"
+                                :loading="Boolean(isPending)"
+                                :trailing="false"
+                            />
+
+                            <UButton
+                                type="reset"
+                                size="sm"
+                                color="gray"
+                                variant="solid"
+                                label="Quay Lại"
+                                :trailing="false"
+                                @click="$router.go(-1)"
+                            />
+                        </div>
+                    </template>
+                </UCard>
+            </UForm>
         </div>
     </section>
 </template>

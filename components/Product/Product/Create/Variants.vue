@@ -129,7 +129,7 @@ const handleIsDefault = (index: number) => {
             <div class="grid gap-4 grid-cols-12">
                 <div class="col-span-12">
                     <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                        1. Thông tin cơ bản
+                        1. Thông tin chung
                     </p>
                 </div>
 

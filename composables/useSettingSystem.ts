@@ -34,11 +34,13 @@ export const useSettingSystemFormInput = () => {
     })
 }
 
-export const useSettingSystemDataList = () => {
+export const useSettingSystemDataList = (key?: string) => {
     // ** useHooks
     const { data } = useQuery({
-        queryKey: [queryKey.dataList],
-        queryFn: () => useFetcher(path.value)
+        queryKey: [queryKey.dataList, key],
+        queryFn: () => useFetcher(path.value, {
+            params: { key }
+        })
     })
 
     return {

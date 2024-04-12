@@ -21,9 +21,6 @@ export const schema = toTypedSchema(yup.object({
     key: yup
         .string()
         .required(`${label.key} không được bỏ trống.`),
-    value: yup
-        .string()
-        .required(`${label.value} không được bỏ trống.`),
     input_type: yup
         .string()
         .required(`${label.input_type} không được bỏ trống.`),

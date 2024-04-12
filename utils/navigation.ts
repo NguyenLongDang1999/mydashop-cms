@@ -28,6 +28,10 @@ export default [
                 to: `${ROUTER.PRODUCT_ATTRIBUTE_VALUES}`
             },
             {
+                title: 'Bộ sưu tập',
+                to: `${ROUTER.PRODUCT_COLLECTION}`
+            },
+            {
                 title: 'Flash Deals',
                 to: `${ROUTER.PRODUCT_FLASH_DEALS}`
             },
@@ -63,12 +67,16 @@ export default [
         label: 'Thiết Lập WEBSITE',
         children: [
             {
-                title: 'Thiết lập trang chủ',
-                to: '/website-setup'
-            },
-            {
                 title: 'Thiết lập hệ thống',
                 to: `${ROUTER.SYSTEM_SETTINGS}`
+            },
+            {
+                title: 'Thiết lập trang chủ',
+                to: `${ROUTER.SYSTEM_SETTINGS_HOME}`
+            },
+            {
+                title: 'Thiết lập secret key',
+                to: `${ROUTER.SYSTEM_SETTINGS_SECRET_KEY_BUNNYCDN}`
             },
             {
                 title: 'Thiết lập email',

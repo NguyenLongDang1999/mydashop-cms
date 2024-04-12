@@ -83,7 +83,11 @@ export enum ROUTER {
     PRODUCT_FLASH_DEALS = '/product-flash-deals',
     PRODUCT = '/product',
 
-    SYSTEM_SETTINGS = '/system-settings'
+    SYSTEM_SETTINGS = '/system-settings',
+    SYSTEM_SETTINGS_HOME = '/system-settings/home',
+    SYSTEM_SETTINGS_SECRET_KEY_BUNNYCDN = '/system-settings/secret-key/bunnycdn',
+    SYSTEM_SETTINGS_SECRET_KEY_GOOGLE = '/system-settings/secret-key/google',
+    SYSTEM_SETTINGS_SECRET_KEY_FACEBOOK = '/system-settings/secret-key/facebook'
 }
 
 export enum IMAGE {

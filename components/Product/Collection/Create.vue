@@ -63,6 +63,12 @@ const onSubmit = handleSubmit(async values => {
                 </template>
 
                 <div class="grid gap-4 grid-cols-12">
+                    <div class="col-span-12">
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            1. Thông tin chung
+                        </p>
+                    </div>
+
                     <div class="sm:col-span-4 col-span-12">
                         <FormInput
                             :label="label.title"
@@ -87,7 +93,9 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        <UDivider />
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            2. Lựa chọn sản phẩm
+                        </p>
                     </div>
 
                     <div class="col-span-12">

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/setting-system';
+import { label, schema } from '~/validations/setting-system'
 
 // ** Types Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type';
+import type { ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** Props & Emits
 interface Props {

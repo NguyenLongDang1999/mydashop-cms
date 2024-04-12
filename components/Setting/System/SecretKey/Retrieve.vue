@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** useHooks
-const { data } = useSettingSystemDataList('system_')
+const { data } = useSettingSystemDataList('secret_key_bunnycdn_')
 </script>
 
 <template>
