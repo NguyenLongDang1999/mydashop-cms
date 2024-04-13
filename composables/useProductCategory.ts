@@ -90,7 +90,7 @@ export const useProductCategoryFormDelete = () => {
     const queryClient = useQueryClient()
 
     return useMutation<IDeleteRecord, Error, IDeleteRecord>({
-        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE' }),
+        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE', params: body }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
             queryClient.invalidateQueries({ queryKey: [queryKey.dataTable] })

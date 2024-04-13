@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     image: {
         provider: 'bunny',
         bunny: {
-            baseURL: "https://nuxivy.b-cdn.net",
-        },
+            baseURL: 'https://nuxivy.b-cdn.net'
+        }
     }
 })

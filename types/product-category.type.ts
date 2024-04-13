@@ -24,6 +24,7 @@ export interface IProductCategoryList {
 
 export interface IProductCategory {
     id: string
+    slug: string
     name: string
     parentCategory: IProductCategoryList
     product: {

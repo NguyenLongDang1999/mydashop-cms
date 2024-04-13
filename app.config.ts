@@ -37,6 +37,16 @@ export default defineAppConfig({
                     font: 'font-medium capitalize'
                 }
             }
+        },
+        pagination: {
+            wrapper: 'flex items-center gap-1',
+            rounded:
+                '!rounded-full min-w-[32px] justify-center',
+            default: {
+                activeButton: {
+                    variant: 'outline',
+                },
+            },
         }
     }
 })
