@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProductAttribute } from '~/types/product-attribute.type'
+import type { IRow } from '~/types/core.type';
+import type { IProductAttribute } from '~/types/product-attribute.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductAttributeDataTable()
@@ -46,7 +46,7 @@ const { isPending, mutateAsync } = useProductAttributeFormDelete()
                 <template #category_id-data="{ row }: IRow<IProductAttribute>">
                     <div v-if="row.productCategoryAttributes.length">
                         <ULink
-                            v-for="category in row.productCategoryAttributes"
+                            v-for="category in row.productCategoryAttributes.slice(0, 5)"
                             :key="category.id"
                             :to="goToPage(category.id, ROUTER.PRODUCT_CATEGORY)"
                             class="flex items-center gap-1 hover:text-primary-500"

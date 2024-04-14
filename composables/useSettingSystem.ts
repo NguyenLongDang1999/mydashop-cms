@@ -2,7 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type'
+import type { IMetadata, ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** State
 const path = ref<string>(ROUTE.SYSTEM_SETTINGS)
@@ -10,7 +10,8 @@ const path = ref<string>(ROUTE.SYSTEM_SETTINGS)
 const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
-    retrieve: `${path.value}-retrieve`
+    retrieve: `${path.value}-retrieve`,
+    metadata: `${path.value}-metadata`
 }
 
 export default function () {
@@ -36,7 +37,7 @@ export const useSettingSystemFormInput = () => {
 
 export const useSettingSystemDataList = (key?: string) => {
     // ** useHooks
-    const { data } = useQuery({
+    const { data, suspense } = useQuery({
         queryKey: [queryKey.dataList, key],
         queryFn: () => useFetcher(path.value, {
             params: { key }
@@ -44,6 +45,7 @@ export const useSettingSystemDataList = (key?: string) => {
     })
 
     return {
+        suspense,
         data: computed(() => data.value as ISettingSystemForm[])
     }
 }
@@ -57,5 +59,19 @@ export const useSettingSystemRetrieve = () => {
 
     return {
         data: computed(() => data.value as ISettingSystemForm[])
+    }
+}
+
+export const useMetadata = async () => {
+    // ** useHooks
+    const { data, suspense } = useQuery({
+        queryKey: [queryKey.metadata],
+        queryFn: () => useFetcher(path.value + '/metadata')
+    })
+
+    await suspense()
+
+    return {
+        data: computed(() => data.value as IMetadata)
     }
 }

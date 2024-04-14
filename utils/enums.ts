@@ -75,6 +75,7 @@ export enum ROUTER {
     FLASH_DEALS = '/flash-deals',
     WEBSITE_SETUP = '/website-setup',
 
+    // ** PRODUCT
     PRODUCT_ATTRIBUTE = '/product-attribute',
     PRODUCT_ATTRIBUTE_VALUES = '/product-attribute-values',
     PRODUCT_BRAND = '/product-brand',
@@ -85,9 +86,17 @@ export enum ROUTER {
 
     SYSTEM_SETTINGS = '/system-settings',
     SYSTEM_SETTINGS_HOME = '/system-settings/home',
+
+    // ** SYSTEM SETTING SECRET KEY
     SYSTEM_SETTINGS_SECRET_KEY_BUNNYCDN = '/system-settings/secret-key/bunnycdn',
     SYSTEM_SETTINGS_SECRET_KEY_GOOGLE = '/system-settings/secret-key/google',
-    SYSTEM_SETTINGS_SECRET_KEY_FACEBOOK = '/system-settings/secret-key/facebook'
+    SYSTEM_SETTINGS_SECRET_KEY_FACEBOOK = '/system-settings/secret-key/facebook',
+
+    // ** SYSTEM SETTING HOME
+    SYSTEM_SETTINGS_HOME_SLIDER = '/system-settings/home/slider',
+    SYSTEM_SETTINGS_HOME_PRODUCT_FLASH_DEALS = '/system-settings/home/product-flash-deals',
+    SYSTEM_SETTINGS_HOME_PRODUCT_CATEGORY = '/system-settings/home/product-category',
+    SYSTEM_SETTINGS_HOME_PRODUCT_COLLECTION = '/system-settings/home/product-collection'
 }
 
 export enum IMAGE {

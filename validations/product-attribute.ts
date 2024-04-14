@@ -7,7 +7,8 @@ export const label = {
     slug: 'Đường dẫn URL',
     product_category_id: 'Danh mục',
     status: 'Trạng thái',
-    description: 'Mô tả'
+    description: 'Mô tả',
+    value: 'Giá trị thuộc tính',
 }
 
 export const schema = toTypedSchema(yup.object({
@@ -24,5 +25,13 @@ export const schema = toTypedSchema(yup.object({
         .default([]),
     description: yup
         .string()
-        .notRequired()
+        .notRequired(),
+    product_attribute_values: yup.array()
+        .of(
+            yup.object().shape({
+                value: yup.string().required(`${label.value} không được bỏ trống.`),
+            }).default({ value: '' })
+        )
+        .min(1, `${label.value} không được bỏ trống.`)
+        .default([]),
 }))

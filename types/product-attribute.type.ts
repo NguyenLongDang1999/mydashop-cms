@@ -11,6 +11,7 @@ export interface IProductAttributeForm {
     product_category_id: string | string[]
     status?: number
     description?: string
+    product_attribute_values: string[]
 }
 
 export interface IProductAttribute {

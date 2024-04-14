@@ -1,16 +1,16 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-attribute'
+import { label, schema } from '~/validations/product-attribute';
 
 // ** Types Imports
-import type { IProductAttributeForm } from '~/types/product-attribute.type'
+import type { IProductAttributeForm } from '~/types/product-attribute.type';
 
 // ** useHooks
 const categoryList = useProductCategoryDataList()
 const { isPending, mutateAsync } = useProductAttributeFormInput()
 
-const { handleSubmit, setFieldValue } = useForm<IProductAttributeForm>({
+const { handleSubmit, values: productAttribute, setFieldValue } = useForm<IProductAttributeForm>({
     validationSchema: schema
 })
 
@@ -61,6 +61,12 @@ const onSubmit = handleSubmit(async values => {
                 </template>
 
                 <div class="grid gap-4 grid-cols-12">
+                    <div class="col-span-12">
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            1. Thông tin chung
+                        </p>
+                    </div>
+
                     <div class="sm:col-span-6 col-span-12">
                         <FormInput
                             :label="label.name"
@@ -98,6 +104,56 @@ const onSubmit = handleSubmit(async values => {
                             :label="label.description"
                             name="description"
                         />
+                    </div>
+
+                    <div class="col-span-12">
+                        <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
+                            2. Thêm giá trị thuộc tính
+                        </p>
+                    </div>
+
+                    <div class="col-span-12">
+                        <FieldArray
+                            v-slot="{ push, remove }"
+                            name="product_attribute_values"
+                        >
+                            <UButton
+                                icon="i-heroicons-plus"
+                                size="sm"
+                                color="primary"
+                                variant="solid"
+                                label="Thêm Giá Trị"
+                                :trailing="false"
+                                @click="push({ value: '' })"
+                            />
+
+                            <div class="flex flex-col gap-4 mt-4">
+                                <div
+                                    v-for="(value, index) in productAttribute.product_attribute_values"
+                                    :key="index"
+                                    class="grid gap-4 grid-cols-12"
+                                >
+                                    <div class="col-span-6">
+                                        <FormInput
+                                            :label="label.value"
+                                            :name="`product_attribute_values.${index}.value`"
+                                        />
+                                    </div>
+
+                                    <div class="col-span-3">
+                                        <UButton
+                                            :ui="{ rounded: 'rounded-full' }"
+                                            icon="i-heroicons-trash"
+                                            size="sm"
+                                            color="red"
+                                            variant="solid"
+                                            class="mt-6"
+                                            @click="remove(index)"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </FieldArray>
                     </div>
                 </div>
 

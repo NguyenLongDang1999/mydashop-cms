@@ -40,12 +40,10 @@ export const label = {
 export const schema = toTypedSchema(yup.object({
     sku: yup
         .string()
-        .required(`${label.sku} không được bỏ trống.`)
-        .max(30, ({ max }) => `${label.sku} không được vượt quá ${max} ký tự.`),
+        .required(`${label.sku} không được bỏ trống.`),
     name: yup
         .string()
-        .required(`${label.name} không được bỏ trống.`)
-        .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+        .required(`${label.name} không được bỏ trống.`),
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
@@ -93,8 +91,7 @@ export const schema = toTypedSchema(yup.object({
 export const schemaVariants = toTypedSchema(yup.object({
     name: yup
         .string()
-        .required(`${label.name} không được bỏ trống.`)
-        .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+        .required(`${label.name} không được bỏ trống.`),
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
@@ -163,8 +160,7 @@ export const schemaVariants = toTypedSchema(yup.object({
 export const schemaVariantsGeneral = toTypedSchema(yup.object({
     name: yup
         .string()
-        .required(`${label.name} không được bỏ trống.`)
-        .max(60, ({ max }) => `${label.name} không được vượt quá ${max} ký tự.`),
+        .required(`${label.name} không được bỏ trống.`),
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),

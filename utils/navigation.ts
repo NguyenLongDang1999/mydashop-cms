@@ -72,7 +72,7 @@ export default [
             },
             {
                 title: 'Thiết lập trang chủ',
-                to: `${ROUTER.SYSTEM_SETTINGS_HOME}`
+                to: `${ROUTER.SYSTEM_SETTINGS_HOME_SLIDER}`
             },
             {
                 title: 'Thiết lập secret key',

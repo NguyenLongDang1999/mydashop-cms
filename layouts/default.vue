@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** useHooks
-// const { data } = await useWebsiteSetupDetail(WEBSITE_SETUP.WEBSITE_COLOUR)
+const { data } = await useMetadata()
 
-// updateAppConfig({
-//     ui: { primary: data.value.value }
-// })
+updateAppConfig({
+    ui: { primary: data.value.theme_colour }
+})
 </script>
 
 <template>
