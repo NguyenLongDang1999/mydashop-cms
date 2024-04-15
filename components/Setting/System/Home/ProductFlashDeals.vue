@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
 // ** Type Imports
-import { ISettingSystemForm } from '~/types/setting-system.type';
+import type { ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** VeeValidate Imports
-import { toTypedSchema } from '@vee-validate/yup';
-import * as yup from 'yup';
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
+
+const props = defineProps<Props>()
 
 const label = {
     image_uri: 'Ảnh đại diện',
@@ -31,8 +33,6 @@ const schema = toTypedSchema(yup.object({
 interface Props {
     data: ISettingSystemForm[]
 }
-
-const props = defineProps<Props>()
 
 // ** useHooks
 const { isPending, mutateAsync } = useSettingSystemFormInput()

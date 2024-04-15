@@ -44,9 +44,9 @@ export default defineAppConfig({
                 '!rounded-full min-w-[32px] justify-center',
             default: {
                 activeButton: {
-                    variant: 'outline',
-                },
-            },
+                    variant: 'outline'
+                }
+            }
         }
     }
 })

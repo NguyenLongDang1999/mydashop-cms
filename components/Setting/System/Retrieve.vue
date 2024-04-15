@@ -28,7 +28,7 @@ const { data } = useSettingSystemDataList('system_')
                         v-if="String(item.input_type) === INPUT_TYPE.SELECT"
                         :model-value="item.value"
                         :label="item.label"
-                        :options="item.setting_system_options"
+                        :options="item.setting_system_options ?? []"
                         name="value"
                         disabled
                     />

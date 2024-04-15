@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductAttributeForm } from '~/types/product-attribute.type';
+import type { IProductAttributeForm } from '~/types/product-attribute.type'
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-attribute';
+import { label, schema } from '~/validations/product-attribute'
 
 // ** Props & Emits
 interface Props {
@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(values => mutateAsync(values))
                         1. Thông tin chung
                     </p>
                 </div>
-                
+
                 <div class="sm:col-span-6 col-span-12">
                     <FormInput
                         :label="label.name"

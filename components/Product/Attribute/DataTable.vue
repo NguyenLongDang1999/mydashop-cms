@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProductAttribute } from '~/types/product-attribute.type';
+import type { IRow } from '~/types/core.type'
+import type { IProductAttribute } from '~/types/product-attribute.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductAttributeDataTable()
