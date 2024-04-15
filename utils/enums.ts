@@ -54,7 +54,6 @@ export enum ROUTE {
     PRODUCT_CATEGORY = 'product-categories',
     PRODUCT_BRAND = 'product-brands',
     PRODUCT_ATTRIBUTE = 'product-attributes',
-    PRODUCT_ATTRIBUTE_VALUES = 'product-attribute-values',
     PRODUCT_FLASH_DEALS = 'product-flash-deals',
     PRODUCT = 'product',
     FILE_MANAGER = 'file-manager',
@@ -77,7 +76,6 @@ export enum ROUTER {
 
     // ** PRODUCT
     PRODUCT_ATTRIBUTE = '/product-attribute',
-    PRODUCT_ATTRIBUTE_VALUES = '/product-attribute-values',
     PRODUCT_BRAND = '/product-brand',
     PRODUCT_CATEGORY = '/product-category',
     PRODUCT_COLLECTION = '/product-collection',

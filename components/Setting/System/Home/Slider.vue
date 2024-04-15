@@ -37,7 +37,7 @@ interface Props {
 // ** useHooks
 const { isPending, mutateAsync } = useSettingSystemFormInput()
 
-const { handleSubmit } = useForm({
+const { handleSubmit, values: field } = useForm({
     validationSchema: schema,
     initialValues: {
         home_slider: props.data.length && typeof props.data[0].value === 'string' ? JSON.parse(props.data[0].value) : []
@@ -118,6 +118,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
         </FieldArray>
 
         <UButton
+            v-if="field.home_slider?.length"
             type="submit"
             size="sm"
             variant="solid"

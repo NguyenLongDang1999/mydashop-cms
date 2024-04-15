@@ -24,10 +24,6 @@ export default [
                 to: `${ROUTER.PRODUCT_ATTRIBUTE}`
             },
             {
-                title: 'Thuộc tính (Giá trị)',
-                to: `${ROUTER.PRODUCT_ATTRIBUTE_VALUES}`
-            },
-            {
                 title: 'Bộ sưu tập',
                 to: `${ROUTER.PRODUCT_COLLECTION}`
             },

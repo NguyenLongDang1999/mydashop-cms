@@ -1,5 +1,5 @@
 // ** Third Party Imports
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // ** Types Imports
 import type { IDeleteRecord } from '~/types/core.type'
@@ -11,7 +11,8 @@ const path = ref<string>(ROUTE.PRODUCT_ATTRIBUTE)
 const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
-    retrieve: `${path.value}-retrieve`
+    retrieve: `${path.value}-retrieve`,
+    dataValueCategory: `${path.value}-data-value-category`
 }
 
 export default function () {
@@ -99,4 +100,26 @@ export const useProductAttributeFormDelete = () => {
         },
         onError: () => useNotificationError(MESSAGE.ERROR)
     })
+}
+
+export const useProductAttributeValueList = () => {
+    // ** Data
+    const attribute_id = ref<string[]>([])
+
+    const attributeData = useQueries({
+        queries: computed(() => attribute_id.value.map(_v => {
+            return {
+                queryKey: [queryKey.dataValueCategory, _v],
+                queryFn: () => useFetcher(`${path.value}/attribute-value-data-list/${_v}`)
+            }
+        }))
+    })
+
+    // ** Computed
+    const attributeValueList = computed(() => attributeData.value)
+
+    return {
+        attribute_id,
+        attributeValueList
+    }
 }
