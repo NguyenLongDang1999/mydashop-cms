@@ -40,7 +40,7 @@ const { isPending, mutateAsync } = useSettingSystemFormInput()
 const { handleSubmit } = useForm({
     validationSchema: schema,
     initialValues: {
-        home_slider: typeof props.data[0].value === 'string' ? JSON.parse(props.data[0].value) : []
+        home_slider: props.data.length && typeof props.data[0].value === 'string' ? JSON.parse(props.data[0].value) : []
     }
 })
 
