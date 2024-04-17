@@ -22,9 +22,6 @@ export const schema = toTypedSchema(yup.object({
     slug: yup
         .string()
         .required(`${label.slug} không được bỏ trống.`),
-    description: yup
-        .string()
-        .required(`${label.description} không được bỏ trống.`),
     product_id: yup
         .array()
         .of(yup.string())

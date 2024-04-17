@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Validations Imports
-import { label, schema } from '~/validations/product-flash-deals'
+import { label, schema } from '~/validations/product-flash-deals';
 
 // ** Types Imports
-import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type'
+import type { IProductFlashDealsForm } from '~/types/product-flash-deals.type';
 
 // ** useHooks
 const { productVariants } = useProduct()
@@ -45,6 +45,7 @@ const onSubmit = handleSubmit(async values => {
         product_variants
     })
 
+    productVariants.value = []
     isOpen.value = false
 })
 </script>
