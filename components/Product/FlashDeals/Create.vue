@@ -230,11 +230,14 @@ const onSubmit = handleSubmit(async values => {
                                             disabled
                                         />
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="col-span-12">
-                                <UDivider />
+                                    <div
+                                        v-if="index < product.productVariants.length - 1"
+                                        class="col-span-12"
+                                    >
+                                        <UDivider />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
