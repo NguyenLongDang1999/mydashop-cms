@@ -28,7 +28,7 @@ export const useProductCategoryDataTable = () => {
     })
 
     // ** useHooks
-    const { data, isFetching } = useQuery<IProductCategoryTable>({
+    const { data, isFetching, suspense } = useQuery<IProductCategoryTable>({
         queryKey: [queryKey.dataTable, search],
         queryFn: () => useFetcher(path.value, { params: search }),
         placeholderData: keepPreviousData
@@ -37,6 +37,7 @@ export const useProductCategoryDataTable = () => {
     provide('search', search)
 
     return {
+        suspense,
         search,
         isFetching,
         dataTable: computed(() => data.value?.data || []),

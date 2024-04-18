@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { VerticalNavigationLink } from '#ui/types'
+import type { VerticalNavigationLink } from '#ui/types';
 
 // ** Data
 const links: VerticalNavigationLink[] = [{
@@ -16,6 +16,9 @@ const links: VerticalNavigationLink[] = [{
 }, {
     label: 'Bộ sưu tập',
     to: ROUTER.SYSTEM_SETTINGS_HOME_PRODUCT_COLLECTION
+}, {
+    label: 'Thương hiệu',
+    to: ROUTER.SYSTEM_SETTINGS_HOME_PRODUCT_BRAND
 }]
 </script>
 
@@ -27,7 +30,7 @@ const links: VerticalNavigationLink[] = [{
             base: 'group block border-s -ms-px leading-6 before:hidden',
             padding: 'p-0 ps-4',
             rounded: '',
-            font: '',
+            font: 'capitalize',
             ring: '',
             active: 'text-primary-500 dark:text-primary-400 border-current font-semibold',
             inactive: 'border-transparent hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300'

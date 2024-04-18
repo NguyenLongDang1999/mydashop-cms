@@ -1,13 +1,11 @@
 <script setup lang="ts">
 
 // ** Type Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type'
+import type { ISettingSystemForm } from '~/types/setting-system.type';
 
 // ** VeeValidate Imports
-import { toTypedSchema } from '@vee-validate/yup'
-import * as yup from 'yup'
-
-const props = defineProps<Props>()
+import { toTypedSchema } from '@vee-validate/yup';
+import * as yup from 'yup';
 
 const label = {
     image_uri: 'Ảnh đại diện',
@@ -34,20 +32,25 @@ interface Props {
     data: ISettingSystemForm[]
 }
 
+const props = defineProps<Props>()
+
+// ** Computed
+const slider = computed(() => props.data.find(_p => _p.key === HOME_SETTING.SLIDER))
+
 // ** useHooks
 const { isPending, mutateAsync } = useSettingSystemFormInput()
 
 const { handleSubmit, values: field } = useForm({
     validationSchema: schema,
     initialValues: {
-        home_slider: props.data.length && typeof props.data[0].value === 'string' ? JSON.parse(props.data[0].value) : []
+        home_slider: typeof slider.value?.value === 'string' ? JSON.parse(slider.value?.value) : []
     }
 })
 
 // ** Methods
 const onSubmit = handleSubmit(values => mutateAsync({
-    label: WEBSITE_SETUP.HOME_SLIDER,
-    key: 'home_slider',
+    label: HOME_SETTING.SLIDER,
+    key: HOME_SETTING.SLIDER,
     value: JSON.stringify(values.home_slider),
     input_type: INPUT_TYPE.TEXT
 

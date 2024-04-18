@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct } from '~/types/product.type';
 
 // ** Props & Emits
 interface Props {
@@ -56,7 +56,7 @@ watch(selected, () => setValue(selected.value.map(_p => _p.id)))
                         :ui="{ td: { base: 'max-w-[0]' }, th: { base: 'whitespace-nowrap' } }"
                     >
                         <template #name-data="{ row }: IRow<IProduct>">
-                            <ULink :to="goToPage(row.id)">
+                            <ULink :to="goToPage(row.id, ROUTER.PRODUCT)">
                                 <div class="flex items-center gap-1">
                                     <UAvatar
                                         :src="getPathImageFile(row.image_uri)"

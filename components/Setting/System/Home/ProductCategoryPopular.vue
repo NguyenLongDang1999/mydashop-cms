@@ -8,7 +8,7 @@ import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
 
 const schema = toTypedSchema(yup.object({
-    product_id: yup
+    product_category_id: yup
         .array()
         .of(yup.string())
         .default([]),
@@ -22,7 +22,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // ** Computed
-const productFlashDeals = computed(() => props.data.find(_p => _p.key === HOME_SETTING.PRODUCT_FLASH_DEALS))
+const productCategory = computed(() => props.data.find(_p => _p.key === HOME_SETTING.PRODUCT_CATEGORIES_POPULAR))
 
 // ** useHooks
 const { isPending, mutateAsync } = useSettingSystemFormInput()
@@ -30,15 +30,15 @@ const { isPending, mutateAsync } = useSettingSystemFormInput()
 const { handleSubmit } = useForm({
     validationSchema: schema,
     initialValues: {
-        product_id: typeof productFlashDeals.value?.value === 'string' ? JSON.parse(productFlashDeals.value?.value) : []
+        product_category_id: typeof productCategory.value?.value === 'string' ? JSON.parse(productCategory.value?.value) : []
     }
 })
 
 // ** Methods
 const onSubmit = handleSubmit(values => mutateAsync({
-    label: HOME_SETTING.PRODUCT_FLASH_DEALS,
-    key: HOME_SETTING.PRODUCT_FLASH_DEALS,
-    value: JSON.stringify(values.product_id),
+    label: HOME_SETTING.PRODUCT_CATEGORIES_POPULAR,
+    key: HOME_SETTING.PRODUCT_CATEGORIES_POPULAR,
+    value: JSON.stringify(values.product_category_id),
     input_type: INPUT_TYPE.TEXT
 
 }))
@@ -56,12 +56,12 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     color="cyan"
                     variant="solid"
                     title="Thông Tin!"
-                    description="Những sản phẩm được chọn chỉ hiển thị trong trang chủ. (Khuyến khích tối đa 10 sản phẩm)"
+                    description="Những danh mục được chọn chỉ hiển thị trong trang chủ. (Khuyến khích tối đa 10 sản phẩm)"
                 />
             </div>
 
             <div class="col-span-12">
-                <FormProductSearchSelected name="product_id" />
+                <FormCategorySearchSelected name="product_category_id" />
             </div>
 
             <div class="col-span-12">

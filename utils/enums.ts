@@ -94,7 +94,8 @@ export enum ROUTER {
     SYSTEM_SETTINGS_HOME_SLIDER = '/system-settings/home/slider',
     SYSTEM_SETTINGS_HOME_PRODUCT_FLASH_DEALS = '/system-settings/home/product-flash-deals',
     SYSTEM_SETTINGS_HOME_PRODUCT_CATEGORY = '/system-settings/home/product-category',
-    SYSTEM_SETTINGS_HOME_PRODUCT_COLLECTION = '/system-settings/home/product-collection'
+    SYSTEM_SETTINGS_HOME_PRODUCT_COLLECTION = '/system-settings/home/product-collection',
+    SYSTEM_SETTINGS_HOME_PRODUCT_BRAND = '/system-settings/home/product-brand'
 }
 
 export enum IMAGE {
@@ -109,6 +110,14 @@ export enum MESSAGE {
     SUCCESS = 'Dữ liệu đã được lưu thành công!',
     ERROR = 'Đã xảy ra lỗi trong quá trình xử lý!',
     DELETE = 'Xóa dữ liệu thành công!'
+}
+
+export enum HOME_SETTING {
+    SLIDER = 'home_slider',
+    PRODUCT_FLASH_DEALS = 'home_product_flash_deals',
+    PRODUCT_CATEGORIES_POPULAR = 'home_product_categories_popular',
+    PRODUCT_COLLECTION = 'home_product_collection',
+    PRODUCT_BRAND = 'home_product_brand'
 }
 
 export enum WEBSITE_SETUP {
