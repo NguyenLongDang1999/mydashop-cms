@@ -42,3 +42,18 @@ export interface IProductFlashDealsSearch extends IPagination {
 export interface IProductFlashDealsTable extends IAggregations {
     data: IProductFlashDeals[]
 }
+
+export interface IProductFlashDealsList {
+    id: string
+    name: string
+}
+
+export interface IHomeProductFlashDealsSearch extends IPagination {
+    id?: string
+    sku?: string
+    name?: string
+    product_brand_id?: string
+    product_category_id?: string
+    status?: string
+    product_type?: string
+}

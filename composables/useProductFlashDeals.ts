@@ -3,7 +3,8 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 
 // ** Types Imports
 import type { IDeleteRecord } from '~/types/core.type'
-import type { IProductFlashDealsForm, IProductFlashDealsSearch, IProductFlashDealsTable } from '~/types/product-flash-deals.type'
+import type { IHomeProductFlashDealsSearch, IProductFlashDealsForm, IProductFlashDealsList, IProductFlashDealsSearch, IProductFlashDealsTable } from '~/types/product-flash-deals.type'
+import { IProductTable } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT_FLASH_DEALS)
@@ -60,6 +61,40 @@ export const useProductFlashDealsRetrieve = async () => {
 
     return {
         data: computed(() => data.value as IProductFlashDealsForm || {})
+    }
+}
+
+export const useProductFlashDealsDataList = () => {
+    // ** useHooks
+    const { data } = useQuery<IProductFlashDealsList[]>({
+        queryKey: [queryKey.dataList],
+        queryFn: () => useFetcher(path.value + '/data-list')
+    })
+
+    return computed(() => data.value || [])
+}
+
+export const useProductFlashDealsTableList = () => {
+    const search = reactive<IHomeProductFlashDealsSearch>({
+        page: PAGE.CURRENT,
+        pageSize: PAGE.SIZE
+    })
+
+    // ** useHooks
+    const { data, isFetching, suspense } = useQuery<IProductTable>({
+        queryKey: [queryKey.dataTable, search],
+        queryFn: () => useFetcher(path.value + '/product-table-list', { params: search }),
+        placeholderData: keepPreviousData
+    })
+
+    provide('search', search)
+
+    return {
+        search,
+        isFetching,
+        dataTable: computed(() => data.value?.data || []),
+        dataAggregations: computed(() => data.value?.aggregations || 0),
+        suspense
     }
 }
 

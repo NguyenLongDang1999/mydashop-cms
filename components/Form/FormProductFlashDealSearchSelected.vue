@@ -1,19 +1,23 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProduct } from '~/types/product.type'
+import type { IRow } from '~/types/core.type';
+import type { IProduct } from '~/types/product.type';
 
 // ** Props & Emits
 interface Props {
     name: string
+    flashDealsId: string
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
+const { search, isFetching, dataTable, dataAggregations, suspense } = useProductFlashDealsTableList()
 const { value, errorMessage, setValue } = useField<string[]>(() => props.name, undefined, { syncVModel: true })
+
+// ** Watch
+watchEffect(() => search.id = props.flashDealsId)
 
 // ** Data
 const selected = ref<IProduct[]>([])
