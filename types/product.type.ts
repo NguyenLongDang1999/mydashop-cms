@@ -95,6 +95,7 @@ export interface IProduct {
     status: number
     image_uri: string
     created_at: string
+    hasFlashDeals: boolean
     productBrand: IProductBrandList
     productCategory: IProductCategoryList
 }

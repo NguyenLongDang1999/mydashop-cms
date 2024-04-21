@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IOptions } from '~/types/core.type'
+import type { IOptions } from '~/types/core.type';
 
 // ** Props & Emits
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
     options: IOptions[]
     modelValue?: string | number | string[] | (number | undefined)[]
     colour?: boolean
+    search?: boolean
     routePage?: string
 }
 
@@ -26,13 +27,14 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 
 // ** Computed
 const error = computed(() => errorMessage.value)
+const searchName = computed(() => props.search ? `search_${props.name}` : props.name)
 const dataList = computed(() => props.options.filter(_p => Array.isArray(value.value) && (value.value as number[])?.includes(_p.id as number)))
 </script>
 
 <template>
     <UFormGroup
         :label="label"
-        :name="name"
+        :name="searchName"
         :error="error"
     >
         <USelectMenu

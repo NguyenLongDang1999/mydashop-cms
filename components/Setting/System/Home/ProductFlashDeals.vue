@@ -7,19 +7,19 @@ import type { ISettingSystemForm } from '~/types/setting-system.type';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
 
+const props = defineProps<Props>()
+
 const schema = toTypedSchema(yup.object({
     product_id: yup
         .array()
         .of(yup.string())
-        .default([]),
+        .default([])
 }))
 
 // ** Props & Emits
 interface Props {
     data: ISettingSystemForm[]
 }
-
-const props = defineProps<Props>()
 
 // ** Computed
 const productFlashDeals = computed(() => props.data.find(_p => _p.key === HOME_SETTING.PRODUCT_FLASH_DEALS))
@@ -61,7 +61,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
             </div>
 
             <div class="col-span-12">
-                <FormProductSearchSelected name="product_id" />
+                <FormProductFlashDealSearchSelected name="product_id" />
             </div>
 
             <div class="col-span-12">

@@ -26,7 +26,6 @@ export default function () {
 }
 
 export const useProductDataTable = () => {
-    // ** Data
     const search = reactive<IProductSearch>({
         page: PAGE.CURRENT,
         pageSize: PAGE.SIZE

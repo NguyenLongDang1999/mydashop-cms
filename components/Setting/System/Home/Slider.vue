@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
 // ** Type Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type';
+import type { ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** VeeValidate Imports
-import { toTypedSchema } from '@vee-validate/yup';
-import * as yup from 'yup';
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
+
+const props = defineProps<Props>()
 
 const label = {
     image_uri: 'Ảnh đại diện',
@@ -31,8 +33,6 @@ const schema = toTypedSchema(yup.object({
 interface Props {
     data: ISettingSystemForm[]
 }
-
-const props = defineProps<Props>()
 
 // ** Computed
 const slider = computed(() => props.data.find(_p => _p.key === HOME_SETTING.SLIDER))

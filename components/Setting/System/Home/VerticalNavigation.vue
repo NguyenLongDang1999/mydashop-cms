@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { VerticalNavigationLink } from '#ui/types';
+import type { VerticalNavigationLink } from '#ui/types'
 
 // ** Data
 const links: VerticalNavigationLink[] = [{

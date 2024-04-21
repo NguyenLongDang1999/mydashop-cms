@@ -1,14 +1,13 @@
 // ** Types Imports
-import type { UseFetchOptions } from '#app'
-import type { FetchContext, FetchResponse } from 'ofetch'
-import type { IAuthProfile } from '~/types/auth.type'
+import { FetchContext, FetchError, FetchOptions, FetchResponse } from 'ofetch';
+import type { IAuthProfile } from '~/types/auth.type';
 
 let refreshTokenPromise: Promise<void> | null = null
 const refreshTokenLock = ref<boolean>(false)
 
 export const useFetcher = async <T>(
     path: string,
-    opts?: UseFetchOptions<unknown> | undefined
+    opts?: FetchOptions
 ): Promise<T> => {
     const config = useRuntimeConfig()
 
@@ -17,7 +16,7 @@ export const useFetcher = async <T>(
     }
 
     try {
-        const { data, error } = await useFetch(path, {
+        const data = await $fetch(path, {
             baseURL: config.public.apiBase,
             credentials: 'include',
             headers: useRequestHeaders(),
@@ -27,20 +26,10 @@ export const useFetcher = async <T>(
             ...opts
         })
 
-        if (error.value) {
-            if (error.value?.data?.message) {
-                throw new Error(error.value?.data?.message || 'An unknown error occurred during data fetching.')
-            }
-
-            throw new Error(error.value?.data?.error || 'An unknown error occurred during data fetching.')
-        }
-
-        if (!data.value) {
-            throw new Error('No data returned from the fetch operation.')
-        }
-
-        return data.value as T
+        return data as T
     } catch (err: unknown) {
+        if (!(err instanceof FetchError)) throw err;
+
         throw new Error(err instanceof Error ? err.message : 'An error occurred during data fetching.')
     }
 }

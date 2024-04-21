@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { TabItem } from '#ui/types'
+import type { TabItem } from '#ui/types';
 
 // ** useHooks
 const { data } = await useProductCategoryRetrieve()
@@ -14,6 +14,8 @@ const items: TabItem[] = [{
     slot: 'product',
     label: 'Sản phẩm'
 }]
+
+provide('productCategoryId', data.value?.id)
 </script>
 
 <template>

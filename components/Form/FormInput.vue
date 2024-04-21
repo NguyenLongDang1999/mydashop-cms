@@ -2,8 +2,9 @@
 
 // ** Props & Emits
 interface Props {
-    label?: string
     name: string
+    label?: string
+    search?: boolean
     modelValue?: string | number
 }
 
@@ -16,13 +17,14 @@ const { value, errorMessage } = useField(() => props.name, undefined, {
 })
 
 // ** Computed
+const searchName = computed(() => props.search ? `search_${props.name}` : props.name)
 const error = computed(() => errorMessage.value)
 </script>
 
 <template>
     <UFormGroup
         :label="label"
-        :name="name"
+        :name="searchName"
         :error="error"
     >
         <UInput
