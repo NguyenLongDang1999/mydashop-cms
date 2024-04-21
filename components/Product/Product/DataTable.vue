@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProduct } from '~/types/product.type';
+import type { IRow } from '~/types/core.type'
+import type { IProduct } from '~/types/product.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductDataTable()
@@ -34,7 +34,7 @@ productTableColumns.value.pop()
                     >
                         Flash Deals
                     </UBadge>
-                    
+
                     <div class="flex items-center gap-1 mt-2">
                         <UAvatar
                             :src="getPathImageFile(row.image_uri)"

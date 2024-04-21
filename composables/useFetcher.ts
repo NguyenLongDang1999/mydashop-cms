@@ -1,6 +1,7 @@
 // ** Types Imports
-import { FetchContext, FetchError, FetchOptions, FetchResponse } from 'ofetch';
-import type { IAuthProfile } from '~/types/auth.type';
+import type { FetchContext, FetchOptions, FetchResponse } from 'ofetch'
+import { FetchError } from 'ofetch'
+import type { IAuthProfile } from '~/types/auth.type'
 
 let refreshTokenPromise: Promise<void> | null = null
 const refreshTokenLock = ref<boolean>(false)
@@ -28,7 +29,7 @@ export const useFetcher = async <T>(
 
         return data as T
     } catch (err: unknown) {
-        if (!(err instanceof FetchError)) throw err;
+        if (!(err instanceof FetchError)) throw err
 
         throw new Error(err instanceof Error ? err.message : 'An error occurred during data fetching.')
     }

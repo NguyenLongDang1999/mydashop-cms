@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type';
-import type { IProductCategory } from '~/types/product-category.type';
+import type { IRow } from '~/types/core.type'
+import type { IProductCategory } from '~/types/product-category.type'
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductCategoryDataTable()
@@ -92,7 +92,7 @@ const { isPending, mutateAsync } = useProductCategoryFormDelete()
                 </template>
             </UTable>
         </div>
-        
+
         <Pagination :data-aggregations="dataAggregations" />
     </UCard>
 </template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IProductSearch } from '~/types/product.type';
+import type { IProductSearch } from '~/types/product.type'
 
 // ** Validations Imports
-import { label } from '~/validations/product';
+import { label } from '~/validations/product'
 
 // ** useHooks
 const categoryList = useProductCategoryDataList()
@@ -12,6 +12,7 @@ const categoryList = useProductCategoryDataList()
 // ** Data
 const search = inject('search') as IProductSearch
 const productCategoryId = inject('productCategoryId', undefined)
+
 search.product_category_id = productCategoryId
 
 const searchTemp = reactive<IProductSearch>(_clone(search))
@@ -24,7 +25,7 @@ const handleReset = () => {
         product_category_id: productCategoryId,
         product_brand_id: undefined,
         status: undefined,
-        product_type: undefined,
+        product_type: undefined
     })
     _assign(search, searchTemp)
 }

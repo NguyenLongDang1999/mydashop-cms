@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Type Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type';
+import type { ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** VeeValidate Imports
-import { toTypedSchema } from '@vee-validate/yup';
-import * as yup from 'yup';
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
 
 const props = defineProps<Props>()
 

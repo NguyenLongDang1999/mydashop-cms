@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IPagination } from '~/types/core.type';
+import type { IPagination } from '~/types/core.type'
 
 // ** Props & Emits
 interface Props {
