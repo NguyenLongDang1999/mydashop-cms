@@ -157,7 +157,7 @@ const onSubmit = handleSubmit(async values => {
 
                     <div class="col-span-12 flex flex-col gap-4">
                         <div
-                            v-for="product in productVariants"
+                            v-for="(product, variantIndex) in productVariants"
                             :key="product.id"
                             class="grid grid-cols-12 gap-4"
                         >
@@ -231,14 +231,14 @@ const onSubmit = handleSubmit(async values => {
                                             disabled
                                         />
                                     </div>
-
-                                    <div
-                                        v-if="index < product.productVariants.length - 1"
-                                        class="col-span-12"
-                                    >
-                                        <UDivider />
-                                    </div>
                                 </div>
+                            </div>
+
+                            <div
+                                v-if="variantIndex < productVariants.length - 1"
+                                class="col-span-12"
+                            >
+                                <UDivider />
                             </div>
                         </div>
                     </div>
