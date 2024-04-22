@@ -12,7 +12,8 @@ const path = ref<string>(ROUTE.PRODUCT_FLASH_DEALS)
 const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
-    retrieve: `${path.value}-retrieve`
+    retrieve: `${path.value}-retrieve`,
+    flashDataTable: `${path.value}-flash-deals-data-table`,
 }
 
 export default function () {
@@ -82,7 +83,7 @@ export const useProductFlashDealsTableList = () => {
 
     // ** useHooks
     const { data, isFetching, suspense } = useQuery<IProductTable>({
-        queryKey: [queryKey.dataTable, search],
+        queryKey: [queryKey.flashDataTable, search],
         queryFn: () => useFetcher(path.value + '/product-table-list', { params: search }),
         placeholderData: keepPreviousData
     })

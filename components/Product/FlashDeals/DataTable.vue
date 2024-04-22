@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 // ** Types Imports
-import type { IRow } from '~/types/core.type'
-import type { IProductFlashDeals } from '~/types/product-flash-deals.type'
+import type { IRow } from '~/types/core.type';
+import type { IProductFlashDeals } from '~/types/product-flash-deals.type';
 
 // ** useHooks
 const { isFetching, dataTable, dataAggregations } = useProductFlashDealsDataTable()
@@ -36,7 +36,7 @@ const { isPending, mutateAsync } = useProductFlashDealsFormDelete()
                         <div class="flex items-center gap-1">
                             <div class="flex flex-col flex-1 truncate">
                                 <span class="capitalize text-primary truncate">{{ row.title }}</span>
-                                <span>{{ row.flashDealProducts.length }} Biến Thể</span>
+                                <span>{{ row.flashDealProducts?.length }} Biến Thể</span>
                             </div>
                         </div>
                     </ULink>

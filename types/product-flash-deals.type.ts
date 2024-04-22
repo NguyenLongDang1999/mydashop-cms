@@ -26,12 +26,12 @@ export interface IProductFlashDealsForm {
 export interface IProductFlashDeals {
     id: string
     title: string
-    description: string
-    product: {
+    start_time: string
+    end_time: string
+    flashDealProducts: {
         _count: number
     }[]
     status: number
-    created_at: string
 }
 
 export interface IProductFlashDealsSearch extends IPagination {
