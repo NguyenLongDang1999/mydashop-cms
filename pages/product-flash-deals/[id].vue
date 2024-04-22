@@ -115,7 +115,11 @@ const onSubmit = handleSubmit(async values => {
                         </div>
 
                         <div class="col-span-12">
-                            <FormProductSearchSelected name="product_id" />
+                            <FormProductSearchSelected
+                                name="product_id"
+                                not-flash-deals
+                                :product-id-flash-deals="flashDeals.product.map(_p => _p.id).join(',')"
+                            />
                         </div>
 
                         <div class="col-span-12">

@@ -7,12 +7,15 @@ import type { IProduct } from '~/types/product.type'
 // ** Props & Emits
 interface Props {
     name: string
+    notFlashDeals?: boolean
+    productIdFlashDeals?: string
 }
 
 const props = defineProps<Props>()
 
 // ** useHooks
-const { isFetching, dataTable, dataAggregations, suspense } = useProductDataTable()
+const { isFetching, dataTable, dataAggregations, suspense } = useProductDataTable(props.notFlashDeals, props.productIdFlashDeals)
+
 const { value, errorMessage, setValue } = useField<string[]>(() => props.name, undefined, { syncVModel: true })
 
 // ** Data

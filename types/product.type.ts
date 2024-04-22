@@ -82,6 +82,8 @@ export interface IProductSearch extends IPagination {
     product_category_id?: string
     status?: string
     product_type?: string
+    not_flash_deals?: boolean
+    product_id_flash_deals?: string
 }
 
 export interface IProduct {

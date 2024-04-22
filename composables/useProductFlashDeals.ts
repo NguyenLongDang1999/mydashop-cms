@@ -4,7 +4,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 // ** Types Imports
 import type { IDeleteRecord } from '~/types/core.type'
 import type { IHomeProductFlashDealsSearch, IProductFlashDealsForm, IProductFlashDealsList, IProductFlashDealsSearch, IProductFlashDealsTable } from '~/types/product-flash-deals.type'
-import { IProductTable } from '~/types/product.type'
+import type { IProductTable } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT_FLASH_DEALS)

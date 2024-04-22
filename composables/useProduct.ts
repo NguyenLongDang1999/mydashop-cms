@@ -25,11 +25,14 @@ export default function () {
     }
 }
 
-export const useProductDataTable = () => {
+export const useProductDataTable = (notFlashDeals?: boolean, productIdFlashDeals?: string) => {
     const search = reactive<IProductSearch>({
         page: PAGE.CURRENT,
         pageSize: PAGE.SIZE
     })
+
+    search.not_flash_deals = notFlashDeals
+    search.product_id_flash_deals = productIdFlashDeals
 
     // ** useHooks
     const { data, isFetching, suspense } = useQuery<IProductTable>({

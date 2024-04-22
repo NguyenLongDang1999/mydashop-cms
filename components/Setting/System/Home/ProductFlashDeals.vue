@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 // ** Type Imports
-import type { ISettingSystemForm } from '~/types/setting-system.type';
+import type { ISettingSystemForm } from '~/types/setting-system.type'
 
 // ** VeeValidate Imports
-import { toTypedSchema } from '@vee-validate/yup';
-import * as yup from 'yup';
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
 
 const props = defineProps<Props>()
 
@@ -29,7 +29,7 @@ const productFlashDeals = computed(() => props.data.find(_p => _p.key === HOME_S
 const flashDealList = useProductFlashDealsDataList()
 const { isPending, mutateAsync } = useSettingSystemFormInput()
 
-const { handleSubmit, values } = useForm({
+const { handleSubmit, values, setFieldValue } = useForm({
     validationSchema: schema,
     initialValues: {
         flash_deals_id: typeof productFlashDeals.value?.value === 'string' ? JSON.parse(productFlashDeals.value?.value).flash_deals_id : '',
@@ -71,6 +71,7 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     label="Flash Deals"
                     name="flash_deals_id"
                     :options="flashDealList"
+                    @update:model-value="setFieldValue('product_id', [])"
                 />
             </div>
 

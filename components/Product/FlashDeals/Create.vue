@@ -18,6 +18,9 @@ const { handleSubmit, values: flashDeals, setFieldValue } = useForm<IProductFlas
 // ** Data
 const isOpen = ref<boolean>(false)
 
+// ** Set Data
+productVariants.value = []
+
 // ** Methods
 const onSubmit = handleSubmit(async values => {
     const product_variants = []
@@ -140,7 +143,10 @@ const onSubmit = handleSubmit(async values => {
                     </div>
 
                     <div class="col-span-12">
-                        <FormProductSearchSelected name="product_id" />
+                        <FormProductSearchSelected
+                            name="product_id"
+                            not-flash-deals
+                        />
                     </div>
 
                     <div class="col-span-12">
