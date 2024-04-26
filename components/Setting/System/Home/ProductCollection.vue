@@ -10,7 +10,9 @@ import * as yup from 'yup'
 const props = defineProps<Props>()
 
 const schema = toTypedSchema(yup.object({
-    flash_deals_id: yup.string().required(),
+    product_collection_id: yup.array()
+        .of(yup.string())
+        .default([]),
     product_id: yup
         .array()
         .of(yup.string())
@@ -23,26 +25,26 @@ interface Props {
 }
 
 // ** Computed
-const productFlashDeals = computed(() => props.data.find(_p => _p.key === HOME_SETTING.PRODUCT_FLASH_DEALS))
+const productCollection = computed(() => props.data.find(_p => _p.key === HOME_SETTING.PRODUCT_COLLECTION))
 
 // ** useHooks
-const flashDealList = useProductFlashDealsDataList()
+const productCollectionList = useProductCollectionDataList()
 const { isPending, mutateAsync } = useSettingSystemFormInput()
 
 const { handleSubmit, values, setFieldValue } = useForm({
     validationSchema: schema,
     initialValues: {
-        flash_deals_id: typeof productFlashDeals.value?.value === 'string' ? JSON.parse(productFlashDeals.value?.value).flash_deals_id : '',
-        product_id: typeof productFlashDeals.value?.value === 'string' ? JSON.parse(productFlashDeals.value?.value).product_id : []
+        product_collection_id: typeof productCollection.value?.value === 'string' ? JSON.parse(productCollection.value?.value).product_collection_id : '',
+        product_id: typeof productCollection.value?.value === 'string' ? JSON.parse(productCollection.value?.value).product_id : []
     }
 })
 
 // ** Methods
 const onSubmit = handleSubmit(values => mutateAsync({
-    label: HOME_SETTING.PRODUCT_FLASH_DEALS,
-    key: HOME_SETTING.PRODUCT_FLASH_DEALS,
+    label: HOME_SETTING.PRODUCT_COLLECTION,
+    key: HOME_SETTING.PRODUCT_COLLECTION,
     value: JSON.stringify({
-        flash_deals_id: values.flash_deals_id,
+        product_collection_id: values.product_collection_id,
         product_id: values.product_id
     }),
     input_type: INPUT_TYPE.TEXT
@@ -62,21 +64,22 @@ const onSubmit = handleSubmit(values => mutateAsync({
                     color="cyan"
                     variant="solid"
                     title="Thông Tin!"
-                    description="Những sản phẩm được chọn chỉ hiển thị trong trang chủ. (Khuyến khích tối đa 10 sản phẩm)"
+                    description="- Có thể lựa chọn nhiều bộ sưu tập (1 bộ sưu tập khuyến khích nên dưới 10 sản phẩm)."
                 />
             </div>
 
             <div class="col-span-12">
                 <p class="text-sm/6 font-semibold flex items-center gap-1.5 capitalize">
-                    1. Lựa chọn Flash Deals
+                    1. Lựa chọn bộ sưu tập
                 </p>
             </div>
 
             <div class="col-span-12">
                 <FormSelect
-                    label="Flash Deals"
-                    name="flash_deals_id"
-                    :options="flashDealList"
+                    label="Bộ sưu tập"
+                    name="product_collection_id"
+                    multiple
+                    :options="productCollectionList"
                     @update:model-value="setFieldValue('product_id', [])"
                 />
             </div>
@@ -88,13 +91,10 @@ const onSubmit = handleSubmit(values => mutateAsync({
             </div>
 
             <div
-                v-if="values.flash_deals_id"
+                v-if="values.product_collection_id"
                 class="col-span-12"
             >
-                <FormProductFlashDealSearchSelected
-                    name="product_id"
-                    :flash-deals-id="values.flash_deals_id"
-                />
+                <FormProductSearchSelected name="product_id" />
             </div>
 
             <div class="col-span-12">

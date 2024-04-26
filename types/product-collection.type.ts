@@ -11,7 +11,7 @@ export interface IProductCollectionForm {
 
 export interface IProductCollectionList {
     id: string
-    title: string
+    name: string
 }
 
 export interface IProductCollection {
