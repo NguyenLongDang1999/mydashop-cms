@@ -93,6 +93,7 @@ const generateProductVariants = () => {
     ) => {
         if (Array.isArray(product.product_attributes)) {
             if (currentIndex === product.product_attributes.length) {
+                console.log(currentIndex, product.product_attributes.length, combinations.length, combinations.length === 0)
                 combinations.push({
                     is_default: combinations.length === 0,
                     label: currentCombination.map(item => item.name).join(' - '),
