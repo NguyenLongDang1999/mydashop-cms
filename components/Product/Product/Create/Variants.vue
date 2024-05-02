@@ -16,12 +16,14 @@ const { category_id, brandList, attributeList, isFetchingBrand, isFetchingAttrib
 const { isPending, mutateAsync } = useProductFormInput()
 const { attribute_id, attributeValueList } = useProductAttributeValueList()
 
-const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormVariant>({
+const { handleSubmit, values: product, setFieldValue, meta } = useForm<IProductFormVariant>({
     validationSchema: schemaVariants
 })
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
+const formIsDirty = computed(() => meta.value.dirty)
+
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
@@ -110,6 +112,12 @@ const handleIsDefault = (index: number) => {
         })
     }
 }
+
+onBeforeRouteLeave((to, from, next) => {
+    const shouldNavigate = !formIsDirty.value || window.confirm('Do you really want to leave? You have unsaved changes!')
+
+    next(shouldNavigate)
+})
 </script>
 
 <template>

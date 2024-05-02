@@ -11,12 +11,13 @@ const categoryList = useProductCategoryDataList()
 const { category_id, brandList, isFetchingBrand } = useProductSelectedWithCategory()
 const { isPending, mutateAsync } = useProductFormInput()
 
-const { handleSubmit, values: product, setFieldValue } = useForm<IProductFormSingle>({
+const { handleSubmit, values: product, setFieldValue, meta } = useForm<IProductFormSingle>({
     validationSchema: schema
 })
 
 // ** Computed
 const hasTechnicalSpecifications = computed(() => product.technical_specifications && product.technical_specifications.length > 0)
+const formIsDirty = computed(() => meta.value.dirty)
 
 // ** Methods
 const onSubmit = handleSubmit(async values => {
@@ -26,6 +27,12 @@ const onSubmit = handleSubmit(async values => {
     })
 
     navigateTo(ROUTER.PRODUCT)
+})
+
+onBeforeRouteLeave((to, from, next) => {
+    const shouldNavigate = !formIsDirty.value || window.confirm('Do you really want to leave? You have unsaved changes!')
+
+    next(shouldNavigate)
 })
 </script>
 
