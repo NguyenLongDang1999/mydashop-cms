@@ -1,5 +1,6 @@
 // ** Types Imports
 import type { IAggregations, IPagination } from '~/types/core.type'
+import type { IProductGenerateVariant } from './product.type'
 
 export interface IProductFlashDealsForm {
     id?: string
@@ -13,7 +14,9 @@ export interface IProductFlashDealsForm {
         start: Date
         end: Date
     }
-    product?: any
+    product?: {
+        id: string
+    }[]
     product_variants: {
         id: string
         price: number
@@ -21,6 +24,7 @@ export interface IProductFlashDealsForm {
         special_price_type?: number
     }[]
     product_id?: string[]
+    productVariants?: IProductGenerateVariant[]
 }
 
 export interface IProductFlashDeals {

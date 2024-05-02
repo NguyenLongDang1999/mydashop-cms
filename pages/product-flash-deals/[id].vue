@@ -118,7 +118,7 @@ const onSubmit = handleSubmit(async values => {
                             <FormProductSearchSelected
                                 name="product_id"
                                 not-flash-deals
-                                :product-id-flash-deals="flashDeals.product.map(_p => _p.id).join(',')"
+                                :product-id-flash-deals="flashDeals.product_id?.map(_p => _p).join(',')"
                             />
                         </div>
 
@@ -174,7 +174,6 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                             <FormSelect
-                                                :model-value="variant.special_price_type"
                                                 :label="label.special_price_type"
                                                 :options="optionTypeDiscount"
                                                 :name="`product.${product.id}.productVariants.${index}.special_price_type`"
@@ -183,7 +182,6 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                             <FormMoney
-                                                :model-value="variant.price"
                                                 :label="label.price"
                                                 :name="`product.${product.id}.productVariants.${index}.price`"
                                                 text-trailing="VNĐ"
@@ -193,7 +191,6 @@ const onSubmit = handleSubmit(async values => {
 
                                         <div class="md:col-span-3 sm:col-span-4 col-span-6">
                                             <FormMoney
-                                                :model-value="variant.special_price"
                                                 :label="label.special_price"
                                                 :name="`product.${product.id}.productVariants.${index}.special_price`"
                                                 :text-trailing="String(variant.special_price_type) === SPECIAL_PRICE.PERCENT ? '%' : 'VNĐ'"

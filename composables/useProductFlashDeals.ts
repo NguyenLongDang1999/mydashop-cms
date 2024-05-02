@@ -4,7 +4,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 // ** Types Imports
 import type { IDeleteRecord } from '~/types/core.type'
 import type { IHomeProductFlashDealsSearch, IProductFlashDealsForm, IProductFlashDealsList, IProductFlashDealsSearch, IProductFlashDealsTable } from '~/types/product-flash-deals.type'
-import type { IProductTable } from '~/types/product.type'
+import type { IProductGenerateVariant, IProductTable } from '~/types/product.type'
 
 // ** State
 const path = ref<string>(ROUTE.PRODUCT_FLASH_DEALS)
@@ -13,7 +13,7 @@ const queryKey = {
     dataTable: `${path.value}-data-table`,
     dataList: `${path.value}-data-list`,
     retrieve: `${path.value}-retrieve`,
-    flashDataTable: `${path.value}-flash-deals-data-table`,
+    flashDataTable: `${path.value}-flash-deals-data-table`
 }
 
 export default function () {
@@ -58,7 +58,7 @@ export const useProductFlashDealsRetrieve = async () => {
 
     await suspense()
 
-    productVariants.value = data.value?.product
+    productVariants.value = data.value?.productVariants as IProductGenerateVariant[]
 
     return {
         data: computed(() => data.value as IProductFlashDealsForm || {})
