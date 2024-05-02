@@ -6,15 +6,18 @@ import type { IProductSearch } from '~/types/product.type'
 // ** Validations Imports
 import { label } from '~/validations/product'
 
+// ** Props && Emits
+interface Props {
+    productCategoryId?: string
+}
+
+const props = defineProps<Props>()
+
 // ** useHooks
 const categoryList = useProductCategoryDataList()
 
 // ** Data
 const search = inject('search') as IProductSearch
-const productCategoryId = inject('productCategoryId', undefined)
-
-search.product_category_id = productCategoryId
-
 const searchTemp = reactive<IProductSearch>(_clone(search))
 
 // ** Methods
@@ -22,7 +25,7 @@ const handleReset = () => {
     _assign(searchTemp, {
         sku: undefined,
         name: undefined,
-        product_category_id: productCategoryId,
+        product_category_id: props.productCategoryId,
         product_brand_id: undefined,
         status: undefined,
         product_type: undefined

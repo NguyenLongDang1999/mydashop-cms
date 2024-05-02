@@ -31,6 +31,10 @@ export const useProductDataTable = (notFlashDeals?: boolean, productIdFlashDeals
         pageSize: PAGE.SIZE
     })
 
+    const productCategoryId = inject('productCategoryId', undefined)
+
+    // ** Set Data
+    search.product_category_id = productCategoryId
     search.not_flash_deals = notFlashDeals
     search.product_id_flash_deals = productIdFlashDeals
 
@@ -46,6 +50,7 @@ export const useProductDataTable = (notFlashDeals?: boolean, productIdFlashDeals
     return {
         search,
         isFetching,
+        productCategoryId,
         dataTable: computed(() => data.value?.data || []),
         dataAggregations: computed(() => data.value?.aggregations || 0),
         suspense

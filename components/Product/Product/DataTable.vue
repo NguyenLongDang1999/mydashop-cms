@@ -5,7 +5,7 @@ import type { IRow } from '~/types/core.type'
 import type { IProduct } from '~/types/product.type'
 
 // ** useHooks
-const { isFetching, dataTable, dataAggregations } = useProductDataTable()
+const { productCategoryId, isFetching, dataTable, dataAggregations } = useProductDataTable()
 const { isPending, mutateAsync } = useProductFormDelete()
 
 // ** Data
@@ -16,7 +16,7 @@ productTableColumns.value.pop()
 </script>
 
 <template>
-    <ProductProductSearch />
+    <ProductProductSearch :product-category-id="productCategoryId" />
 
     <div class="my-4 flex border border-gray-200 dark:border-gray-700 relative rounded-md not-prose bg-white dark:bg-gray-900">
         <UTable
