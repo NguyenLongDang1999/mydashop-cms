@@ -14,10 +14,10 @@ const queryKey = {
     retrieve: `${path.value}-retrieve`
 }
 
-export default function () {
-    return {
-        path
-    }
+const pathKey = {
+    index: path.value,
+    id: `${path.value}/$id`,
+    dataList: `${path.value}/data-list`
 }
 
 export const useProductCategoryDataTable = () => {
@@ -30,7 +30,7 @@ export const useProductCategoryDataTable = () => {
     // ** useHooks
     const { data, isFetching, suspense } = useQuery<IProductCategoryTable>({
         queryKey: [queryKey.dataTable, search],
-        queryFn: () => useFetcher(path.value, { params: search }),
+        queryFn: () => useFetcher(pathKey.index, { params: search }),
         placeholderData: keepPreviousData
     })
 
@@ -49,7 +49,7 @@ export const useProductCategoryDataList = () => {
     // ** useHooks
     const { data } = useQuery<IProductCategoryList[]>({
         queryKey: [queryKey.dataList],
-        queryFn: () => useFetcher(path.value + '/data-list')
+        queryFn: () => useFetcher(pathKey.dataList)
     })
 
     return computed(() => data.value || [])
@@ -61,7 +61,7 @@ export const useProductCategoryRetrieve = async () => {
 
     const { data, suspense } = useQuery<IProductCategoryForm>({
         queryKey: [queryKey.retrieve, params.id],
-        queryFn: () => useFetcher(path.value + '/' + params.id)
+        queryFn: () => useFetcher(pathQueryKey(pathKey.id, params.id))
     })
 
     await suspense()
@@ -75,7 +75,10 @@ export const useProductCategoryFormInput = () => {
     const queryClient = useQueryClient()
 
     return useMutation<IProductCategoryForm, Error, IProductCategoryForm>({
-        mutationFn: body => useFetcher(body.id ? `${path.value}/${body.id}` : path.value, { method: body.id ? 'PATCH' : 'POST', body }),
+        mutationFn: body => useFetcher(body.id ? pathQueryKey(pathKey.id, body.id) : pathKey.index, {
+            method: body.id ? 'PATCH' : 'POST',
+            body
+        }),
         onSuccess: (_data, variables) => {
             queryClient.refetchQueries({ queryKey: [queryKey.dataTable] })
             queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
@@ -91,7 +94,12 @@ export const useProductCategoryFormDelete = () => {
     const queryClient = useQueryClient()
 
     return useMutation<IDeleteRecord, Error, IDeleteRecord>({
-        mutationFn: body => useFetcher(`${path.value}/${body.id}`, { method: 'DELETE', params: body }),
+        mutationFn: body => useFetcher(pathQueryKey(pathKey.id, body.id), {
+            method: 'DELETE',
+            params: {
+                slug: body.slug
+            }
+        }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [queryKey.dataList] })
             queryClient.invalidateQueries({ queryKey: [queryKey.dataTable] })

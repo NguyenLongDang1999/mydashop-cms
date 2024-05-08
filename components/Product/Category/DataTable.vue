@@ -87,7 +87,12 @@ const { isPending, mutateAsync } = useProductCategoryFormDelete()
                             :to="goToPage(row.id)"
                         />
 
-                        <Confirm :remove="() => mutateAsync({ id: row.id })" />
+                        <Confirm
+                            :remove="() => mutateAsync({
+                                id: row.id,
+                                slug: row.slug
+                            })"
+                        />
                     </div>
                 </template>
             </UTable>

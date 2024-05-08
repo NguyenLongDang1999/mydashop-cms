@@ -90,3 +90,5 @@ export const calculateCartDiscount = (cartTotal: number, amount: number, isForma
 
     return isFormat ? formatCurrency(sellingPrice) : sellingPrice
 }
+
+export const pathQueryKey = (pathKey: string, id: string | string[]) => pathKey.replace('$id', id as string)
